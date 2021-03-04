@@ -1,0 +1,112 @@
+ TITLE:
+    M1 Student-level only
+
+
+DATA:
+    file = "C:\Users\Mudar Saied\implist.dat";
+
+    type = imputation;
+
+
+VARIABLE:
+      names =
+        CNTRYID CNTSCHID CNTSTUID W_STU READ
+        ! Demographic control var
+        FEMALE IMMI1GEN IMMI2GEN ESCS
+        ! ICT Use at Home
+        ICTLEIS ICTSCHWK USESCH
+        ! Reading Mediation
+        READJOY READCOMP  READEASE 
+        ! School Weight
+        W_SCH
+        ! School ICT Policy
+        Q05HA
+        ;
+     
+    usevar =
+        ! Outcome
+        READ
+        ! Student-level
+        FEMALE IMMI1GEN IMMI2GEN ESCS     ! Demographic controls
+            ! ICT-related var
+        ICTLEIS ICTSCHWK USESCH           ! ICT use at home/ at school
+            ! Mediators
+        READJOY READCOMP READEASE         ! Reading affect
+    ;
+
+    grouping = CNTRYID (208=DEN 246=FIN 752=SWE)
+
+    missing = all (-99);
+
+    weight = W_STU;
+
+    cluster = CNTSCHID;
+
+
+ANALYSIS:
+    type=complex;    
+
+    processors = 8;
+
+    estimator = MLR;
+
+
+MODEL:
+    
+    ! SES onto X vars
+    ICTLEIS on ESCS;
+    ICTSCHWK on ESCS;
+    USESCH on ESCS;
+    
+    ! Mediators
+        ! Enjoyment of reading
+    READJOY on ICTLEIS ICTSCHWK USESCH 
+        IMMI1GEN IMMI2GEN FEMALE ESCS;
+        ICTLEIS ICTSCHWK USESCH 
+        IMMI1GEN IMMI2GEN FEMALE ESCS;       
+
+        ! Perception of reading competence
+         READCOMP on ICTLEIS ICTSCHWK USESCH 
+         IMMI1GEN IMMI2GEN FEMALE ESCS;
+
+        ! Perception of reading difficulty
+    READEASE on ICTLEIS ICTSCHWK USESCH 
+        IMMI1GEN IMMI2GEN FEMALE ESCS;
+
+    ! Total effect
+    READ on                             ! Y
+        ICTLEIS ICTSCHWK USESCH         ! X
+        READJOY READCOMP READEASE       ! M
+        FEMALE ESCS                     ! controls
+    ;
+
+    ! Correlations
+
+    ! Correlation amongst X
+    ICTLEIS with ICTSCHWK;
+    ICTSCHWK with USESCH;
+    ICTLEIS with USESCH;
+
+    ! Correlation amongst M
+    READJOY with READCOMP;
+    READCOMP with READEASE;
+    READEASE with READJOY;
+
+
+MODEL INDIRECT:
+
+    READ ind ICTLEIS;
+    READ ind ICTSCHWK;
+    READ ind USESCH;
+
+! Runing Model for Finland
+MODEL FIN:
+! Runing Model for Sweden
+MODEL SWE:
+! Runing Model for Denmark
+MODEL DEN:
+
+
+OUTPUT:
+    stdyx;
+

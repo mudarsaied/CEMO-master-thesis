@@ -1,0 +1,16 @@
+\chapter{Discussion}
+\label{chp:5}
+
+\section{Brief summary}
+
+\subsection{Remind readers what my research questions are}
+
+\section{The implication of this study}
+
+\section{Limitation and future directions}
+
+\subsection{Word in positive form}
+
+\section{Bird-eye view}
+
+\subsection{What conclusion I can draw from this paper/study}

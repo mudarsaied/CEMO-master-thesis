@@ -1,0 +1,37 @@
+\chapter{Results}
+\label{chp:4}
+
+%\epigraph{If you torture the data long enough, nature will confess.}{Ronald Coase}
+
+%//tip Quickly re-word my research questions. Not to answer them right now but to remind the readers "why we are here". In order to answer these questions, let's first of all examine the descriptive statistics, the correlationss, by country and by levels, blah blah. Most importantly, I would like to interrogate the measurement part because its robustness directly determine the validity of my models.
+
+\section{Descriptive statistics}
+
+\section{Correlation matrices}
+
+\subsection{Across countries}
+
+\subsection{Across levels: Country | School | Students}
+
+\section{Examination of measurement models}
+
+\input{./Tables/Estimates1}
+
+\input{./Tables/Estimates2}
+
+\newpage
+
+\pfigure{fig:flschool}{Total, Direct and Indirect Effects of School Intervention (\texttt{FLSCHOOL})}{1}{./Figures/FLSCHOOL.pdf}{Countries with high (low) financial knowlege indices are represented in darker (lighter) colours. Top panel: Estimates with 95\% confidence intervals crossing the verticle blue line are not statistically significant. Lower panel: Estimates whose 95\% confidence ellipses cross the verticle, horizontal and $-45\degree$ lines are not significant for direct, indirect and total effect, respectively.}{1}{1.25}
+
+\newpage
+
+\pfigure{fig:flfamily}{Total, Direct and Indirect Effects of Financial Socialisation (\texttt{FLFAMILY})}{1}{./Figures/FLFAMILY.pdf}{Countries with high (low) financial knowlege indices are represented in darker (lighter) colours. Top panel: Estimates with 95\% confidence intervals crossing the verticle blue line are not statistically significant. Lower panel: Estimates whose 95\% confidence ellipses cross the verticle, horizontal and $-45\degree$ lines are not significant for direct, indirect and total effect, respectively.}{1}{1.25}
+
+\newpage
+
+\pfigure{fig:decomposition}{School-Family Effect Decomposition by Country}{1}{./Figures/country_decomposition.pdf}{Cognitive and affective effects are represented on hozitonal and vertical axes respectively.}{0.5}{2}
+
+\newpage
+
+\section{Address the research question}
+

@@ -1,0 +1,916 @@
+Mplus VERSION 8.3
+MUTHEN & MUTHEN
+03/03/2021  12:31 AM
+
+INPUT INSTRUCTIONS
+
+  TITLE:
+      EFA: ICT use at school (SPSS: IC011, 10 items)
+
+
+  DATA:
+      file = "C:\Users\Mudar Saied\read1.dat";
+
+
+  VARIABLE:
+        names =
+
+            CNTRYID CNTSCHID CNTSTUID W_STU READ
+           ! Demographic control var
+            FEMALE IMMI1GEN IMMI2GEN ESCS
+           ! ICT
+              ! ICT Use at school (10 items)
+            Q3 Q4 Q5 Q7 Q8
+            Q9 Q10 Q1 Q2 Q6
+              !ICT PISA scaled
+            ACAHOM USESCH LEIHOM
+              ! Reading Mediation
+            READJOY READCOMP  READEASE
+           ! School Weight
+            W_SCH
+             ! School ICT Policy
+            Q05HA
+          ;
+
+      !useobs = (CNTRYID EQ 246);             ! 208DNK=7657, 246FIN=5649, 752SWE=5504
+
+      usevar =
+
+          Q3 Q4 Q5 Q7 Q8                      ! ICT Use AT School (10 Items)
+          Q9 Q10 Q1 Q2 Q6                     ! SPSS: IC011
+
+      ;
+
+      weight = W_STU;
+
+
+  ANALYSIS:
+
+      type = EFA 1 3;
+
+
+      processors = 8;
+
+
+
+  OUTPUT:
+      modindices;
+
+  PLOT:
+        TYPE = Plot3
+
+
+
+
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+
+EFA: ICT use at school (SPSS: IC011, 10 items)
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                       18810
+
+Number of dependent variables                                   10
+Number of independent variables                                  0
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Continuous
+   Q3          Q4          Q5          Q7          Q8          Q9
+   Q10         Q1          Q2          Q6
+
+Variables with special functions
+
+  Weight variable       W_STU
+
+Estimator                                                      MLR
+Rotation                                                    GEOMIN
+Row standardization                                    CORRELATION
+Type of rotation                                           OBLIQUE
+Epsilon value                                               Varies
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Optimization Specifications for the Exploratory Factor Analysis
+Rotation Algorithm
+  Number of random starts                                       30
+  Maximum number of iterations                               10000
+  Derivative convergence criterion                       0.100D-04
+
+Input data file(s)
+  C:\Users\Mudar Saied\read1.dat
+
+Input data format  FREE
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     Q3                    3.609      -0.425      -0.551    0.01%       2.900      3.000      4.000
+           18810.000       1.347      -0.505       7.349    0.01%       4.000      5.000
+     Q4                    2.464       0.397      -1.951    0.01%       1.000      2.000      2.000
+           18810.000       1.950      -0.913       7.642    0.01%       3.000      4.000
+     Q5                    2.129       0.706      -2.346    0.01%       1.000      1.000      2.000
+           18810.000       1.706      -0.476       7.204    0.01%       2.000      3.028
+     Q7                    2.531       0.294      -1.933    0.01%       1.000      2.000      2.630
+           18810.000       1.581      -0.737       7.771    0.01%       3.000      4.000
+     Q8                    2.535       0.350      -2.804    0.01%       1.000      2.000      2.771
+           18810.000       2.168      -1.017       8.398    0.01%       3.000      4.000
+     Q9                    2.394       0.486      -3.059    0.01%       1.000      2.000      2.000
+           18810.000       1.790      -0.671       8.535    0.01%       3.000      4.000
+     Q10                   2.361       0.471      -4.077    0.01%       1.000      2.000      2.000
+           18810.000       1.776      -0.658       7.867    0.01%       3.000      4.000
+     Q1                    3.360      -0.356      -1.175    0.01%       2.000      3.000      4.000
+           18810.000       2.213      -1.036       8.425    0.01%       4.000      5.000
+     Q2                    2.388       0.439      -2.722    0.01%       1.000      2.000      2.000
+           18810.000       1.646      -0.675       7.732    0.01%       2.978      3.441
+     Q6                    1.801       1.178      -1.956    0.01%       1.000      1.000      1.000
+           18810.000       1.400       0.576       6.030    0.01%       1.988      3.000
+
+
+SUMMARY OF MODEL FIT INFORMATION
+
+
+                   Number of                   Degrees of
+     Model        Parameters      Chi-Square    Freedom     P-Value
+
+     1-factor          30           5006.630        35       0.0000
+     2-factor          39           3436.716        26       0.0000
+     3-factor          47           1927.339        18       0.0000
+
+                                               Degrees of
+     Models Compared              Chi-Square    Freedom     P-Value
+
+     1-factor against 2-factor      1488.241         9       0.0000
+     2-factor against 3-factor      1334.095         8       0.0000
+
+
+
+RESULTS FOR EXPLORATORY FACTOR ANALYSIS
+
+
+           EIGENVALUES FOR SAMPLE CORRELATION MATRIX
+                  1             2             3             4             5
+              ________      ________      ________      ________      ________
+                4.613         1.045         0.924         0.730         0.642
+
+
+           EIGENVALUES FOR SAMPLE CORRELATION MATRIX
+                  6             7             8             9            10
+              ________      ________      ________      ________      ________
+                0.495         0.459         0.397         0.354         0.341
+
+
+EXPLORATORY FACTOR ANALYSIS WITH 1 FACTOR(S):
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       30
+
+Loglikelihood
+
+          H0 Value                     -287370.827
+          H0 Scaling Correction Factor      1.2641
+            for MLR
+          H1 Value                     -283209.714
+          H1 Scaling Correction Factor      1.4785
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                  574801.654
+          Bayesian (BIC)                575036.918
+          Sample-Size Adjusted BIC      574941.580
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                           5006.630*
+          Degrees of Freedom                    35
+          P-Value                           0.0000
+          Scaling Correction Factor         1.6622
+            for MLR
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.087
+          90 Percent C.I.                    0.085  0.089
+          Probability RMSEA <= .05           0.000
+
+CFI/TLI
+
+          CFI                                0.885
+          TLI                                0.852
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                          43112.459
+          Degrees of Freedom                    45
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.050
+
+
+
+MINIMUM ROTATION FUNCTION VALUE       4.07070
+
+
+
+           GEOMIN ROTATED LOADINGS (* significant at 5% level)
+                  1
+              ________
+ Q3             0.488*
+ Q4             0.714*
+ Q5             0.711*
+ Q7             0.750*
+ Q8             0.696*
+ Q9             0.680*
+ Q10            0.730*
+ Q1             0.270*
+ Q2             0.510*
+ Q6             0.664*
+
+
+           GEOMIN FACTOR CORRELATIONS (* significant at 5% level)
+                  1
+              ________
+      1         1.000
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+                0.762         0.489         0.495         0.438         0.516
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+                0.538         0.467         0.927         0.740         0.559
+
+
+           S.E. GEOMIN ROTATED LOADINGS
+                  1
+              ________
+ Q3             0.007
+ Q4             0.005
+ Q5             0.006
+ Q7             0.005
+ Q8             0.005
+ Q9             0.006
+ Q10            0.005
+ Q1             0.008
+ Q2             0.008
+ Q6             0.007
+
+
+           S.E. GEOMIN FACTOR CORRELATIONS
+                  1
+              ________
+      1         0.000
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+                0.007         0.007         0.009         0.007         0.007
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+                0.008         0.007         0.004         0.008         0.009
+
+
+           Est./S.E. GEOMIN ROTATED LOADINGS
+                  1
+              ________
+ Q3            72.495
+ Q4           136.767
+ Q5           118.712
+ Q7           159.375
+ Q8           135.478
+ Q9           122.139
+ Q10          143.839
+ Q1            33.561
+ Q2            65.434
+ Q6            98.033
+
+
+           Est./S.E. GEOMIN FACTOR CORRELATIONS
+                  1
+              ________
+      1         0.000
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+              115.927        65.569        58.148        62.082        72.149
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+               71.112        62.944       213.067        93.111        62.077
+
+
+EXPLORATORY FACTOR ANALYSIS WITH 2 FACTOR(S):
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       39
+
+Loglikelihood
+
+          H0 Value                     -285795.612
+          H0 Scaling Correction Factor      1.4609
+            for MLR
+          H1 Value                     -283209.714
+          H1 Scaling Correction Factor      1.4785
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                  571669.224
+          Bayesian (BIC)                571975.068
+          Sample-Size Adjusted BIC      571851.128
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                           3436.716*
+          Degrees of Freedom                    26
+          P-Value                           0.0000
+          Scaling Correction Factor         1.5049
+            for MLR
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.084
+          90 Percent C.I.                    0.081  0.086
+          Probability RMSEA <= .05           0.000
+
+CFI/TLI
+
+          CFI                                0.921
+          TLI                                0.863
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                          43112.459
+          Degrees of Freedom                    45
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.039
+
+
+
+MINIMUM ROTATION FUNCTION VALUE       0.90925
+
+
+
+           GEOMIN ROTATED LOADINGS (* significant at 5% level)
+                  1             2
+              ________      ________
+ Q3             0.603*       -0.406*
+ Q4             0.715*       -0.006
+ Q5             0.660*        0.217*
+ Q7             0.773*       -0.076*
+ Q8             0.720*       -0.097*
+ Q9             0.666*        0.029
+ Q10            0.721*        0.013
+ Q1             0.267*        0.031
+ Q2             0.496*        0.070*
+ Q6             0.574*        0.535*
+
+
+           GEOMIN FACTOR CORRELATIONS (* significant at 5% level)
+                  1             2
+              ________      ________
+      1         1.000
+      2         0.180         1.000
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+                0.560         0.491         0.466         0.418         0.497
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+                0.548         0.476         0.925         0.736         0.273
+
+
+           S.E. GEOMIN ROTATED LOADINGS
+                  1             2
+              ________      ________
+ Q3             0.040         0.029
+ Q4             0.006         0.010
+ Q5             0.030         0.012
+ Q7             0.009         0.018
+ Q8             0.015         0.017
+ Q9             0.008         0.017
+ Q10            0.007         0.014
+ Q1             0.013         0.023
+ Q2             0.017         0.024
+ Q6             0.070         0.051
+
+
+           S.E. GEOMIN FACTOR CORRELATIONS
+                  1             2
+              ________      ________
+      1         0.000
+      2         0.099         0.000
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+                0.028         0.008         0.011         0.008         0.010
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+                0.008         0.008         0.004         0.008         0.035
+
+
+           Est./S.E. GEOMIN ROTATED LOADINGS
+                  1             2
+              ________      ________
+ Q3            15.249       -13.893
+ Q4           114.248        -0.639
+ Q5            22.104        18.339
+ Q7            82.547        -4.177
+ Q8            49.059        -5.771
+ Q9            83.676         1.699
+ Q10          110.876         0.918
+ Q1            20.444         1.374
+ Q2            29.837         2.868
+ Q6             8.258        10.478
+
+
+           Est./S.E. GEOMIN FACTOR CORRELATIONS
+                  1             2
+              ________      ________
+      1         0.000
+      2         1.820         0.000
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+               19.933        60.995        40.544        54.214        50.041
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+               70.247        62.342       213.748        93.738         7.870
+
+
+           FACTOR STRUCTURE
+                  1             2
+              ________      ________
+ Q3             0.530        -0.297
+ Q4             0.714         0.122
+ Q5             0.699         0.336
+ Q7             0.759         0.063
+ Q8             0.703         0.032
+ Q9             0.672         0.149
+ Q10            0.723         0.143
+ Q1             0.272         0.079
+ Q2             0.509         0.159
+ Q6             0.671         0.638
+
+
+EXPLORATORY FACTOR ANALYSIS WITH 3 FACTOR(S):
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       47
+
+Loglikelihood
+
+          H0 Value                     -284423.311
+          H0 Scaling Correction Factor      1.5624
+            for MLR
+          H1 Value                     -283209.714
+          H1 Scaling Correction Factor      1.4785
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                  568940.622
+          Bayesian (BIC)                569309.203
+          Sample-Size Adjusted BIC      569159.840
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                           1927.339*
+          Degrees of Freedom                    18
+          P-Value                           0.0000
+          Scaling Correction Factor         1.2593
+            for MLR
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.075
+          90 Percent C.I.                    0.072  0.078
+          Probability RMSEA <= .05           0.000
+
+CFI/TLI
+
+          CFI                                0.956
+          TLI                                0.889
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                          43112.459
+          Degrees of Freedom                    45
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.027
+
+
+
+MINIMUM ROTATION FUNCTION VALUE       0.27741
+
+
+
+           GEOMIN ROTATED LOADINGS (* significant at 5% level)
+                  1             2             3
+              ________      ________      ________
+ Q3             0.000         0.764*        0.501*
+ Q4             0.741*        0.182*       -0.002
+ Q5             0.947*       -0.004*       -0.182*
+ Q7             0.202*        0.084*        0.573*
+ Q8            -0.024         0.007         0.761*
+ Q9             0.005        -0.101*        0.725*
+ Q10            0.163*       -0.036*        0.603*
+ Q1             0.297*        0.127*       -0.027
+ Q2             0.507*        0.144*        0.013
+ Q6             0.702*       -0.187*        0.019*
+
+
+           GEOMIN FACTOR CORRELATIONS (* significant at 5% level)
+                  1             2             3
+              ________      ________      ________
+      1         1.000
+      2        -0.025         1.000
+      3         0.827*        0.016         1.000
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+                0.153         0.427         0.356         0.432         0.450
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+                0.460         0.446         0.910         0.714         0.443
+
+
+           S.E. GEOMIN ROTATED LOADINGS
+                  1             2             3
+              ________      ________      ________
+ Q3             0.000         0.037         0.060
+ Q4             0.031         0.013         0.022
+ Q5             0.047         0.001         0.048
+ Q7             0.035         0.012         0.034
+ Q8             0.043         0.005         0.043
+ Q9             0.008         0.015         0.013
+ Q10            0.028         0.014         0.028
+ Q1             0.045         0.014         0.050
+ Q2             0.049         0.016         0.053
+ Q6             0.022         0.014         0.007
+
+
+           S.E. GEOMIN FACTOR CORRELATIONS
+                  1             2             3
+              ________      ________      ________
+      1         0.000
+      2         0.060         0.000
+      3         0.010         0.068         0.000
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+                0.055         0.010         0.018         0.008         0.014
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+                0.013         0.010         0.008         0.013         0.013
+
+
+           Est./S.E. GEOMIN ROTATED LOADINGS
+                  1             2             3
+              ________      ________      ________
+ Q3            -1.269        20.555         8.386
+ Q4            23.840        13.947        -0.069
+ Q5            20.336        -4.073        -3.819
+ Q7             5.834         7.038        16.720
+ Q8            -0.557         1.354        17.788
+ Q9             0.639        -6.587        55.346
+ Q10            5.703        -2.562        21.820
+ Q1             6.594         9.139        -0.543
+ Q2            10.453         9.274         0.248
+ Q6            31.391       -13.845         2.919
+
+
+           Est./S.E. GEOMIN FACTOR CORRELATIONS
+                  1             2             3
+              ________      ________      ________
+      1         0.000
+      2        -0.411         0.000
+      3        85.402         0.228         0.000
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+                2.798        40.934        19.675        52.554        31.595
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+               35.988        45.776       116.349        56.062        34.075
+
+
+           FACTOR STRUCTURE
+                  1             2             3
+              ________      ________      ________
+ Q3             0.395         0.772         0.512
+ Q4             0.735         0.164         0.614
+ Q5             0.796        -0.030         0.601
+ Q7             0.674         0.088         0.741
+ Q8             0.605         0.020         0.741
+ Q9             0.608        -0.090         0.728
+ Q10            0.663        -0.031         0.737
+ Q1             0.272         0.119         0.221
+ Q2             0.514         0.132         0.435
+ Q6             0.722        -0.204         0.597
+
+
+MODIFICATION INDICES
+
+
+     MODIFICATION INDICES FOR ANALYSIS WITH 1 FACTOR(S)
+
+
+
+     MODIFICATION INDICES
+
+
+           THETA
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+ Q3             0.000
+ Q4           246.748         0.000
+ Q5           173.718       691.308         0.000
+ Q7           232.185        23.156        95.909         0.000
+ Q8            71.489        30.209       133.364       179.082         0.000
+ Q9            39.304       301.713        87.374        51.408       433.216
+ Q10            5.226        90.981        99.560        94.184         0.535
+ Q1            87.389         0.611         7.211        76.207        20.090
+ Q2           120.182        26.886         1.774        51.669       333.792
+ Q6          1038.835         7.602       610.542        16.138        84.958
+
+
+           THETA
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+ Q9             0.000
+ Q10          245.789         0.000
+ Q1             4.512        36.395         0.000
+ Q2             1.074        12.859       483.145         0.000
+ Q6             4.367         0.451        32.704        94.666         0.000
+
+
+     EXPECTED PARAMETER CHANGE
+
+
+           THETA
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+ Q3             0.000
+ Q4             0.162         0.000
+ Q5            -0.128         0.266         0.000
+ Q7             0.137        -0.045        -0.087         0.000
+ Q8             0.094        -0.063        -0.125         0.135         0.000
+ Q9            -0.064        -0.184        -0.093        -0.066         0.236
+ Q10           -0.022        -0.097        -0.095         0.087        -0.008
+ Q1             0.131         0.011        -0.036        -0.108        -0.069
+ Q2             0.121         0.058         0.014        -0.071        -0.221
+ Q6            -0.295        -0.026         0.220        -0.033        -0.094
+
+
+           THETA
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+ Q9             0.000
+ Q10            0.157         0.000
+ Q1            -0.030        -0.081         0.000
+ Q2             0.012        -0.038         0.336         0.000
+ Q6             0.020         0.006         0.072         0.097         0.000
+
+
+     MODIFICATION INDICES FOR ANALYSIS WITH 2 FACTOR(S)
+
+
+
+     MODIFICATION INDICES
+
+
+           THETA
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+ Q3             0.000
+ Q4           224.802         0.000
+ Q5            10.659      1004.205         0.000
+ Q7             7.870        56.472        27.656         0.000
+ Q8            77.546        55.102        38.395        99.733         0.000
+ Q9           164.691       260.007        67.596        53.242       552.567
+ Q10          102.467        67.280        59.613       106.159         0.244
+ Q1           194.079         0.393        14.772       100.393        24.780
+ Q2           330.382        33.196         0.048        58.563       366.888
+ Q6            76.619        69.016        44.924        90.826         0.511
+
+
+           THETA
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+ Q9             0.000
+ Q10          336.229         0.000
+ Q1             4.892        38.901         0.000
+ Q2             2.648         8.831       515.457         0.000
+ Q6             9.028         8.189        57.639        66.821         0.000
+
+
+     EXPECTED PARAMETER CHANGE
+
+
+           THETA
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+ Q3             0.000
+ Q4             0.161         0.000
+ Q5            -0.049         0.299         0.000
+ Q7             0.030        -0.069        -0.042         0.000
+ Q8            -0.117        -0.083        -0.061         0.102         0.000
+ Q9            -0.134        -0.162        -0.078        -0.065         0.256
+ Q10           -0.102        -0.079        -0.070         0.089        -0.005
+ Q1             0.193         0.008        -0.048        -0.118        -0.073
+ Q2             0.201         0.061        -0.002        -0.071        -0.220
+ Q6            -0.387        -0.099        -0.179         0.101         0.010
+
+
+           THETA
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+ Q9             0.000
+ Q10            0.173         0.000
+ Q1            -0.030        -0.079         0.000
+ Q2             0.017        -0.030         0.328         0.000
+ Q6            -0.036        -0.033         0.120         0.108         0.000
+
+
+     MODIFICATION INDICES FOR ANALYSIS WITH 3 FACTOR(S)
+
+
+
+     MODIFICATION INDICES
+
+
+           THETA
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+ Q3             0.000
+ Q4           112.472         0.000
+ Q5            11.533       681.161         0.000
+ Q7             1.537         3.548         4.849         0.000
+ Q8             9.696        92.641        27.672        94.960         0.000
+ Q9            16.968        54.879         0.466       479.334       175.519
+ Q10            1.053         0.920        30.006       109.015       371.228
+ Q1            10.272        38.593       163.568        63.842         0.148
+ Q2            74.979        20.009       253.453        16.310       268.382
+ Q6            19.485       339.050         2.041        20.766        27.342
+
+
+           THETA
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+ Q9             0.000
+ Q10           71.339         0.000
+ Q1            23.602         4.908         0.000
+ Q2           165.665        11.741       556.417         0.000
+ Q6             2.171         1.118       100.734       181.570         0.000
+
+
+     EXPECTED PARAMETER CHANGE
+
+
+           THETA
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+ Q3             0.000
+ Q4            -0.313         0.000
+ Q5             0.117         0.483         0.000
+ Q7             0.024         0.016        -0.018         0.000
+ Q8            -0.063         0.100         0.057         0.104         0.000
+ Q9             0.082        -0.074         0.007        -0.216         0.212
+ Q10           -0.017         0.008        -0.049         0.088        -0.246
+ Q1             0.083        -0.083        -0.170        -0.086        -0.005
+ Q2             0.195        -0.053        -0.190        -0.034        -0.179
+ Q6            -0.252        -0.211         0.031         0.033        -0.047
+
+
+           THETA
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+ Q9             0.000
+ Q10            0.103         0.000
+ Q1             0.063        -0.026         0.000
+ Q2             0.132         0.032         0.316         0.000
+ Q6             0.013         0.008         0.111         0.122         0.000
+
+
+PLOT INFORMATION
+
+The following plots are available:
+
+  Histograms (sample values)
+  Scatterplots (sample values)
+  Eigenvalues for exploratory factor analysis
+
+DIAGRAM INFORMATION
+
+  Mplus diagrams are currently not available for EFA.
+  No diagram output was produced.
+
+
+     Beginning Time:  00:31:16
+        Ending Time:  00:31:18
+       Elapsed Time:  00:00:02
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2019 Muthen & Muthen

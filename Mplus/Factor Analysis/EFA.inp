@@ -1,0 +1,58 @@
+TITLE:
+    EFA: ICT use at school (SPSS: IC011, 10 items)
+
+
+DATA:
+    file = "C:\Users\Mudar Saied\read1.dat";
+
+
+VARIABLE:
+      names =
+
+          CNTRYID CNTSCHID CNTSTUID W_STU READ
+         ! Demographic control var
+          FEMALE IMMI1GEN IMMI2GEN ESCS
+         ! ICT
+            ! ICT Use at school (10 items)
+          Q3 Q4 Q5 Q7 Q8
+          Q9 Q10 Q1 Q2 Q6
+            !ICT PISA scaled
+          ACAHOM USESCH LEIHOM
+            ! Reading Mediation
+          READJOY READCOMP  READEASE
+         ! School Weight
+          W_SCH
+           ! School ICT Policy
+          Q05HA
+        ;
+
+    !useobs = (CNTRYID EQ 246);             ! 208DNK=7657, 246FIN=5649, 752SWE=5504
+
+    usevar =
+        
+        Q3 Q4 Q5 Q7 Q8                      ! ICT Use AT School (10 Items)
+        Q9 Q10 Q1 Q2 Q6                     ! SPSS: IC011
+      
+    ;
+
+    weight = W_STU;
+
+
+ANALYSIS:
+    
+    type = EFA 1 3;
+    
+
+    processors = 8;
+
+
+
+OUTPUT:
+    modindices;
+
+PLOT:
+      TYPE = Plot3
+
+
+
+

@@ -1,0 +1,3086 @@
+Mplus VERSION 8.3
+MUTHEN & MUTHEN
+02/27/2021   2:26 AM
+
+INPUT INSTRUCTIONS
+
+   TITLE:
+      M1 Student-level only
+
+
+  DATA:
+      file = "C:\Users\Mudar Saied\implist.dat";
+
+      type = imputation;
+
+
+  VARIABLE:
+        names =
+          CNTRYID CNTSCHID CNTSTUID W_STU READ
+          ! Demographic control var
+          FEMALE IMMI1GEN IMMI2GEN ESCS
+          ! ICT Use at Home
+          ICTLEIS ICTSCHWK USESCH
+          ! Reading Mediation
+          READJOY READCOMP  READEASE
+          ! School Weight
+          W_SCH
+          ! School ICT Policy
+          Q05HA
+          ;
+
+      usevar =
+          ! Outcome
+          READ
+          ! Student-level
+          FEMALE IMMI1GEN IMMI2GEN ESCS     ! Demographic controls
+              ! ICT-related var
+          ICTLEIS ICTSCHWK USESCH           ! ICT use at home/ at school
+              ! Mediators
+          READJOY READCOMP READEASE         ! Reading affect
+      ;
+
+      grouping = CNTRYID (208=DEN 246=FIN 752=SWE)
+
+      missing = all (-99);
+
+      weight = W_STU;
+
+      cluster = CNTSCHID;
+
+
+  ANALYSIS:
+      type=complex;
+
+      processors = 8;
+
+      estimator = MLR;
+
+
+  MODEL:
+
+      ! SES onto X vars
+      ICTLEIS on ESCS;
+      ICTSCHWK on ESCS;
+      USESCH on ESCS;
+
+      ! Mediators
+          ! Enjoyment of reading
+      READJOY on ICTLEIS ICTSCHWK USESCH
+          IMMI1GEN IMMI2GEN FEMALE ESCS;
+          ICTLEIS ICTSCHWK USESCH
+          IMMI1GEN IMMI2GEN FEMALE ESCS;
+
+          ! Perception of reading competence
+           READCOMP on ICTLEIS ICTSCHWK USESCH
+           IMMI1GEN IMMI2GEN FEMALE ESCS;
+
+          ! Perception of reading difficulty
+      READEASE on ICTLEIS ICTSCHWK USESCH
+          IMMI1GEN IMMI2GEN FEMALE ESCS;
+
+      ! Total effect
+      READ on                             ! Y
+          ICTLEIS ICTSCHWK USESCH         ! X
+          READJOY READCOMP READEASE       ! M
+          FEMALE ESCS                     ! controls
+      ;
+
+      ! Correlations
+
+      ! Correlation amongst X
+      ICTLEIS with ICTSCHWK;
+      ICTSCHWK with USESCH;
+      ICTLEIS with USESCH;
+
+      ! Correlation amongst M
+      READJOY with READCOMP;
+      READCOMP with READEASE;
+      READEASE with READJOY;
+
+
+  MODEL INDIRECT:
+
+      READ ind ICTLEIS;
+      READ ind ICTSCHWK;
+      READ ind USESCH;
+
+  ! Runing Model for Finland
+  MODEL FIN:
+  ! Runing Model for Sweden
+  MODEL SWE:
+  ! Runing Model for Denmark
+  MODEL DEN:
+
+
+  OUTPUT:
+      stdyx;
+
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+
+M1 Student-level only
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 3
+Average number of observations
+   Group DEN                                                  7657
+   Group FIN                                                  5649
+   Group SWE                                                  5504
+   Total sample size                                         18810
+
+Number of replications
+    Requested                                                   10
+    Completed                                                   10
+
+Number of dependent variables                                    7
+Number of independent variables                                  4
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Continuous
+   READ        ICTLEIS     ICTSCHWK    USESCH      READJOY     READCOMP
+   READEASE
+
+Observed independent variables
+   FEMALE      IMMI1GEN    IMMI2GEN    ESCS
+
+Variables with special functions
+
+  Grouping variable     CNTRYID
+  Cluster variable      CNTSCHID
+  Weight variable       W_STU
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+
+Input data file(s)
+  Multiple data files from
+    C:\Users\Mudar Saied\implist.dat
+
+Input data format  FREE
+
+
+SUMMARY OF DATA FOR THE FIRST DATA SET
+
+   Group DEN
+     Number of clusters                        348
+
+
+   Group FIN
+     Number of clusters                        214
+
+
+   Group SWE
+     Number of clusters                        223
+
+
+
+SAMPLE STATISTICS
+
+NOTE:  These are average results over 10 data sets.
+
+
+     SAMPLE STATISTICS FOR DEN
+
+
+           Means
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+              501.130         0.045         0.138         0.566        -0.380
+
+
+           Means
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                0.271         0.114         0.500         0.024         0.086
+
+
+           Means
+              ESCS
+              ________
+                0.509
+
+
+           Covariances
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ        8481.587
+ ICTLEIS       -6.020         0.719
+ ICTSCHWK     -11.066         0.342         0.687
+ USESCH        -8.109         0.282         0.333         0.482
+ READJOY       28.001        -0.087         0.016        -0.021         1.069
+ READCOMP      33.195         0.067         0.027         0.047         0.265
+ READEASE      30.304        -0.010        -0.047        -0.022         0.177
+ FEMALE         7.336        -0.113        -0.023        -0.040         0.121
+ IMMI1GEN      -1.624         0.002         0.005         0.004         0.004
+ IMMI2GEN      -4.824         0.001         0.021         0.008         0.018
+ ESCS          22.207         0.038         0.038         0.028         0.121
+
+
+           Covariances
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP       0.910
+ READEASE       0.453         0.894
+ FEMALE        -0.006        -0.020         0.250
+ IMMI1GEN      -0.006        -0.005        -0.001         0.023
+ IMMI2GEN       0.001        -0.009         0.000        -0.002         0.078
+ ESCS           0.121         0.104         0.001        -0.014        -0.057
+
+
+           Covariances
+              ESCS
+              ________
+ ESCS           0.586
+
+
+           Correlations
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ           1.000
+ ICTLEIS       -0.077         1.000
+ ICTSCHWK      -0.145         0.487         1.000
+ USESCH        -0.127         0.479         0.579         1.000
+ READJOY        0.294        -0.099         0.018        -0.030         1.000
+ READCOMP       0.378         0.083         0.035         0.071         0.269
+ READEASE       0.348        -0.012        -0.060        -0.033         0.181
+ FEMALE         0.159        -0.267        -0.054        -0.114         0.234
+ IMMI1GEN      -0.115         0.019         0.040         0.034         0.026
+ IMMI2GEN      -0.187         0.005         0.090         0.040         0.062
+ ESCS           0.315         0.058         0.060         0.052         0.152
+
+
+           Correlations
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP       1.000
+ READEASE       0.503         1.000
+ FEMALE        -0.013        -0.043         1.000
+ IMMI1GEN      -0.039        -0.033        -0.009         1.000
+ IMMI2GEN       0.003        -0.034        -0.003        -0.047         1.000
+ ESCS           0.166         0.144         0.002        -0.124        -0.267
+
+
+           Correlations
+              ESCS
+              ________
+ ESCS           1.000
+
+
+     SAMPLE STATISTICS FOR FIN
+
+
+           Means
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+              520.079        -0.031        -0.238         0.214        -0.264
+
+
+           Means
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                0.083         0.087         0.491         0.035         0.027
+
+
+           Means
+              ESCS
+              ________
+                0.294
+
+
+           Covariances
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ        9910.880
+ ICTLEIS       -5.128         0.660
+ ICTSCHWK     -11.579         0.307         0.814
+ USESCH       -14.904         0.256         0.435         0.579
+ READJOY       46.712        -0.064         0.041        -0.043         1.220
+ READCOMP      41.442         0.054         0.020        -0.005         0.444
+ READEASE      34.204         0.009        -0.057        -0.070         0.261
+ FEMALE        12.883        -0.081        -0.021        -0.037         0.177
+ IMMI1GEN      -3.577         0.002         0.012         0.006         0.007
+ IMMI2GEN      -2.003         0.003         0.010         0.007        -0.002
+ ESCS          24.056         0.049         0.080         0.037         0.185
+
+
+           Covariances
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP       1.005
+ READEASE       0.534         1.097
+ FEMALE         0.028        -0.036         0.250
+ IMMI1GEN      -0.007        -0.010         0.000         0.033
+ IMMI2GEN      -0.005        -0.009         0.000        -0.001         0.027
+ ESCS           0.153         0.110         0.003        -0.021        -0.012
+
+
+           Covariances
+              ESCS
+              ________
+ ESCS           0.631
+
+
+           Correlations
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ           1.000
+ ICTLEIS       -0.063         1.000
+ ICTSCHWK      -0.129         0.419         1.000
+ USESCH        -0.197         0.414         0.633         1.000
+ READJOY        0.425        -0.072         0.041        -0.052         1.000
+ READCOMP       0.415         0.066         0.023        -0.007         0.401
+ READEASE       0.328         0.011        -0.060        -0.088         0.225
+ FEMALE         0.259        -0.200        -0.046        -0.097         0.320
+ IMMI1GEN      -0.197         0.015         0.074         0.047         0.032
+ IMMI2GEN      -0.123         0.020         0.068         0.055        -0.011
+ ESCS           0.304         0.076         0.112         0.061         0.211
+
+
+           Correlations
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP       1.000
+ READEASE       0.509         1.000
+ FEMALE         0.056        -0.069         1.000
+ IMMI1GEN      -0.037        -0.050         0.000         1.000
+ IMMI2GEN      -0.030        -0.054        -0.005        -0.032         1.000
+ ESCS           0.192         0.133         0.008        -0.143        -0.094
+
+
+           Correlations
+              ESCS
+              ________
+ ESCS           1.000
+
+
+     SAMPLE STATISTICS FOR SWE
+
+
+           Means
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+              505.785         0.042         0.159         0.435        -0.324
+
+
+           Means
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                0.306         0.036         0.500         0.096         0.110
+
+
+           Means
+              ESCS
+              ________
+                0.352
+
+
+           Covariances
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ       11563.919
+ ICTLEIS      -10.219         0.879
+ ICTSCHWK     -16.814         0.436         0.874
+ USESCH       -16.857         0.353         0.507         0.753
+ READJOY       32.922        -0.089         0.028        -0.015         1.226
+ READCOMP      39.363         0.064         0.044         0.012         0.378
+ READEASE      39.639        -0.002        -0.050        -0.050         0.247
+ FEMALE         8.581        -0.105        -0.026        -0.027         0.109
+ IMMI1GEN      -9.324         0.001         0.022         0.020         0.031
+ IMMI2GEN      -4.316         0.001         0.020         0.004         0.013
+ ESCS          31.510         0.048         0.070         0.054         0.143
+
+
+           Covariances
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP       1.083
+ READEASE       0.581         1.152
+ FEMALE         0.028        -0.005         0.250
+ IMMI1GEN      -0.013        -0.024        -0.005         0.087
+ IMMI2GEN       0.009        -0.007        -0.001        -0.010         0.098
+ ESCS           0.171         0.162         0.004        -0.066        -0.045
+
+
+           Covariances
+              ESCS
+              ________
+ ESCS           0.794
+
+
+           Correlations
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ           1.000
+ ICTLEIS       -0.101         1.000
+ ICTSCHWK      -0.167         0.498         1.000
+ USESCH        -0.181         0.434         0.625         1.000
+ READJOY        0.276        -0.086         0.027        -0.016         1.000
+ READCOMP       0.352         0.065         0.045         0.013         0.328
+ READEASE       0.343        -0.002        -0.050        -0.054         0.208
+ FEMALE         0.160        -0.224        -0.055        -0.062         0.196
+ IMMI1GEN      -0.295         0.003         0.080         0.078         0.096
+ IMMI2GEN      -0.128         0.004         0.068         0.016         0.038
+ ESCS           0.329         0.057         0.084         0.069         0.145
+
+
+           Correlations
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP       1.000
+ READEASE       0.520         1.000
+ FEMALE         0.054        -0.010         1.000
+ IMMI1GEN      -0.042        -0.076        -0.032         1.000
+ IMMI2GEN       0.026        -0.022        -0.005        -0.113         1.000
+ ESCS           0.184         0.170         0.008        -0.251        -0.161
+
+
+           Correlations
+              ESCS
+              ________
+ ESCS           1.000
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                      198
+
+Loglikelihood
+
+    H0 Value
+
+        Mean                           -279565.093
+        Std Dev                            200.006
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000      -280030.368    -279808.128
+           0.980       1.000      -279975.846    -279808.128
+           0.950       1.000      -279894.084    -279808.128
+           0.900       1.000      -279821.421    -279808.128
+           0.800       0.800      -279733.419    -279808.128
+           0.700       0.600      -279669.977    -279721.428
+           0.500       0.300      -279565.093    -279659.528
+           0.300       0.300      -279460.210    -279573.283
+           0.200       0.300      -279396.768    -279395.706
+           0.100       0.200      -279308.765    -279225.364
+           0.050       0.200      -279236.103    -279225.364
+           0.020       0.000      -279154.341    -279225.364
+           0.010       0.000      -279099.819    -279225.364
+
+    H1 Value
+
+        Mean                           -278291.392
+        Std Dev                            192.693
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000      -278739.653    -278509.808
+           0.980       1.000      -278687.125    -278509.808
+           0.950       1.000      -278608.352    -278509.808
+           0.900       1.000      -278538.347    -278509.808
+           0.800       0.800      -278453.562    -278509.808
+           0.700       0.600      -278392.440    -278443.388
+           0.500       0.400      -278291.392    -278376.876
+           0.300       0.300      -278190.344    -278288.972
+           0.200       0.200      -278129.222    -278133.786
+           0.100       0.200      -278044.437    -277968.053
+           0.050       0.200      -277974.432    -277968.053
+           0.020       0.000      -277895.660    -277968.053
+           0.010       0.000      -277843.132    -277968.053
+
+Information Criteria
+
+    Akaike (AIC)
+
+        Mean                            559526.187
+        Std Dev                            400.012
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000       558595.638     558842.938
+           0.980       1.000       558704.681     558842.938
+           0.950       0.800       558868.206     558842.938
+           0.900       0.800       559013.531     558842.938
+           0.800       0.700       559189.536     558842.938
+           0.700       0.700       559316.420     559187.412
+           0.500       0.700       559526.187     559653.412
+           0.300       0.400       559735.953     559747.755
+           0.200       0.200       559862.837     559838.857
+           0.100       0.000       560038.843     559874.889
+           0.050       0.000       560184.167     559874.889
+           0.020       0.000       560347.692     559874.889
+           0.010       0.000       560456.736     559874.889
+
+    Bayesian (BIC)
+
+        Mean                            561078.931
+        Std Dev                            400.012
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000       560148.382     560395.682
+           0.980       1.000       560257.426     560395.682
+           0.950       0.800       560420.951     560395.682
+           0.900       0.800       560566.275     560395.682
+           0.800       0.700       560742.281     560395.682
+           0.700       0.700       560869.165     560740.156
+           0.500       0.700       561078.931     561206.157
+           0.300       0.400       561288.698     561300.499
+           0.200       0.200       561415.582     561391.601
+           0.100       0.000       561591.587     561427.634
+           0.050       0.000       561736.912     561427.634
+           0.020       0.000       561900.437     561427.634
+           0.010       0.000       562009.480     561427.634
+
+    Sample-Size Adjusted BIC (n* = (n + 2) / 24)
+
+        Mean                            560449.698
+        Std Dev                            400.012
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000       559519.149     559766.449
+           0.980       1.000       559628.192     559766.449
+           0.950       0.800       559791.717     559766.449
+           0.900       0.800       559937.042     559766.449
+           0.800       0.700       560113.047     559766.449
+           0.700       0.700       560239.931     560110.923
+           0.500       0.700       560449.698     560576.923
+           0.300       0.400       560659.464     560671.266
+           0.200       0.200       560786.348     560762.368
+           0.100       0.000       560962.354     560798.400
+           0.050       0.000       561107.678     560798.400
+           0.020       0.000       561271.203     560798.400
+           0.010       0.000       561380.247     560798.400
+
+Chi-Square Test of Model Fit
+
+        Degrees of freedom                      33
+
+        Mean                              1812.052
+        Std Dev                             30.184
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000           17.074       1779.133
+           0.980       1.000           18.527       1779.133
+           0.950       1.000           20.867       1779.133
+           0.900       1.000           23.110       1779.133
+           0.800       1.000           26.042       1779.133
+           0.700       1.000           28.307       1789.606
+           0.500       1.000           32.336       1795.483
+           0.300       1.000           36.731       1823.600
+           0.200       1.000           39.572       1824.308
+           0.100       1.000           43.745       1835.163
+           0.050       1.000           47.400       1835.163
+           0.020       1.000           51.743       1835.163
+           0.010       1.000           54.776       1835.163
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+        Mean                                 0.093
+        Std Dev                              0.001
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            0.091          0.092
+           0.980       1.000            0.091          0.092
+           0.950       1.000            0.091          0.092
+           0.900       1.000            0.092          0.092
+           0.800       0.900            0.092          0.092
+           0.700       0.500            0.092          0.092
+           0.500       0.400            0.093          0.092
+           0.300       0.200            0.093          0.093
+           0.200       0.100            0.093          0.093
+           0.100       0.100            0.094          0.093
+           0.050       0.100            0.094          0.093
+           0.020       0.100            0.094          0.093
+           0.010       0.100            0.095          0.093
+
+CFI/TLI
+
+    CFI
+
+        Mean                                 0.918
+        Std Dev                              0.001
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            0.915          0.916
+           0.980       1.000            0.916          0.916
+           0.950       1.000            0.916          0.916
+           0.900       0.900            0.916          0.916
+           0.800       0.900            0.917          0.916
+           0.700       0.600            0.917          0.917
+           0.500       0.400            0.918          0.917
+           0.300       0.400            0.918          0.918
+           0.200       0.300            0.919          0.919
+           0.100       0.100            0.919          0.919
+           0.050       0.100            0.919          0.919
+           0.020       0.000            0.920          0.919
+           0.010       0.000            0.920          0.919
+
+    TLI
+
+        Mean                                 0.633
+        Std Dev                              0.004
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            0.623          0.627
+           0.980       1.000            0.625          0.627
+           0.950       1.000            0.626          0.627
+           0.900       0.900            0.628          0.627
+           0.800       0.900            0.630          0.627
+           0.700       0.600            0.631          0.630
+           0.500       0.400            0.633          0.632
+           0.300       0.400            0.636          0.636
+           0.200       0.300            0.637          0.637
+           0.100       0.100            0.639          0.639
+           0.050       0.100            0.641          0.639
+           0.020       0.000            0.642          0.639
+           0.010       0.000            0.643          0.639
+
+SRMR (Standardized Root Mean Square Residual)
+
+        Mean                                 0.042
+        Std Dev                              0.000
+        Number of successful computations       10
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            0.041          0.041
+           0.980       1.000            0.041          0.041
+           0.950       1.000            0.041          0.041
+           0.900       0.900            0.041          0.041
+           0.800       0.700            0.041          0.041
+           0.700       0.700            0.041          0.041
+           0.500       0.500            0.042          0.042
+           0.300       0.300            0.042          0.042
+           0.200       0.300            0.042          0.042
+           0.100       0.100            0.042          0.042
+           0.050       0.000            0.042          0.042
+           0.020       0.000            0.042          0.042
+           0.010       0.000            0.043          0.042
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+Group DEN
+
+ ICTLEIS  ON
+    ESCS               0.064      0.018      3.614      0.000      0.223
+
+ ICTSCHWK ON
+    ESCS               0.065      0.017      3.787      0.000      0.058
+
+ USESCH   ON
+    ESCS               0.047      0.015      3.103      0.002      0.199
+
+ READJOY  ON
+    ICTLEIS           -0.086      0.022     -3.870      0.000      0.079
+    ICTSCHWK           0.063      0.025      2.495      0.013      0.147
+    USESCH            -0.025      0.027     -0.938      0.348      0.153
+    IMMI1GEN           0.382      0.084      4.546      0.000      0.096
+    IMMI2GEN           0.416      0.048      8.726      0.000      0.095
+    FEMALE             0.447      0.033     13.361      0.000      0.043
+    ESCS               0.258      0.022     11.918      0.000      0.037
+
+ READCOMP ON
+    ICTLEIS            0.081      0.026      3.173      0.002      0.111
+    ICTSCHWK          -0.052      0.024     -2.164      0.030      0.206
+    USESCH             0.074      0.028      2.604      0.009      0.233
+    IMMI1GEN          -0.105      0.082     -1.276      0.202      0.133
+    IMMI2GEN           0.172      0.040      4.280      0.000      0.157
+    FEMALE             0.018      0.032      0.570      0.569      0.074
+    ESCS               0.216      0.018     11.748      0.000      0.097
+
+ READEASE ON
+    ICTLEIS            0.005      0.027      0.172      0.864      0.144
+    ICTSCHWK          -0.078      0.027     -2.884      0.004      0.337
+    USESCH            -0.012      0.029     -0.403      0.687      0.168
+    IMMI1GEN          -0.074      0.090     -0.817      0.414      0.165
+    IMMI2GEN           0.038      0.043      0.890      0.374      0.098
+    FEMALE            -0.089      0.031     -2.830      0.005      0.047
+    ESCS               0.185      0.019      9.715      0.000      0.052
+
+ READ     ON
+    ICTLEIS            4.343      2.360      1.840      0.066      0.269
+    ICTSCHWK         -14.245      2.490     -5.721      0.000      0.429
+    USESCH            -9.944      2.983     -3.333      0.001      0.475
+    READJOY           12.460      1.377      9.049      0.000      0.225
+    READCOMP          21.415      1.973     10.856      0.000      0.335
+    READEASE          16.805      1.691      9.938      0.000      0.219
+    FEMALE            24.236      2.580      9.393      0.000      0.142
+    ESCS              29.030      1.660     17.483      0.000      0.180
+
+ ICTLEIS  WITH
+    ICTSCHWK           0.340      0.029     11.749      0.000      0.064
+    USESCH             0.280      0.024     11.584      0.000      0.089
+
+ ICTSCHWK WITH
+    USESCH             0.331      0.021     15.484      0.000      0.094
+
+ READJOY  WITH
+    READCOMP           0.243      0.015     16.498      0.000      0.109
+    READEASE           0.166      0.016     10.338      0.000      0.154
+
+ READCOMP WITH
+    READEASE           0.432      0.018     24.674      0.000      0.093
+
+ IMMI1GEN WITH
+    FEMALE            -0.001      0.001     -0.769      0.442      0.039
+
+ IMMI2GEN WITH
+    FEMALE             0.000      0.002     -0.242      0.808      0.100
+    IMMI1GEN          -0.002      0.000     -6.534      0.000      0.145
+
+ ESCS     WITH
+    FEMALE             0.001      0.005      0.150      0.881      0.013
+    IMMI1GEN          -0.014      0.002     -5.898      0.000      0.021
+    IMMI2GEN          -0.057      0.005    -10.470      0.000      0.045
+
+ Means
+    FEMALE             0.500      0.007     76.205      0.000      0.000
+    IMMI1GEN           0.024      0.002     10.399      0.000      0.085
+    IMMI2GEN           0.086      0.006     13.750      0.000      0.030
+    ESCS               0.509      0.019     26.888      0.000      0.003
+
+ Intercepts
+    READ             478.664      3.163    151.332      0.000      0.193
+    ICTLEIS            0.013      0.016      0.821      0.412      0.103
+    ICTSCHWK           0.105      0.018      5.833      0.000      0.082
+    USESCH             0.542      0.015     36.402      0.000      0.229
+    READJOY           -0.770      0.029    -26.724      0.000      0.029
+    READCOMP           0.102      0.031      3.333      0.001      0.144
+    READEASE           0.080      0.030      2.693      0.007      0.021
+
+ Variances
+    FEMALE             0.250      0.000  42279.723      0.000      0.000
+    IMMI1GEN           0.023      0.002     10.660      0.000      0.085
+    IMMI2GEN           0.078      0.005     15.172      0.000      0.030
+    ESCS               0.586      0.018     33.245      0.000      0.009
+
+ Residual Variances
+    READ            5874.098    175.422     33.486      0.000      0.050
+    ICTLEIS            0.717      0.042     17.228      0.000      0.047
+    ICTSCHWK           0.685      0.032     21.563      0.000      0.081
+    USESCH             0.481      0.023     21.257      0.000      0.147
+    READJOY            0.966      0.022     44.027      0.000      0.041
+    READCOMP           0.875      0.020     44.030      0.000      0.175
+    READEASE           0.869      0.020     42.423      0.000      0.119
+
+Group FIN
+
+ ICTLEIS  ON
+    ESCS               0.078      0.016      4.805      0.000      0.241
+
+ ICTSCHWK ON
+    ESCS               0.127      0.019      6.757      0.000      0.076
+
+ USESCH   ON
+    ESCS               0.059      0.015      4.022      0.000      0.148
+
+ READJOY  ON
+    ICTLEIS           -0.042      0.023     -1.882      0.060      0.136
+    ICTSCHWK           0.112      0.024      4.664      0.000      0.048
+    USESCH            -0.121      0.028     -4.331      0.000      0.129
+    IMMI1GEN           0.370      0.082      4.509      0.000      0.074
+    IMMI2GEN           0.081      0.077      1.044      0.297      0.123
+    FEMALE             0.681      0.028     24.633      0.000      0.038
+    ESCS               0.300      0.019     15.811      0.000      0.033
+
+ READCOMP ON
+    ICTLEIS            0.105      0.021      4.961      0.000      0.105
+    ICTSCHWK           0.000      0.024     -0.012      0.991      0.193
+    USESCH            -0.060      0.031     -1.950      0.051      0.111
+    IMMI1GEN          -0.052      0.097     -0.539      0.590      0.143
+    IMMI2GEN          -0.071      0.102     -0.694      0.488      0.166
+    FEMALE             0.135      0.029      4.594      0.000      0.045
+    ESCS               0.234      0.020     11.696      0.000      0.077
+
+ READEASE ON
+    ICTLEIS            0.052      0.026      1.976      0.048      0.155
+    ICTSCHWK          -0.033      0.025     -1.328      0.184      0.184
+    USESCH            -0.135      0.031     -4.362      0.000      0.187
+    IMMI1GEN          -0.148      0.088     -1.690      0.091      0.175
+    IMMI2GEN          -0.233      0.097     -2.405      0.016      0.193
+    FEMALE            -0.152      0.029     -5.267      0.000      0.055
+    ESCS               0.174      0.019      9.051      0.000      0.044
+
+ READ     ON
+    ICTLEIS            5.711      1.895      3.014      0.003      0.169
+    ICTSCHWK          -9.293      2.029     -4.580      0.000      0.178
+    USESCH           -17.453      2.422     -7.207      0.000      0.177
+    READJOY           18.600      1.227     15.156      0.000      0.050
+    READCOMP          20.457      1.683     12.155      0.000      0.101
+    READEASE          13.642      1.480      9.220      0.000      0.066
+    FEMALE            36.205      2.657     13.627      0.000      0.280
+    ESCS              26.871      1.851     14.520      0.000      0.118
+
+ ICTLEIS  WITH
+    ICTSCHWK           0.300      0.020     14.996      0.000      0.031
+    USESCH             0.253      0.016     15.695      0.000      0.008
+
+ ICTSCHWK WITH
+    USESCH             0.430      0.020     21.196      0.000      0.048
+
+ READJOY  WITH
+    READCOMP           0.381      0.016     24.453      0.000      0.078
+    READEASE           0.255      0.016     15.806      0.000      0.026
+
+ READCOMP WITH
+    READEASE           0.507      0.018     28.219      0.000      0.068
+
+ IMMI1GEN WITH
+    FEMALE             0.000      0.001     -0.015      0.988      0.072
+
+ IMMI2GEN WITH
+    FEMALE             0.000      0.001     -0.384      0.701      0.038
+    IMMI1GEN          -0.001      0.000     -5.061      0.000      0.027
+
+ ESCS     WITH
+    FEMALE             0.003      0.005      0.580      0.562      0.018
+    IMMI1GEN          -0.021      0.004     -5.017      0.000      0.017
+    IMMI2GEN          -0.012      0.003     -4.371      0.000      0.057
+
+ Means
+    FEMALE             0.491      0.005     91.979      0.000      0.000
+    IMMI1GEN           0.035      0.004      9.038      0.000      0.034
+    IMMI2GEN           0.027      0.003      8.355      0.000      0.064
+    ESCS               0.294      0.022     13.414      0.000      0.004
+
+ Intercepts
+    READ             498.160      2.691    185.141      0.000      0.160
+    ICTLEIS           -0.054      0.013     -4.023      0.000      0.169
+    ICTSCHWK          -0.275      0.023    -12.004      0.000      0.093
+    USESCH             0.197      0.015     13.080      0.000      0.083
+    READJOY           -0.650      0.024    -27.449      0.000      0.067
+    READCOMP          -0.032      0.026     -1.247      0.212      0.103
+    READEASE           0.145      0.024      5.944      0.000      0.096
+
+ Variances
+    FEMALE             0.250      0.000   2566.438      0.000      0.000
+    IMMI1GEN           0.033      0.004      9.374      0.000      0.034
+    IMMI2GEN           0.027      0.003      8.597      0.000      0.064
+    ESCS               0.631      0.014     44.318      0.000      0.012
+
+ Residual Variances
+    READ            6274.732    157.666     39.798      0.000      0.144
+    ICTLEIS            0.656      0.031     20.859      0.000      0.010
+    ICTSCHWK           0.804      0.027     29.232      0.000      0.063
+    USESCH             0.577      0.023     24.652      0.000      0.051
+    READJOY            1.029      0.021     48.011      0.000      0.024
+    READCOMP           0.958      0.020     47.249      0.000      0.096
+    READEASE           1.057      0.021     51.199      0.000      0.086
+
+Group SWE
+
+ ICTLEIS  ON
+    ESCS               0.060      0.019      3.115      0.002      0.113
+
+ ICTSCHWK ON
+    ESCS               0.088      0.022      4.085      0.000      0.199
+
+ USESCH   ON
+    ESCS               0.068      0.020      3.371      0.001      0.149
+
+ READJOY  ON
+    ICTLEIS           -0.082      0.021     -3.916      0.000      0.138
+    ICTSCHWK           0.072      0.026      2.839      0.005      0.085
+    USESCH            -0.051      0.026     -1.946      0.052      0.130
+    IMMI1GEN           0.603      0.050     12.087      0.000      0.043
+    IMMI2GEN           0.303      0.047      6.419      0.000      0.036
+    FEMALE             0.411      0.031     13.058      0.000      0.031
+    ESCS               0.247      0.020     12.240      0.000      0.023
+
+ READCOMP ON
+    ICTLEIS            0.090      0.023      3.909      0.000      0.166
+    ICTSCHWK           0.015      0.024      0.615      0.539      0.292
+    USESCH            -0.050      0.025     -2.035      0.042      0.180
+    IMMI1GEN           0.061      0.053      1.147      0.251      0.095
+    IMMI2GEN           0.198      0.057      3.457      0.001      0.107
+    FEMALE             0.145      0.032      4.598      0.000      0.063
+    ESCS               0.228      0.020     11.603      0.000      0.075
+
+ READEASE ON
+    ICTLEIS            0.035      0.024      1.424      0.154      0.202
+    ICTSCHWK          -0.056      0.026     -2.137      0.033      0.189
+    USESCH            -0.058      0.028     -2.066      0.039      0.187
+    IMMI1GEN          -0.095      0.057     -1.667      0.096      0.154
+    IMMI2GEN           0.021      0.053      0.393      0.694      0.103
+    FEMALE            -0.023      0.034     -0.682      0.495      0.029
+    ESCS               0.204      0.018     11.558      0.000      0.033
+
+ READ     ON
+    ICTLEIS            2.431      2.138      1.137      0.256      0.221
+    ICTSCHWK         -14.456      2.171     -6.659      0.000      0.202
+    USESCH           -14.049      2.264     -6.206      0.000      0.156
+    READJOY           12.292      1.433      8.576      0.000      0.114
+    READCOMP          17.702      1.756     10.081      0.000      0.167
+    READEASE          17.210      1.734      9.926      0.000      0.178
+    FEMALE            24.859      3.085      8.058      0.000      0.118
+    ESCS              32.125      2.030     15.825      0.000      0.086
+
+ ICTLEIS  WITH
+    ICTSCHWK           0.432      0.034     12.691      0.000      0.043
+    USESCH             0.350      0.029     11.982      0.000      0.040
+
+ ICTSCHWK WITH
+    USESCH             0.502      0.028     18.108      0.000      0.050
+
+ READJOY  WITH
+    READCOMP           0.332      0.019     17.146      0.000      0.041
+    READEASE           0.227      0.019     11.907      0.000      0.037
+
+ READCOMP WITH
+    READEASE           0.546      0.019     28.493      0.000      0.036
+
+ IMMI1GEN WITH
+    FEMALE            -0.005      0.002     -2.024      0.043      0.036
+
+ IMMI2GEN WITH
+    FEMALE            -0.001      0.002     -0.366      0.714      0.040
+    IMMI1GEN          -0.010      0.002     -6.790      0.000      0.009
+
+ ESCS     WITH
+    FEMALE             0.004      0.007      0.565      0.572      0.047
+    IMMI1GEN          -0.066      0.007     -9.624      0.000      0.026
+    IMMI2GEN          -0.045      0.006     -7.347      0.000      0.033
+
+ Means
+    FEMALE             0.500      0.006     85.377      0.000      0.000
+    IMMI1GEN           0.096      0.008     11.448      0.000      0.008
+    IMMI2GEN           0.110      0.010     11.372      0.000      0.011
+    ESCS               0.352      0.027     13.085      0.000      0.006
+
+ Intercepts
+    READ             488.325      3.751    130.180      0.000      0.088
+    ICTLEIS            0.021      0.016      1.316      0.188      0.114
+    ICTSCHWK           0.128      0.022      5.802      0.000      0.113
+    USESCH             0.411      0.023     18.145      0.000      0.112
+    READJOY           -0.694      0.027    -25.679      0.000      0.033
+    READCOMP           0.141      0.027      5.144      0.000      0.105
+    READEASE           0.015      0.028      0.548      0.583      0.057
+
+ Variances
+    FEMALE             0.250      0.000  92804.820      0.000      0.000
+    IMMI1GEN           0.087      0.007     12.804      0.000      0.008
+    IMMI2GEN           0.098      0.008     12.983      0.000      0.011
+    ESCS               0.794      0.025     31.593      0.000      0.016
+
+ Residual Variances
+    READ            8096.868    253.652     31.921      0.000      0.221
+    ICTLEIS            0.876      0.050     17.431      0.000      0.013
+    ICTSCHWK           0.867      0.037     23.545      0.000      0.077
+    USESCH             0.750      0.030     25.243      0.000      0.036
+    READJOY            1.113      0.027     41.612      0.000      0.071
+    READCOMP           1.033      0.022     47.069      0.000      0.046
+    READEASE           1.111      0.030     37.081      0.000      0.030
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+Group DEN
+
+ ICTLEIS  ON
+    ESCS               0.058      0.016      3.644      0.000      0.234
+
+ ICTSCHWK ON
+    ESCS               0.060      0.016      3.810      0.000      0.056
+
+ USESCH   ON
+    ESCS               0.052      0.017      3.122      0.002      0.198
+
+ READJOY  ON
+    ICTLEIS           -0.071      0.018     -3.914      0.000      0.086
+    ICTSCHWK           0.050      0.020      2.482      0.013      0.149
+    USESCH            -0.017      0.018     -0.937      0.349      0.153
+    IMMI1GEN           0.057      0.012      4.539      0.000      0.097
+    IMMI2GEN           0.113      0.013      8.391      0.000      0.085
+    FEMALE             0.217      0.016     13.932      0.000      0.038
+    ESCS               0.192      0.015     12.711      0.000      0.037
+
+ READCOMP ON
+    ICTLEIS            0.072      0.023      3.127      0.002      0.112
+    ICTSCHWK          -0.045      0.021     -2.164      0.030      0.212
+    USESCH             0.054      0.021      2.592      0.010      0.232
+    IMMI1GEN          -0.017      0.013     -1.273      0.203      0.132
+    IMMI2GEN           0.050      0.012      4.274      0.000      0.156
+    FEMALE             0.010      0.017      0.571      0.568      0.073
+    ESCS               0.173      0.014     12.217      0.000      0.094
+
+ READEASE ON
+    ICTLEIS            0.004      0.024      0.171      0.864      0.143
+    ICTSCHWK          -0.069      0.024     -2.867      0.004      0.345
+    USESCH            -0.009      0.022     -0.404      0.687      0.167
+    IMMI1GEN          -0.012      0.015     -0.817      0.414      0.167
+    IMMI2GEN           0.011      0.013      0.889      0.374      0.097
+    FEMALE            -0.047      0.016     -2.861      0.004      0.048
+    ESCS               0.149      0.015      9.937      0.000      0.050
+
+ READ     ON
+    ICTLEIS            0.040      0.022      1.836      0.066      0.266
+    ICTSCHWK          -0.128      0.023     -5.683      0.000      0.432
+    USESCH            -0.075      0.022     -3.336      0.001      0.490
+    READJOY            0.139      0.015      9.361      0.000      0.222
+    READCOMP           0.222      0.020     10.888      0.000      0.311
+    READEASE           0.173      0.017      9.911      0.000      0.233
+    FEMALE             0.132      0.014      9.691      0.000      0.145
+    ESCS               0.241      0.014     16.931      0.000      0.151
+
+ ICTLEIS  WITH
+    ICTSCHWK           0.485      0.023     20.723      0.000      0.069
+    USESCH             0.478      0.024     19.601      0.000      0.099
+
+ ICTSCHWK WITH
+    USESCH             0.578      0.019     31.141      0.000      0.082
+
+ READJOY  WITH
+    READCOMP           0.265      0.015     17.943      0.000      0.102
+    READEASE           0.182      0.017     10.465      0.000      0.150
+
+ READCOMP WITH
+    READEASE           0.496      0.019     25.920      0.000      0.077
+
+ IMMI1GEN WITH
+    FEMALE            -0.009      0.012     -0.773      0.439      0.036
+
+ IMMI2GEN WITH
+    FEMALE            -0.003      0.011     -0.242      0.809      0.099
+    IMMI1GEN          -0.047      0.005     -9.783      0.000      0.278
+
+ ESCS     WITH
+    FEMALE             0.002      0.013      0.150      0.881      0.013
+    IMMI1GEN          -0.124      0.018     -6.896      0.000      0.024
+    IMMI2GEN          -0.267      0.018    -14.605      0.000      0.055
+
+ Means
+    FEMALE             0.999      0.013     76.274      0.000      0.000
+    IMMI1GEN           0.156      0.008     20.307      0.000      0.085
+    IMMI2GEN           0.306      0.012     25.142      0.000      0.031
+    ESCS               0.665      0.031     21.432      0.000      0.004
+
+ Intercepts
+    READ               5.197      0.081     63.922      0.000      0.148
+    ICTLEIS            0.015      0.018      0.824      0.410      0.105
+    ICTSCHWK           0.127      0.022      5.766      0.000      0.087
+    USESCH             0.781      0.027     28.838      0.000      0.258
+    READJOY           -0.748      0.027    -27.862      0.000      0.027
+    READCOMP           0.107      0.032      3.305      0.001      0.144
+    READEASE           0.085      0.031      2.708      0.007      0.023
+
+ Variances
+    FEMALE             1.000      0.000  *********      0.000      0.000
+    IMMI1GEN           1.000      0.000  *********      0.000      0.000
+    IMMI2GEN           1.000      0.000  *********      0.000      0.000
+    ESCS               1.000      0.000  *********      0.000      0.000
+
+ Residual Variances
+    READ               0.693      0.013     53.756      0.000      0.221
+    ICTLEIS            0.997      0.002    531.788      0.000      0.244
+    ICTSCHWK           0.996      0.002    521.620      0.000      0.055
+    USESCH             0.997      0.002    575.764      0.000      0.195
+    READJOY            0.911      0.008    111.299      0.000      0.043
+    READCOMP           0.962      0.006    154.522      0.000      0.113
+    READEASE           0.972      0.005    190.763      0.000      0.043
+
+Group FIN
+
+ ICTLEIS  ON
+    ESCS               0.076      0.016      4.858      0.000      0.238
+
+ ICTSCHWK ON
+    ESCS               0.112      0.016      6.824      0.000      0.079
+
+ USESCH   ON
+    ESCS               0.061      0.015      4.050      0.000      0.141
+
+ READJOY  ON
+    ICTLEIS           -0.031      0.017     -1.896      0.058      0.140
+    ICTSCHWK           0.092      0.019      4.750      0.000      0.051
+    USESCH            -0.083      0.019     -4.363      0.000      0.138
+    IMMI1GEN           0.061      0.014      4.335      0.000      0.074
+    IMMI2GEN           0.012      0.011      1.041      0.298      0.124
+    FEMALE             0.309      0.012     26.692      0.000      0.037
+    ESCS               0.216      0.013     16.706      0.000      0.032
+
+ READCOMP ON
+    ICTLEIS            0.085      0.017      4.960      0.000      0.110
+    ICTSCHWK           0.000      0.021     -0.012      0.991      0.194
+    USESCH            -0.046      0.023     -1.954      0.051      0.110
+    IMMI1GEN          -0.010      0.018     -0.542      0.588      0.146
+    IMMI2GEN          -0.012      0.017     -0.692      0.489      0.164
+    FEMALE             0.067      0.015      4.612      0.000      0.042
+    ESCS               0.185      0.015     11.993      0.000      0.076
+
+ READEASE ON
+    ICTLEIS            0.040      0.020      1.971      0.049      0.157
+    ICTSCHWK          -0.028      0.021     -1.328      0.184      0.186
+    USESCH            -0.098      0.022     -4.405      0.000      0.192
+    IMMI1GEN          -0.026      0.015     -1.703      0.089      0.186
+    IMMI2GEN          -0.036      0.015     -2.385      0.017      0.167
+    FEMALE            -0.073      0.014     -5.288      0.000      0.058
+    ESCS               0.132      0.015      9.095      0.000      0.049
+
+ READ     ON
+    ICTLEIS            0.047      0.015      3.031      0.002      0.169
+    ICTSCHWK          -0.084      0.018     -4.646      0.000      0.184
+    USESCH            -0.134      0.019     -7.208      0.000      0.178
+    READJOY            0.206      0.014     15.180      0.000      0.063
+    READCOMP           0.207      0.017     11.999      0.000      0.092
+    READEASE           0.144      0.015      9.295      0.000      0.054
+    FEMALE             0.182      0.013     14.254      0.000      0.279
+    ESCS               0.215      0.014     14.819      0.000      0.128
+
+ ICTLEIS  WITH
+    ICTSCHWK           0.414      0.020     21.132      0.000      0.036
+    USESCH             0.411      0.018     22.397      0.000      0.012
+
+ ICTSCHWK WITH
+    USESCH             0.631      0.015     41.161      0.000      0.065
+
+ READJOY  WITH
+    READCOMP           0.383      0.013     29.701      0.000      0.087
+    READEASE           0.244      0.015     16.803      0.000      0.029
+
+ READCOMP WITH
+    READEASE           0.504      0.015     33.599      0.000      0.027
+
+ IMMI1GEN WITH
+    FEMALE             0.000      0.013     -0.013      0.989      0.073
+
+ IMMI2GEN WITH
+    FEMALE            -0.005      0.014     -0.383      0.701      0.036
+    IMMI1GEN          -0.032      0.003     -9.809      0.000      0.027
+
+ ESCS     WITH
+    FEMALE             0.008      0.014      0.579      0.562      0.017
+    IMMI1GEN          -0.143      0.023     -6.192      0.000      0.019
+    IMMI2GEN          -0.094      0.018     -5.136      0.000      0.056
+
+ Means
+    FEMALE             0.981      0.010     93.710      0.000      0.000
+    IMMI1GEN           0.189      0.011     17.446      0.000      0.034
+    IMMI2GEN           0.168      0.010     16.249      0.000      0.064
+    ESCS               0.370      0.029     12.864      0.000      0.005
+
+ Intercepts
+    READ               5.013      0.077     65.281      0.000      0.103
+    ICTLEIS           -0.066      0.017     -3.909      0.000      0.157
+    ICTSCHWK          -0.305      0.027    -11.481      0.000      0.096
+    USESCH             0.259      0.019     13.577      0.000      0.110
+    READJOY           -0.591      0.021    -28.434      0.000      0.061
+    READCOMP          -0.032      0.026     -1.248      0.212      0.100
+    READEASE           0.139      0.023      5.938      0.000      0.098
+
+ Variances
+    FEMALE             1.000      0.000  *********      0.000      0.000
+    IMMI1GEN           1.000      0.000  *********      0.000      0.000
+    IMMI2GEN           1.000      0.000  *********      0.000      0.000
+    ESCS               1.000      0.000  *********      0.000      0.000
+
+ Residual Variances
+    READ               0.635      0.011     56.031      0.000      0.090
+    ICTLEIS            0.994      0.002    413.007      0.000      0.236
+    ICTSCHWK           0.987      0.004    268.413      0.000      0.074
+    USESCH             0.996      0.002    539.413      0.000      0.145
+    READJOY            0.849      0.009     99.734      0.000      0.026
+    READCOMP           0.952      0.006    146.658      0.000      0.066
+    READEASE           0.964      0.006    167.015      0.000      0.156
+
+Group SWE
+
+ ICTLEIS  ON
+    ESCS               0.057      0.018      3.152      0.002      0.115
+
+ ICTSCHWK ON
+    ESCS               0.084      0.020      4.160      0.000      0.203
+
+ USESCH   ON
+    ESCS               0.069      0.020      3.414      0.001      0.151
+
+ READJOY  ON
+    ICTLEIS           -0.070      0.018     -3.900      0.000      0.142
+    ICTSCHWK           0.061      0.021      2.854      0.004      0.090
+    USESCH            -0.040      0.020     -1.951      0.051      0.130
+    IMMI1GEN           0.161      0.014     11.246      0.000      0.041
+    IMMI2GEN           0.086      0.014      6.291      0.000      0.032
+    FEMALE             0.186      0.013     13.894      0.000      0.025
+    ESCS               0.200      0.015     13.080      0.000      0.029
+
+ READCOMP ON
+    ICTLEIS            0.081      0.021      3.861      0.000      0.149
+    ICTSCHWK           0.013      0.022      0.616      0.538      0.291
+    USESCH            -0.042      0.021     -2.036      0.042      0.181
+    IMMI1GEN           0.017      0.015      1.145      0.252      0.094
+    IMMI2GEN           0.060      0.017      3.470      0.001      0.103
+    FEMALE             0.070      0.015      4.597      0.000      0.062
+    ESCS               0.195      0.016     12.364      0.000      0.079
+
+ READEASE ON
+    ICTLEIS            0.030      0.021      1.423      0.155      0.203
+    ICTSCHWK          -0.049      0.023     -2.126      0.034      0.184
+    USESCH            -0.047      0.023     -2.065      0.039      0.192
+    IMMI1GEN          -0.026      0.016     -1.666      0.096      0.155
+    IMMI2GEN           0.006      0.016      0.393      0.694      0.102
+    FEMALE            -0.011      0.016     -0.681      0.496      0.029
+    ESCS               0.170      0.015     11.696      0.000      0.037
+
+ READ     ON
+    ICTLEIS            0.021      0.019      1.134      0.257      0.217
+    ICTSCHWK          -0.126      0.019     -6.729      0.000      0.206
+    USESCH            -0.113      0.018     -6.311      0.000      0.159
+    READJOY            0.126      0.015      8.263      0.000      0.103
+    READCOMP           0.172      0.017     10.024      0.000      0.129
+    READEASE           0.172      0.017      9.888      0.000      0.211
+    FEMALE             0.116      0.014      8.236      0.000      0.115
+    ESCS               0.266      0.017     16.060      0.000      0.069
+
+ ICTLEIS  WITH
+    ICTSCHWK           0.496      0.022     22.895      0.000      0.068
+    USESCH             0.432      0.024     18.373      0.000      0.058
+
+ ICTSCHWK WITH
+    USESCH             0.623      0.018     34.681      0.000      0.045
+
+ READJOY  WITH
+    READCOMP           0.310      0.016     19.346      0.000      0.033
+    READEASE           0.204      0.017     12.343      0.000      0.033
+
+ READCOMP WITH
+    READEASE           0.510      0.016     31.780      0.000      0.021
+
+ IMMI1GEN WITH
+    FEMALE            -0.032      0.016     -2.039      0.041      0.037
+
+ IMMI2GEN WITH
+    FEMALE            -0.005      0.015     -0.366      0.714      0.040
+    IMMI1GEN          -0.113      0.009    -11.854      0.000      0.017
+
+ ESCS     WITH
+    FEMALE             0.008      0.015      0.566      0.572      0.047
+    IMMI1GEN          -0.251      0.018    -13.610      0.000      0.042
+    IMMI2GEN          -0.161      0.019     -8.443      0.000      0.039
+
+ Means
+    FEMALE             1.000      0.012     85.416      0.000      0.000
+    IMMI1GEN           0.325      0.016     20.703      0.000      0.008
+    IMMI2GEN           0.352      0.017     20.232      0.000      0.011
+    ESCS               0.395      0.033     11.852      0.000      0.007
+
+ Intercepts
+    READ               4.543      0.086     52.571      0.000      0.107
+    ICTLEIS            0.022      0.016      1.337      0.181      0.116
+    ICTSCHWK           0.137      0.023      5.981      0.000      0.121
+    USESCH             0.474      0.027     17.432      0.000      0.094
+    READJOY           -0.629      0.023    -27.191      0.000      0.038
+    READCOMP           0.135      0.027      5.062      0.000      0.105
+    READEASE           0.014      0.026      0.548      0.584      0.057
+
+ Variances
+    FEMALE             1.000      0.000  *********      0.000      0.000
+    IMMI1GEN           1.000      0.000  *********      0.000      0.000
+    IMMI2GEN           1.000      0.000  *********      0.000      0.000
+    ESCS               1.000      0.000  *********      0.000      0.000
+
+ Residual Variances
+    READ               0.701      0.013     54.145      0.000      0.293
+    ICTLEIS            0.997      0.002    476.782      0.000      0.119
+    ICTSCHWK           0.993      0.003    290.533      0.000      0.196
+    USESCH             0.995      0.003    354.505      0.000      0.145
+    READJOY            0.914      0.007    122.628      0.000      0.040
+    READCOMP           0.952      0.007    143.156      0.000      0.112
+    READEASE           0.965      0.005    177.562      0.000      0.044
+
+
+R-SQUARE
+
+Group DEN
+
+    Observed                                        Two-Tailed   Rate of
+    Variable        Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+    READ               0.307      0.013     23.867      0.000      0.221
+    ICTLEIS            0.003      0.002      1.820      0.069      0.245
+    ICTSCHWK           0.004      0.002      1.907      0.056      0.055
+    USESCH             0.003      0.002      1.572      0.116      0.194
+    READJOY            0.089      0.008     10.847      0.000      0.043
+    READCOMP           0.038      0.006      6.187      0.000      0.113
+    READEASE           0.028      0.005      5.592      0.000      0.043
+
+Group FIN
+
+    Observed                                        Two-Tailed   Rate of
+    Variable        Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+    READ               0.365      0.011     32.142      0.000      0.090
+    ICTLEIS            0.006      0.002      2.442      0.015      0.234
+    ICTSCHWK           0.013      0.004      3.423      0.001      0.074
+    USESCH             0.004      0.002      2.033      0.042      0.146
+    READJOY            0.151      0.009     17.707      0.000      0.026
+    READCOMP           0.048      0.006      7.378      0.000      0.066
+    READEASE           0.036      0.006      6.290      0.000      0.156
+
+Group SWE
+
+    Observed                                        Two-Tailed   Rate of
+    Variable        Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+    READ               0.299      0.013     23.108      0.000      0.293
+    ICTLEIS            0.003      0.002      1.576      0.115      0.120
+    ICTSCHWK           0.007      0.003      2.100      0.036      0.196
+    USESCH             0.005      0.003      1.731      0.083      0.145
+    READJOY            0.086      0.007     11.607      0.000      0.040
+    READCOMP           0.048      0.007      7.236      0.000      0.112
+    READEASE           0.035      0.005      6.519      0.000      0.044
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Average Condition Number for the Information Matrix      0.780E-07
+       (ratio of smallest to largest eigenvalue)
+
+
+TOTAL, TOTAL INDIRECT, SPECIFIC INDIRECT, AND DIRECT EFFECTS
+
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+Group DEN
+
+Effects from ICTLEIS to READ
+
+  Total                5.089      2.585      1.969      0.049      0.262
+  Total indirect       0.747      0.820      0.911      0.362      0.181
+
+  Specific indirect 1
+    READ
+    READJOY
+    ICTLEIS           -1.069      0.286     -3.733      0.000      0.099
+
+  Specific indirect 2
+    READ
+    READCOMP
+    ICTLEIS            1.738      0.602      2.886      0.004      0.084
+
+  Specific indirect 3
+    READ
+    READEASE
+    ICTLEIS            0.078      0.462      0.169      0.866      0.144
+
+  Direct
+    READ
+    ICTLEIS            4.343      2.360      1.840      0.066      0.269
+
+
+Effects from ICTSCHWK to READ
+
+  Total              -15.894      2.516     -6.316      0.000      0.351
+  Total indirect      -1.649      0.976     -1.689      0.091      0.273
+
+  Specific indirect 1
+    READ
+    READJOY
+    ICTSCHWK           0.778      0.324      2.401      0.016      0.104
+
+  Specific indirect 2
+    READ
+    READCOMP
+    ICTSCHWK          -1.111      0.505     -2.198      0.028      0.181
+
+  Specific indirect 3
+    READ
+    READEASE
+    ICTSCHWK          -1.316      0.460     -2.859      0.004      0.340
+
+  Direct
+    READ
+    ICTSCHWK         -14.245      2.490     -5.721      0.000      0.429
+
+
+Effects from USESCH to READ
+
+  Total               -8.879      3.316     -2.678      0.007      0.479
+  Total indirect       1.065      0.999      1.066      0.286      0.153
+
+  Specific indirect 1
+    READ
+    READJOY
+    USESCH            -0.312      0.336     -0.930      0.352      0.140
+
+  Specific indirect 2
+    READ
+    READCOMP
+    USESCH             1.580      0.648      2.438      0.015      0.275
+
+  Specific indirect 3
+    READ
+    READEASE
+    USESCH            -0.203      0.495     -0.410      0.682      0.176
+
+  Direct
+    READ
+    USESCH            -9.944      2.983     -3.333      0.001      0.475
+
+
+Group FIN
+
+Effects from ICTLEIS to READ
+
+  Total                7.771      2.089      3.720      0.000      0.122
+  Total indirect       2.060      0.832      2.476      0.013      0.106
+
+  Specific indirect 1
+    READ
+    READJOY
+    ICTLEIS           -0.790      0.425     -1.861      0.063      0.134
+
+  Specific indirect 2
+    READ
+    READCOMP
+    ICTLEIS            2.147      0.475      4.515      0.000      0.107
+
+  Specific indirect 3
+    READ
+    READEASE
+    ICTLEIS            0.704      0.374      1.883      0.060      0.158
+
+  Direct
+    READ
+    ICTLEIS            5.711      1.895      3.014      0.003      0.169
+
+
+Effects from ICTSCHWK to READ
+
+  Total               -7.670      2.090     -3.671      0.000      0.123
+  Total indirect       1.623      0.921      1.762      0.078      0.111
+
+  Specific indirect 1
+    READ
+    READJOY
+    ICTSCHWK           2.079      0.462      4.498      0.000      0.056
+
+  Specific indirect 2
+    READ
+    READCOMP
+    ICTSCHWK          -0.003      0.484     -0.007      0.994      0.196
+
+  Specific indirect 3
+    READ
+    READEASE
+    ICTSCHWK          -0.452      0.343     -1.320      0.187      0.196
+
+  Direct
+    READ
+    ICTSCHWK          -9.293      2.029     -4.580      0.000      0.178
+
+
+Effects from USESCH to READ
+
+  Total              -22.770      2.646     -8.606      0.000      0.112
+  Total indirect      -5.317      1.192     -4.462      0.000      0.116
+
+  Specific indirect 1
+    READ
+    READJOY
+    USESCH            -2.242      0.536     -4.186      0.000      0.129
+
+  Specific indirect 2
+    READ
+    READCOMP
+    USESCH            -1.235      0.650     -1.901      0.057      0.118
+
+  Specific indirect 3
+    READ
+    READEASE
+    USESCH            -1.839      0.478     -3.848      0.000      0.117
+
+  Direct
+    READ
+    USESCH           -17.453      2.422     -7.207      0.000      0.177
+
+
+Group SWE
+
+Effects from ICTLEIS to READ
+
+  Total                3.605      2.226      1.620      0.105      0.183
+  Total indirect       1.174      0.700      1.677      0.094      0.082
+
+  Specific indirect 1
+    READ
+    READJOY
+    ICTLEIS           -1.015      0.305     -3.327      0.001      0.147
+
+  Specific indirect 2
+    READ
+    READCOMP
+    ICTLEIS            1.589      0.425      3.737      0.000      0.105
+
+  Specific indirect 3
+    READ
+    READEASE
+    ICTLEIS            0.600      0.424      1.414      0.157      0.226
+
+  Direct
+    READ
+    ICTLEIS            2.431      2.138      1.137      0.256      0.221
+
+
+Effects from ICTSCHWK to READ
+
+  Total              -14.264      2.266     -6.296      0.000      0.159
+  Total indirect       0.193      0.845      0.228      0.820      0.194
+
+  Specific indirect 1
+    READ
+    READJOY
+    ICTSCHWK           0.891      0.338      2.633      0.008      0.091
+
+  Specific indirect 2
+    READ
+    READCOMP
+    ICTSCHWK           0.264      0.427      0.618      0.536      0.289
+
+  Specific indirect 3
+    READ
+    READEASE
+    ICTSCHWK          -0.962      0.459     -2.097      0.036      0.222
+
+  Direct
+    READ
+    ICTSCHWK         -14.456      2.171     -6.659      0.000      0.202
+
+
+Effects from USESCH to READ
+
+  Total              -16.569      2.561     -6.469      0.000      0.186
+  Total indirect      -2.520      0.928     -2.715      0.007      0.149
+
+  Specific indirect 1
+    READ
+    READJOY
+    USESCH            -0.625      0.334     -1.871      0.061      0.130
+
+  Specific indirect 2
+    READ
+    READCOMP
+    USESCH            -0.893      0.445     -2.008      0.045      0.191
+
+  Specific indirect 3
+    READ
+    READEASE
+    USESCH            -1.002      0.499     -2.008      0.045      0.161
+
+  Direct
+    READ
+    USESCH           -14.049      2.264     -6.206      0.000      0.156
+
+
+
+STANDARDIZED TOTAL, TOTAL INDIRECT, SPECIFIC INDIRECT, AND DIRECT EFFECTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+Group DEN
+
+Effects from ICTLEIS to READ
+
+  Total                0.047      0.024      1.968      0.049      0.259
+  Total indirect       0.007      0.008      0.913      0.361      0.180
+
+  Specific indirect 1
+    READ
+    READJOY
+    ICTLEIS           -0.010      0.003     -3.764      0.000      0.104
+
+  Specific indirect 2
+    READ
+    READCOMP
+    ICTLEIS            0.016      0.006      2.844      0.004      0.080
+
+  Specific indirect 3
+    READ
+    READEASE
+    ICTLEIS            0.001      0.004      0.169      0.865      0.143
+
+  Direct
+    READ
+    ICTLEIS            0.040      0.022      1.836      0.066      0.266
+
+
+Effects from ICTSCHWK to READ
+
+  Total               -0.143      0.023     -6.269      0.000      0.360
+  Total indirect      -0.015      0.009     -1.690      0.091      0.275
+
+  Specific indirect 1
+    READ
+    READJOY
+    ICTSCHWK           0.007      0.003      2.399      0.016      0.107
+
+  Specific indirect 2
+    READ
+    READCOMP
+    ICTSCHWK          -0.010      0.005     -2.201      0.028      0.183
+
+  Specific indirect 3
+    READ
+    READEASE
+    ICTSCHWK          -0.012      0.004     -2.854      0.004      0.347
+
+  Direct
+    READ
+    ICTSCHWK          -0.128      0.023     -5.683      0.000      0.432
+
+
+Effects from USESCH to READ
+
+  Total               -0.067      0.025     -2.681      0.007      0.491
+  Total indirect       0.008      0.008      1.067      0.286      0.149
+
+  Specific indirect 1
+    READ
+    READJOY
+    USESCH            -0.002      0.003     -0.930      0.352      0.139
+
+  Specific indirect 2
+    READ
+    READCOMP
+    USESCH             0.012      0.005      2.427      0.015      0.267
+
+  Specific indirect 3
+    READ
+    READEASE
+    USESCH            -0.002      0.004     -0.411      0.681      0.177
+
+  Direct
+    READ
+    USESCH            -0.075      0.022     -3.336      0.001      0.490
+
+
+Group FIN
+
+Effects from ICTLEIS to READ
+
+  Total                0.064      0.017      3.731      0.000      0.119
+  Total indirect       0.017      0.007      2.463      0.014      0.101
+
+  Specific indirect 1
+    READ
+    READJOY
+    ICTLEIS           -0.006      0.003     -1.875      0.061      0.137
+
+  Specific indirect 2
+    READ
+    READCOMP
+    ICTLEIS            0.018      0.004      4.508      0.000      0.103
+
+  Specific indirect 3
+    READ
+    READEASE
+    ICTLEIS            0.006      0.003      1.883      0.060      0.155
+
+  Direct
+    READ
+    ICTLEIS            0.047      0.015      3.031      0.002      0.169
+
+
+Effects from ICTSCHWK to READ
+
+  Total               -0.070      0.019     -3.685      0.000      0.126
+  Total indirect       0.015      0.008      1.775      0.076      0.112
+
+  Specific indirect 1
+    READ
+    READJOY
+    ICTSCHWK           0.019      0.004      4.588      0.000      0.057
+
+  Specific indirect 2
+    READ
+    READCOMP
+    ICTSCHWK           0.000      0.004     -0.008      0.994      0.196
+
+  Specific indirect 3
+    READ
+    READEASE
+    ICTSCHWK          -0.004      0.003     -1.319      0.187      0.195
+
+  Direct
+    READ
+    ICTSCHWK          -0.084      0.018     -4.646      0.000      0.184
+
+
+Effects from USESCH to READ
+
+  Total               -0.174      0.020     -8.727      0.000      0.110
+  Total indirect      -0.041      0.009     -4.532      0.000      0.114
+
+  Specific indirect 1
+    READ
+    READJOY
+    USESCH            -0.017      0.004     -4.215      0.000      0.134
+
+  Specific indirect 2
+    READ
+    READCOMP
+    USESCH            -0.009      0.005     -1.910      0.056      0.116
+
+  Specific indirect 3
+    READ
+    READEASE
+    USESCH            -0.014      0.004     -3.895      0.000      0.113
+
+  Direct
+    READ
+    USESCH            -0.134      0.019     -7.208      0.000      0.178
+
+
+Group SWE
+
+Effects from ICTLEIS to READ
+
+  Total                0.031      0.019      1.615      0.106      0.177
+  Total indirect       0.010      0.006      1.671      0.095      0.082
+
+  Specific indirect 1
+    READ
+    READJOY
+    ICTLEIS           -0.009      0.003     -3.332      0.001      0.144
+
+  Specific indirect 2
+    READ
+    READCOMP
+    ICTLEIS            0.014      0.004      3.692      0.000      0.095
+
+  Specific indirect 3
+    READ
+    READEASE
+    ICTLEIS            0.005      0.004      1.415      0.157      0.230
+
+  Direct
+    READ
+    ICTLEIS            0.021      0.019      1.134      0.257      0.217
+
+
+Effects from ICTSCHWK to READ
+
+  Total               -0.124      0.020     -6.318      0.000      0.159
+  Total indirect       0.002      0.007      0.228      0.819      0.193
+
+  Specific indirect 1
+    READ
+    READJOY
+    ICTSCHWK           0.008      0.003      2.646      0.008      0.092
+
+  Specific indirect 2
+    READ
+    READCOMP
+    ICTSCHWK           0.002      0.004      0.619      0.536      0.288
+
+  Specific indirect 3
+    READ
+    READEASE
+    ICTSCHWK          -0.008      0.004     -2.083      0.037      0.220
+
+  Direct
+    READ
+    ICTSCHWK          -0.126      0.019     -6.729      0.000      0.206
+
+
+Effects from USESCH to READ
+
+  Total               -0.134      0.020     -6.591      0.000      0.194
+  Total indirect      -0.020      0.007     -2.725      0.006      0.154
+
+  Specific indirect 1
+    READ
+    READJOY
+    USESCH            -0.005      0.003     -1.870      0.061      0.131
+
+  Specific indirect 2
+    READ
+    READCOMP
+    USESCH            -0.007      0.004     -2.017      0.044      0.191
+
+  Specific indirect 3
+    READ
+    READEASE
+    USESCH            -0.008      0.004     -2.013      0.044      0.167
+
+  Direct
+    READ
+    USESCH            -0.113      0.018     -6.311      0.000      0.159
+
+
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR DEN
+
+
+           NU
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           NU
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           NU
+              ESCS
+              ________
+                  0
+
+
+           LAMBDA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ               0             0             0             0             0
+ ICTLEIS            0             0             0             0             0
+ ICTSCHWK           0             0             0             0             0
+ USESCH             0             0             0             0             0
+ READJOY            0             0             0             0             0
+ READCOMP           0             0             0             0             0
+ READEASE           0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           LAMBDA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READ               0             0             0             0             0
+ ICTLEIS            0             0             0             0             0
+ ICTSCHWK           0             0             0             0             0
+ USESCH             0             0             0             0             0
+ READJOY            0             0             0             0             0
+ READCOMP           0             0             0             0             0
+ READEASE           0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           LAMBDA
+              ESCS
+              ________
+ READ               0
+ ICTLEIS            0
+ ICTSCHWK           0
+ USESCH             0
+ READJOY            0
+ READCOMP           0
+ READEASE           0
+ FEMALE             0
+ IMMI1GEN           0
+ IMMI2GEN           0
+ ESCS               0
+
+
+           THETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ               0
+ ICTLEIS            0             0
+ ICTSCHWK           0             0             0
+ USESCH             0             0             0             0
+ READJOY            0             0             0             0             0
+ READCOMP           0             0             0             0             0
+ READEASE           0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           THETA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP           0
+ READEASE           0             0
+ FEMALE             0             0             0
+ IMMI1GEN           0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           THETA
+              ESCS
+              ________
+ ESCS               0
+
+
+           ALPHA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+                  1             2             3             4             5
+
+
+           ALPHA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                  6             7             8             9            10
+
+
+           ALPHA
+              ESCS
+              ________
+                 11
+
+
+           BETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ               0            12            13            14            15
+ ICTLEIS            0             0             0             0             0
+ ICTSCHWK           0             0             0             0             0
+ USESCH             0             0             0             0             0
+ READJOY            0            23            24            25             0
+ READCOMP           0            30            31            32             0
+ READEASE           0            37            38            39             0
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           BETA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READ              16            17            18             0             0
+ ICTLEIS            0             0             0             0             0
+ ICTSCHWK           0             0             0             0             0
+ USESCH             0             0             0             0             0
+ READJOY            0             0            26            27            28
+ READCOMP           0             0            33            34            35
+ READEASE           0             0            40            41            42
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           BETA
+              ESCS
+              ________
+ READ              19
+ ICTLEIS           20
+ ICTSCHWK          21
+ USESCH            22
+ READJOY           29
+ READCOMP          36
+ READEASE          43
+ FEMALE             0
+ IMMI1GEN           0
+ IMMI2GEN           0
+ ESCS               0
+
+
+           PSI
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ              44
+ ICTLEIS            0            45
+ ICTSCHWK           0            46            47
+ USESCH             0            48            49            50
+ READJOY            0             0             0             0            51
+ READCOMP           0             0             0             0            52
+ READEASE           0             0             0             0            54
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           PSI
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP          53
+ READEASE          55            56
+ FEMALE             0             0            57
+ IMMI1GEN           0             0            58            59
+ IMMI2GEN           0             0            60            61            62
+ ESCS               0             0            63            64            65
+
+
+           PSI
+              ESCS
+              ________
+ ESCS              66
+
+
+     PARAMETER SPECIFICATION FOR FIN
+
+
+           NU
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           NU
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           NU
+              ESCS
+              ________
+                  0
+
+
+           LAMBDA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ               0             0             0             0             0
+ ICTLEIS            0             0             0             0             0
+ ICTSCHWK           0             0             0             0             0
+ USESCH             0             0             0             0             0
+ READJOY            0             0             0             0             0
+ READCOMP           0             0             0             0             0
+ READEASE           0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           LAMBDA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READ               0             0             0             0             0
+ ICTLEIS            0             0             0             0             0
+ ICTSCHWK           0             0             0             0             0
+ USESCH             0             0             0             0             0
+ READJOY            0             0             0             0             0
+ READCOMP           0             0             0             0             0
+ READEASE           0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           LAMBDA
+              ESCS
+              ________
+ READ               0
+ ICTLEIS            0
+ ICTSCHWK           0
+ USESCH             0
+ READJOY            0
+ READCOMP           0
+ READEASE           0
+ FEMALE             0
+ IMMI1GEN           0
+ IMMI2GEN           0
+ ESCS               0
+
+
+           THETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ               0
+ ICTLEIS            0             0
+ ICTSCHWK           0             0             0
+ USESCH             0             0             0             0
+ READJOY            0             0             0             0             0
+ READCOMP           0             0             0             0             0
+ READEASE           0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           THETA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP           0
+ READEASE           0             0
+ FEMALE             0             0             0
+ IMMI1GEN           0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           THETA
+              ESCS
+              ________
+ ESCS               0
+
+
+           ALPHA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+                 67            68            69            70            71
+
+
+           ALPHA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                 72            73            74            75            76
+
+
+           ALPHA
+              ESCS
+              ________
+                 77
+
+
+           BETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ               0            78            79            80            81
+ ICTLEIS            0             0             0             0             0
+ ICTSCHWK           0             0             0             0             0
+ USESCH             0             0             0             0             0
+ READJOY            0            89            90            91             0
+ READCOMP           0            96            97            98             0
+ READEASE           0           103           104           105             0
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           BETA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READ              82            83            84             0             0
+ ICTLEIS            0             0             0             0             0
+ ICTSCHWK           0             0             0             0             0
+ USESCH             0             0             0             0             0
+ READJOY            0             0            92            93            94
+ READCOMP           0             0            99           100           101
+ READEASE           0             0           106           107           108
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           BETA
+              ESCS
+              ________
+ READ              85
+ ICTLEIS           86
+ ICTSCHWK          87
+ USESCH            88
+ READJOY           95
+ READCOMP         102
+ READEASE         109
+ FEMALE             0
+ IMMI1GEN           0
+ IMMI2GEN           0
+ ESCS               0
+
+
+           PSI
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ             110
+ ICTLEIS            0           111
+ ICTSCHWK           0           112           113
+ USESCH             0           114           115           116
+ READJOY            0             0             0             0           117
+ READCOMP           0             0             0             0           118
+ READEASE           0             0             0             0           120
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           PSI
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP         119
+ READEASE         121           122
+ FEMALE             0             0           123
+ IMMI1GEN           0             0           124           125
+ IMMI2GEN           0             0           126           127           128
+ ESCS               0             0           129           130           131
+
+
+           PSI
+              ESCS
+              ________
+ ESCS             132
+
+
+     PARAMETER SPECIFICATION FOR SWE
+
+
+           NU
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           NU
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           NU
+              ESCS
+              ________
+                  0
+
+
+           LAMBDA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ               0             0             0             0             0
+ ICTLEIS            0             0             0             0             0
+ ICTSCHWK           0             0             0             0             0
+ USESCH             0             0             0             0             0
+ READJOY            0             0             0             0             0
+ READCOMP           0             0             0             0             0
+ READEASE           0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           LAMBDA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READ               0             0             0             0             0
+ ICTLEIS            0             0             0             0             0
+ ICTSCHWK           0             0             0             0             0
+ USESCH             0             0             0             0             0
+ READJOY            0             0             0             0             0
+ READCOMP           0             0             0             0             0
+ READEASE           0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           LAMBDA
+              ESCS
+              ________
+ READ               0
+ ICTLEIS            0
+ ICTSCHWK           0
+ USESCH             0
+ READJOY            0
+ READCOMP           0
+ READEASE           0
+ FEMALE             0
+ IMMI1GEN           0
+ IMMI2GEN           0
+ ESCS               0
+
+
+           THETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ               0
+ ICTLEIS            0             0
+ ICTSCHWK           0             0             0
+ USESCH             0             0             0             0
+ READJOY            0             0             0             0             0
+ READCOMP           0             0             0             0             0
+ READEASE           0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           THETA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP           0
+ READEASE           0             0
+ FEMALE             0             0             0
+ IMMI1GEN           0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           THETA
+              ESCS
+              ________
+ ESCS               0
+
+
+           ALPHA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+                133           134           135           136           137
+
+
+           ALPHA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                138           139           140           141           142
+
+
+           ALPHA
+              ESCS
+              ________
+                143
+
+
+           BETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ               0           144           145           146           147
+ ICTLEIS            0             0             0             0             0
+ ICTSCHWK           0             0             0             0             0
+ USESCH             0             0             0             0             0
+ READJOY            0           155           156           157             0
+ READCOMP           0           162           163           164             0
+ READEASE           0           169           170           171             0
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           BETA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READ             148           149           150             0             0
+ ICTLEIS            0             0             0             0             0
+ ICTSCHWK           0             0             0             0             0
+ USESCH             0             0             0             0             0
+ READJOY            0             0           158           159           160
+ READCOMP           0             0           165           166           167
+ READEASE           0             0           172           173           174
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           BETA
+              ESCS
+              ________
+ READ             151
+ ICTLEIS          152
+ ICTSCHWK         153
+ USESCH           154
+ READJOY          161
+ READCOMP         168
+ READEASE         175
+ FEMALE             0
+ IMMI1GEN           0
+ IMMI2GEN           0
+ ESCS               0
+
+
+           PSI
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ             176
+ ICTLEIS            0           177
+ ICTSCHWK           0           178           179
+ USESCH             0           180           181           182
+ READJOY            0             0             0             0           183
+ READCOMP           0             0             0             0           184
+ READEASE           0             0             0             0           186
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           PSI
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP         185
+ READEASE         187           188
+ FEMALE             0             0           189
+ IMMI1GEN           0             0           190           191
+ IMMI2GEN           0             0           192           193           194
+ ESCS               0             0           195           196           197
+
+
+           PSI
+              ESCS
+              ________
+ ESCS             198
+
+
+     STARTING VALUES FOR DEN
+
+
+           NU
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              ESCS
+              ________
+                0.000
+
+
+           LAMBDA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ           1.000         0.000         0.000         0.000         0.000
+ ICTLEIS        0.000         1.000         0.000         0.000         0.000
+ ICTSCHWK       0.000         0.000         1.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         1.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         1.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READ           0.000         0.000         0.000         0.000         0.000
+ ICTLEIS        0.000         0.000         0.000         0.000         0.000
+ ICTSCHWK       0.000         0.000         0.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       1.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         1.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         1.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         1.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         1.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              ESCS
+              ________
+ READ           0.000
+ ICTLEIS        0.000
+ ICTSCHWK       0.000
+ USESCH         0.000
+ READJOY        0.000
+ READCOMP       0.000
+ READEASE       0.000
+ FEMALE         0.000
+ IMMI1GEN       0.000
+ IMMI2GEN       0.000
+ ESCS           1.000
+
+
+           THETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ           0.000
+ ICTLEIS        0.000         0.000
+ ICTSCHWK       0.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP       0.000
+ READEASE       0.000         0.000
+ FEMALE         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              ESCS
+              ________
+ ESCS           0.000
+
+
+           ALPHA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+              501.876         0.050         0.132         0.571        -0.383
+
+
+           ALPHA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                0.269         0.114         0.500         0.023         0.084
+
+
+           ALPHA
+              ESCS
+              ________
+                0.510
+
+
+           BETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ           0.000         0.000         0.000         0.000         0.000
+ ICTLEIS        0.000         0.000         0.000         0.000         0.000
+ ICTSCHWK       0.000         0.000         0.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READ           0.000         0.000         0.000         0.000         0.000
+ ICTLEIS        0.000         0.000         0.000         0.000         0.000
+ ICTSCHWK       0.000         0.000         0.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              ESCS
+              ________
+ READ           0.000
+ ICTLEIS        0.000
+ ICTSCHWK       0.000
+ USESCH         0.000
+ READJOY        0.000
+ READCOMP       0.000
+ READEASE       0.000
+ FEMALE         0.000
+ IMMI1GEN       0.000
+ IMMI2GEN       0.000
+ ESCS           0.000
+
+
+           PSI
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ        4264.184
+ ICTLEIS        0.000         0.356
+ ICTSCHWK       0.000         0.000         0.344
+ USESCH         0.000         0.000         0.000         0.237
+ READJOY        0.000         0.000         0.000         0.000         0.536
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP       0.452
+ READEASE       0.000         0.445
+ FEMALE         0.000         0.000         0.125
+ IMMI1GEN       0.000         0.000         0.000         0.011
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.038
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              ESCS
+              ________
+ ESCS           0.293
+
+
+     STARTING VALUES FOR FIN
+
+
+           NU
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              ESCS
+              ________
+                0.000
+
+
+           LAMBDA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ           1.000         0.000         0.000         0.000         0.000
+ ICTLEIS        0.000         1.000         0.000         0.000         0.000
+ ICTSCHWK       0.000         0.000         1.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         1.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         1.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READ           0.000         0.000         0.000         0.000         0.000
+ ICTLEIS        0.000         0.000         0.000         0.000         0.000
+ ICTSCHWK       0.000         0.000         0.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       1.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         1.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         1.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         1.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         1.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              ESCS
+              ________
+ READ           0.000
+ ICTLEIS        0.000
+ ICTSCHWK       0.000
+ USESCH         0.000
+ READJOY        0.000
+ READCOMP       0.000
+ READEASE       0.000
+ FEMALE         0.000
+ IMMI1GEN       0.000
+ IMMI2GEN       0.000
+ ESCS           1.000
+
+
+           THETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ           0.000
+ ICTLEIS        0.000         0.000
+ ICTSCHWK       0.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP       0.000
+ READEASE       0.000         0.000
+ FEMALE         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              ESCS
+              ________
+ ESCS           0.000
+
+
+           ALPHA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+              501.876         0.050         0.132         0.571        -0.383
+
+
+           ALPHA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                0.269         0.114         0.500         0.023         0.084
+
+
+           ALPHA
+              ESCS
+              ________
+                0.510
+
+
+           BETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ           0.000         0.000         0.000         0.000         0.000
+ ICTLEIS        0.000         0.000         0.000         0.000         0.000
+ ICTSCHWK       0.000         0.000         0.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READ           0.000         0.000         0.000         0.000         0.000
+ ICTLEIS        0.000         0.000         0.000         0.000         0.000
+ ICTSCHWK       0.000         0.000         0.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              ESCS
+              ________
+ READ           0.000
+ ICTLEIS        0.000
+ ICTSCHWK       0.000
+ USESCH         0.000
+ READJOY        0.000
+ READCOMP       0.000
+ READEASE       0.000
+ FEMALE         0.000
+ IMMI1GEN       0.000
+ IMMI2GEN       0.000
+ ESCS           0.000
+
+
+           PSI
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ        4264.184
+ ICTLEIS        0.000         0.356
+ ICTSCHWK       0.000         0.000         0.344
+ USESCH         0.000         0.000         0.000         0.237
+ READJOY        0.000         0.000         0.000         0.000         0.536
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP       0.452
+ READEASE       0.000         0.445
+ FEMALE         0.000         0.000         0.125
+ IMMI1GEN       0.000         0.000         0.000         0.011
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.038
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              ESCS
+              ________
+ ESCS           0.293
+
+
+     STARTING VALUES FOR SWE
+
+
+           NU
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              ESCS
+              ________
+                0.000
+
+
+           LAMBDA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ           1.000         0.000         0.000         0.000         0.000
+ ICTLEIS        0.000         1.000         0.000         0.000         0.000
+ ICTSCHWK       0.000         0.000         1.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         1.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         1.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READ           0.000         0.000         0.000         0.000         0.000
+ ICTLEIS        0.000         0.000         0.000         0.000         0.000
+ ICTSCHWK       0.000         0.000         0.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       1.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         1.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         1.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         1.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         1.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              ESCS
+              ________
+ READ           0.000
+ ICTLEIS        0.000
+ ICTSCHWK       0.000
+ USESCH         0.000
+ READJOY        0.000
+ READCOMP       0.000
+ READEASE       0.000
+ FEMALE         0.000
+ IMMI1GEN       0.000
+ IMMI2GEN       0.000
+ ESCS           1.000
+
+
+           THETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ           0.000
+ ICTLEIS        0.000         0.000
+ ICTSCHWK       0.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP       0.000
+ READEASE       0.000         0.000
+ FEMALE         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              ESCS
+              ________
+ ESCS           0.000
+
+
+           ALPHA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+              501.876         0.050         0.132         0.571        -0.383
+
+
+           ALPHA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                0.269         0.114         0.500         0.023         0.084
+
+
+           ALPHA
+              ESCS
+              ________
+                0.510
+
+
+           BETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ           0.000         0.000         0.000         0.000         0.000
+ ICTLEIS        0.000         0.000         0.000         0.000         0.000
+ ICTSCHWK       0.000         0.000         0.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READ           0.000         0.000         0.000         0.000         0.000
+ ICTLEIS        0.000         0.000         0.000         0.000         0.000
+ ICTSCHWK       0.000         0.000         0.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              ESCS
+              ________
+ READ           0.000
+ ICTLEIS        0.000
+ ICTSCHWK       0.000
+ USESCH         0.000
+ READJOY        0.000
+ READCOMP       0.000
+ READEASE       0.000
+ FEMALE         0.000
+ IMMI1GEN       0.000
+ IMMI2GEN       0.000
+ ESCS           0.000
+
+
+           PSI
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ        4264.184
+ ICTLEIS        0.000         0.356
+ ICTSCHWK       0.000         0.000         0.344
+ USESCH         0.000         0.000         0.000         0.237
+ READJOY        0.000         0.000         0.000         0.000         0.536
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP       0.452
+ READEASE       0.000         0.445
+ FEMALE         0.000         0.000         0.125
+ IMMI1GEN       0.000         0.000         0.000         0.011
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.038
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              ESCS
+              ________
+ ESCS           0.293
+
+
+DIAGRAM INFORMATION
+
+  Use View Diagram under the Diagram menu in the Mplus Editor to view the diagram.
+  If running Mplus from the Mplus Diagrammer, the diagram opens automatically.
+
+  Diagram output
+    m:\pc\dokumenter\msc\thesis\mplus\m3 (group)\student.dgm
+
+     Beginning Time:  02:26:57
+        Ending Time:  02:27:15
+       Elapsed Time:  00:00:18
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2019 Muthen & Muthen

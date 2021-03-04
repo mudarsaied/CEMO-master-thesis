@@ -1,0 +1,68 @@
+VERSION 1.1.0
+INPUT
+TITLE:
+
+    M1 Student-level only
+
+
+DATA:
+    file = "C:\Users\Mudar Saied\read2.dat";
+VARIABLE:
+    names =
+        CNTRYID CNTSCHID CNTSTUID W_STU READ
+        FEMALE IMMI1GEN IMMI2GEN ESCS
+        ICTHOME ICTSCH ICTRES
+        ICTINT ICTCOMP ICTAUT ICTSOC
+        ICTLEIS IC008Q01TA IC008Q02TA
+        IC008Q04TA IC008Q05TA IC008Q08TA
+        IC008Q03TA IC008Q09TA IC008Q10TA
+        ICTSCHWK USESCH
+        READJOY READCOMP READDIFF READEASE
+        W_SCH
+        RATCMP1 RATCMP2
+        SC156Q01 SC156Q02 SC156Q05 SC156Q06
+        SC156Q03 SC156Q04
+        ;
+    usevar =
+        READ
+        FEMALE IMMI1GEN IMMI2GEN ESCS
+        ICTLEIS ICTSCHWK USESCH
+        READJOY READCOMP READEASE
+    ;
+    missing = all (-99);
+    weight = W_STU;
+ANALYSIS:
+    processors = 8;
+    estimator = MLR;
+OUTPUT:
+    mod(all);
+MODEL:
+    READ;
+INPUT_END
+2
+0
+0
+0
+MLR
+1
+GENERAL
+0
+11
+0
+0
+read female immi1gen immi2gen escs ictleis ictschwk usesch readjoy readcomp readease
+1
+0 0 0 0 0 0 0 0 0 0 0
+0
+0
+5 1 read 10042.077   198.810
+5 1 female     0.250     0.000
+5 1 immi1gen     0.057     0.003
+5 1 immi2gen     0.071     0.003
+5 1 escs     0.686     0.017
+5 1 ictleis     0.252     0.001
+5 1 ictschwk     0.709     0.016
+5 1 usesch     0.713     0.035
+5 1 readjoy     0.786     0.026
+5 1 readcomp     0.646     0.022
+5 1 readease     1.014     0.020

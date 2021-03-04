@@ -1,0 +1,58 @@
+TITLE:
+    CFA invariance: ICT use at school (SPSS: IC011, 10 items)
+
+
+DATA:
+    file = "C:\Users\Mudar Saied\read1.dat";
+
+
+VARIABLE:
+      names =
+          CNTRYID CNTSCHID CNTSTUID W_STU READ
+         ! Demographic control var
+          FEMALE IMMI1GEN IMMI2GEN ESCS
+         ! ICT
+            ! ICT Use at school (10 items)
+          Q3 Q4 Q5 Q7 Q8
+          Q9 Q10 Q1 Q2 Q6
+            !ICT PISA scaled
+          ACAHOM USESCH LEIHOM
+            ! Reading Mediation
+          READJOY READCOMP  READEASE
+         ! School Weight
+          W_SCH
+           ! School ICT Policy
+          Q05HA
+        ;
+
+    usevar =
+        Q3 Q4 Q7 Q8 Q9 Q10
+        Q2 Q5 Q6
+        ;
+
+    group = CNTRYID (208 = DNK 246 = FIN 752 = SWE); 
+
+
+ANALYSIS:
+    processors = 8;
+
+
+MODEL:
+
+    ACASCH by Q3-Q10;
+    LEISCH by Q2-Q6;
+
+    ACASCH with LEISCH;
+
+MODEL DNK:
+
+MODEL FIN:
+
+MODEL SWE:
+
+
+OUTPUT:
+    stdyx
+    modindices
+    ;
+

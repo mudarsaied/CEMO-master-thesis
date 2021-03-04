@@ -1,0 +1,573 @@
+VERSION 1.1.0
+INPUT
+TITLE:
+
+    M1 Student-level only
+
+
+DATA:
+    file = "C:\Users\Mudar Saied\implist.dat";
+    type = imputation;
+VARIABLE:
+      names =
+        CNTRYID CNTSCHID CNTSTUID W_STU READ
+        FEMALE IMMI1GEN IMMI2GEN ESCS
+        ICTLEIS ICTSCHWK USESCH
+        READJOY READCOMP  READEASE
+        W_SCH
+        Q05HA
+        ;
+    usevar =
+        READ
+        FEMALE IMMI1GEN IMMI2GEN ESCS
+        ICTLEIS ICTSCHWK USESCH
+        READJOY READCOMP READEASE
+    ;
+    grouping = CNTRYID (208=DEN 246=FIN 752=SWE)
+    missing = all (-99);
+    weight = W_STU;
+    cluster = CNTSCHID;
+ANALYSIS:
+    type=complex;
+    processors = 8;
+    estimator = MLR;
+OUTPUT:
+    stdyx;
+MODEL:
+    ICTLEIS on ESCS;
+    ICTSCHWK on ESCS;
+    USESCH on ESCS;
+    READJOY on ICTLEIS ICTSCHWK USESCH
+        IMMI1GEN IMMI2GEN FEMALE ESCS;
+        ICTLEIS ICTSCHWK USESCH
+        IMMI1GEN IMMI2GEN FEMALE ESCS;
+         READCOMP on ICTLEIS ICTSCHWK USESCH
+         IMMI1GEN IMMI2GEN FEMALE ESCS;
+    READEASE on ICTLEIS ICTSCHWK USESCH
+        IMMI1GEN IMMI2GEN FEMALE ESCS;
+    READ on
+        ICTLEIS ICTSCHWK USESCH
+        READJOY READCOMP READEASE
+        FEMALE ESCS
+    ;
+    ICTLEIS with ICTSCHWK;
+    ICTSCHWK with USESCH;
+    ICTLEIS with USESCH;
+    READJOY with READCOMP;
+    READCOMP with READEASE;
+    READEASE with READJOY;
+INPUT_END
+2
+2
+0
+2
+MLR
+1
+GENERAL
+3
+DEN
+FIN
+SWE
+11
+0
+0
+read ictleis ictschwk usesch readjoy readcomp readease female immi1gen immi2gen escs
+4
+3 1 1 1 2 2 2 0 0 0 0
+0
+0
+1 1 escs ictleis           0.064           0.018
+1 1 escs ictschwk           0.065           0.017
+1 1 escs usesch           0.047           0.015
+1 1 ictleis readjoy          -0.086           0.022
+1 1 ictschwk readjoy           0.063           0.025
+1 1 usesch readjoy          -0.025           0.027
+1 1 immi1gen readjoy           0.382           0.084
+1 1 immi2gen readjoy           0.416           0.048
+1 1 female readjoy           0.447           0.033
+1 1 escs readjoy           0.258           0.022
+1 1 ictleis readcomp           0.081           0.026
+1 1 ictschwk readcomp          -0.052           0.024
+1 1 usesch readcomp           0.074           0.028
+1 1 immi1gen readcomp          -0.105           0.082
+1 1 immi2gen readcomp           0.172           0.040
+1 1 female readcomp           0.018           0.032
+1 1 escs readcomp           0.216           0.018
+1 1 ictleis readease           0.005           0.027
+1 1 ictschwk readease          -0.078           0.027
+1 1 usesch readease          -0.012           0.029
+1 1 immi1gen readease          -0.074           0.090
+1 1 immi2gen readease           0.038           0.043
+1 1 female readease          -0.089           0.031
+1 1 escs readease           0.185           0.019
+1 1 ictleis read           4.343           2.360
+1 1 ictschwk read         -14.245           2.490
+1 1 usesch read          -9.944           2.983
+1 1 readjoy read          12.460           1.377
+1 1 readcomp read          21.415           1.973
+1 1 readease read          16.805           1.691
+1 1 female read          24.236           2.580
+1 1 escs read          29.030           1.660
+2 1 ictleis ictschwk           0.340           0.029
+2 1 ictleis usesch           0.280           0.024
+2 1 ictschwk usesch           0.331           0.021
+2 1 readjoy readcomp           0.243           0.015
+2 1 readjoy readease           0.166           0.016
+2 1 readcomp readease           0.432           0.018
+2 1 immi1gen female          -0.001           0.001
+2 1 immi2gen female           0.000           0.002
+2 1 immi2gen immi1gen          -0.002           0.000
+2 1 escs female           0.001           0.005
+2 1 escs immi1gen          -0.014           0.002
+2 1 escs immi2gen          -0.057           0.005
+4 1 read        5874.098         175.422
+4 1 ictleis           0.717           0.042
+4 1 ictschwk           0.685           0.032
+4 1 usesch           0.481           0.023
+4 1 readjoy           0.966           0.022
+4 1 readcomp           0.875           0.020
+4 1 readease           0.869           0.020
+5 1 female           0.250           0.000
+5 1 immi1gen           0.023           0.002
+5 1 immi2gen           0.078           0.005
+5 1 escs           0.586           0.018
+1 2 escs ictleis           0.078           0.016
+1 2 escs ictschwk           0.127           0.019
+1 2 escs usesch           0.059           0.015
+1 2 ictleis readjoy          -0.042           0.023
+1 2 ictschwk readjoy           0.112           0.024
+1 2 usesch readjoy          -0.121           0.028
+1 2 immi1gen readjoy           0.370           0.082
+1 2 immi2gen readjoy           0.081           0.077
+1 2 female readjoy           0.681           0.028
+1 2 escs readjoy           0.300           0.019
+1 2 ictleis readcomp           0.105           0.021
+1 2 ictschwk readcomp           0.000           0.024
+1 2 usesch readcomp          -0.060           0.031
+1 2 immi1gen readcomp          -0.052           0.097
+1 2 immi2gen readcomp          -0.071           0.102
+1 2 female readcomp           0.135           0.029
+1 2 escs readcomp           0.234           0.020
+1 2 ictleis readease           0.052           0.026
+1 2 ictschwk readease          -0.033           0.025
+1 2 usesch readease          -0.135           0.031
+1 2 immi1gen readease          -0.148           0.088
+1 2 immi2gen readease          -0.233           0.097
+1 2 female readease          -0.152           0.029
+1 2 escs readease           0.174           0.019
+1 2 ictleis read           5.711           1.895
+1 2 ictschwk read          -9.293           2.029
+1 2 usesch read         -17.453           2.422
+1 2 readjoy read          18.600           1.227
+1 2 readcomp read          20.457           1.683
+1 2 readease read          13.642           1.480
+1 2 female read          36.205           2.657
+1 2 escs read          26.871           1.851
+2 2 ictleis ictschwk           0.300           0.020
+2 2 ictleis usesch           0.253           0.016
+2 2 ictschwk usesch           0.430           0.020
+2 2 readjoy readcomp           0.381           0.016
+2 2 readjoy readease           0.255           0.016
+2 2 readcomp readease           0.507           0.018
+2 2 immi1gen female           0.000           0.001
+2 2 immi2gen female           0.000           0.001
+2 2 immi2gen immi1gen          -0.001           0.000
+2 2 escs female           0.003           0.005
+2 2 escs immi1gen          -0.021           0.004
+2 2 escs immi2gen          -0.012           0.003
+4 2 read        6274.732         157.666
+4 2 ictleis           0.656           0.031
+4 2 ictschwk           0.804           0.027
+4 2 usesch           0.577           0.023
+4 2 readjoy           1.029           0.021
+4 2 readcomp           0.958           0.020
+4 2 readease           1.057           0.021
+5 2 female           0.250           0.000
+5 2 immi1gen           0.033           0.004
+5 2 immi2gen           0.027           0.003
+5 2 escs           0.631           0.014
+1 3 escs ictleis           0.060           0.019
+1 3 escs ictschwk           0.088           0.022
+1 3 escs usesch           0.068           0.020
+1 3 ictleis readjoy          -0.082           0.021
+1 3 ictschwk readjoy           0.072           0.026
+1 3 usesch readjoy          -0.051           0.026
+1 3 immi1gen readjoy           0.603           0.050
+1 3 immi2gen readjoy           0.303           0.047
+1 3 female readjoy           0.411           0.031
+1 3 escs readjoy           0.247           0.020
+1 3 ictleis readcomp           0.090           0.023
+1 3 ictschwk readcomp           0.015           0.024
+1 3 usesch readcomp          -0.050           0.025
+1 3 immi1gen readcomp           0.061           0.053
+1 3 immi2gen readcomp           0.198           0.057
+1 3 female readcomp           0.145           0.032
+1 3 escs readcomp           0.228           0.020
+1 3 ictleis readease           0.035           0.024
+1 3 ictschwk readease          -0.056           0.026
+1 3 usesch readease          -0.058           0.028
+1 3 immi1gen readease          -0.095           0.057
+1 3 immi2gen readease           0.021           0.053
+1 3 female readease          -0.023           0.034
+1 3 escs readease           0.204           0.018
+1 3 ictleis read           2.431           2.138
+1 3 ictschwk read         -14.456           2.171
+1 3 usesch read         -14.049           2.264
+1 3 readjoy read          12.292           1.433
+1 3 readcomp read          17.702           1.756
+1 3 readease read          17.210           1.734
+1 3 female read          24.859           3.085
+1 3 escs read          32.125           2.030
+2 3 ictleis ictschwk           0.432           0.034
+2 3 ictleis usesch           0.350           0.029
+2 3 ictschwk usesch           0.502           0.028
+2 3 readjoy readcomp           0.332           0.019
+2 3 readjoy readease           0.227           0.019
+2 3 readcomp readease           0.546           0.019
+2 3 immi1gen female          -0.005           0.002
+2 3 immi2gen female          -0.001           0.002
+2 3 immi2gen immi1gen          -0.010           0.002
+2 3 escs female           0.004           0.007
+2 3 escs immi1gen          -0.066           0.007
+2 3 escs immi2gen          -0.045           0.006
+4 3 read        8096.868         253.652
+4 3 ictleis           0.876           0.050
+4 3 ictschwk           0.867           0.037
+4 3 usesch           0.750           0.030
+4 3 readjoy           1.113           0.027
+4 3 readcomp           1.033           0.022
+4 3 readease           1.111           0.030
+5 3 female           0.250           0.000
+5 3 immi1gen           0.087           0.007
+5 3 immi2gen           0.098           0.008
+5 3 escs           0.794           0.025
+11 1 escs ictleis           0.058           0.016
+11 1 escs ictschwk           0.060           0.016
+11 1 escs usesch           0.052           0.017
+11 1 ictleis readjoy          -0.071           0.018
+11 1 ictschwk readjoy           0.050           0.020
+11 1 usesch readjoy          -0.017           0.018
+11 1 immi1gen readjoy           0.057           0.012
+11 1 immi2gen readjoy           0.113           0.013
+11 1 female readjoy           0.217           0.016
+11 1 escs readjoy           0.192           0.015
+11 1 ictleis readcomp           0.072           0.023
+11 1 ictschwk readcomp          -0.045           0.021
+11 1 usesch readcomp           0.054           0.021
+11 1 immi1gen readcomp          -0.017           0.013
+11 1 immi2gen readcomp           0.050           0.012
+11 1 female readcomp           0.010           0.017
+11 1 escs readcomp           0.173           0.014
+11 1 ictleis readease           0.004           0.024
+11 1 ictschwk readease          -0.069           0.024
+11 1 usesch readease          -0.009           0.022
+11 1 immi1gen readease          -0.012           0.015
+11 1 immi2gen readease           0.011           0.013
+11 1 female readease          -0.047           0.016
+11 1 escs readease           0.149           0.015
+11 1 ictleis read           0.040           0.022
+11 1 ictschwk read          -0.128           0.023
+11 1 usesch read          -0.075           0.022
+11 1 readjoy read           0.139           0.015
+11 1 readcomp read           0.222           0.020
+11 1 readease read           0.173           0.017
+11 1 female read           0.132           0.014
+11 1 escs read           0.241           0.014
+12 1 ictleis ictschwk           0.485           0.023
+12 1 ictleis usesch           0.478           0.024
+12 1 ictschwk usesch           0.578           0.019
+12 1 readjoy readcomp           0.265           0.015
+12 1 readjoy readease           0.182           0.017
+12 1 readcomp readease           0.496           0.019
+12 1 immi1gen female          -0.009           0.012
+12 1 immi2gen female          -0.003           0.011
+12 1 immi2gen immi1gen          -0.047           0.005
+12 1 escs female           0.002           0.013
+12 1 escs immi1gen          -0.124           0.018
+12 1 escs immi2gen          -0.267           0.018
+14 1 read           0.693           0.013
+14 1 ictleis           0.997           0.002
+14 1 ictschwk           0.996           0.002
+14 1 usesch           0.997           0.002
+14 1 readjoy           0.911           0.008
+14 1 readcomp           0.962           0.006
+14 1 readease           0.972           0.005
+15 1 female           1.000           0.000
+15 1 immi1gen           1.000           0.000
+15 1 immi2gen           1.000           0.000
+15 1 escs           1.000           0.000
+11 2 escs ictleis           0.076           0.016
+11 2 escs ictschwk           0.112           0.016
+11 2 escs usesch           0.061           0.015
+11 2 ictleis readjoy          -0.031           0.017
+11 2 ictschwk readjoy           0.092           0.019
+11 2 usesch readjoy          -0.083           0.019
+11 2 immi1gen readjoy           0.061           0.014
+11 2 immi2gen readjoy           0.012           0.011
+11 2 female readjoy           0.309           0.012
+11 2 escs readjoy           0.216           0.013
+11 2 ictleis readcomp           0.085           0.017
+11 2 ictschwk readcomp           0.000           0.021
+11 2 usesch readcomp          -0.046           0.023
+11 2 immi1gen readcomp          -0.010           0.018
+11 2 immi2gen readcomp          -0.012           0.017
+11 2 female readcomp           0.067           0.015
+11 2 escs readcomp           0.185           0.015
+11 2 ictleis readease           0.040           0.020
+11 2 ictschwk readease          -0.028           0.021
+11 2 usesch readease          -0.098           0.022
+11 2 immi1gen readease          -0.026           0.015
+11 2 immi2gen readease          -0.036           0.015
+11 2 female readease          -0.073           0.014
+11 2 escs readease           0.132           0.015
+11 2 ictleis read           0.047           0.015
+11 2 ictschwk read          -0.084           0.018
+11 2 usesch read          -0.134           0.019
+11 2 readjoy read           0.206           0.014
+11 2 readcomp read           0.207           0.017
+11 2 readease read           0.144           0.015
+11 2 female read           0.182           0.013
+11 2 escs read           0.215           0.014
+12 2 ictleis ictschwk           0.414           0.020
+12 2 ictleis usesch           0.411           0.018
+12 2 ictschwk usesch           0.631           0.015
+12 2 readjoy readcomp           0.383           0.013
+12 2 readjoy readease           0.244           0.015
+12 2 readcomp readease           0.504           0.015
+12 2 immi1gen female           0.000           0.013
+12 2 immi2gen female          -0.005           0.014
+12 2 immi2gen immi1gen          -0.032           0.003
+12 2 escs female           0.008           0.014
+12 2 escs immi1gen          -0.143           0.023
+12 2 escs immi2gen          -0.094           0.018
+14 2 read           0.635           0.011
+14 2 ictleis           0.994           0.002
+14 2 ictschwk           0.987           0.004
+14 2 usesch           0.996           0.002
+14 2 readjoy           0.849           0.009
+14 2 readcomp           0.952           0.006
+14 2 readease           0.964           0.006
+15 2 female           1.000           0.000
+15 2 immi1gen           1.000           0.000
+15 2 immi2gen           1.000           0.000
+15 2 escs           1.000           0.000
+11 3 escs ictleis           0.057           0.018
+11 3 escs ictschwk           0.084           0.020
+11 3 escs usesch           0.069           0.020
+11 3 ictleis readjoy          -0.070           0.018
+11 3 ictschwk readjoy           0.061           0.021
+11 3 usesch readjoy          -0.040           0.020
+11 3 immi1gen readjoy           0.161           0.014
+11 3 immi2gen readjoy           0.086           0.014
+11 3 female readjoy           0.186           0.013
+11 3 escs readjoy           0.200           0.015
+11 3 ictleis readcomp           0.081           0.021
+11 3 ictschwk readcomp           0.013           0.022
+11 3 usesch readcomp          -0.042           0.021
+11 3 immi1gen readcomp           0.017           0.015
+11 3 immi2gen readcomp           0.060           0.017
+11 3 female readcomp           0.070           0.015
+11 3 escs readcomp           0.195           0.016
+11 3 ictleis readease           0.030           0.021
+11 3 ictschwk readease          -0.049           0.023
+11 3 usesch readease          -0.047           0.023
+11 3 immi1gen readease          -0.026           0.016
+11 3 immi2gen readease           0.006           0.016
+11 3 female readease          -0.011           0.016
+11 3 escs readease           0.170           0.015
+11 3 ictleis read           0.021           0.019
+11 3 ictschwk read          -0.126           0.019
+11 3 usesch read          -0.113           0.018
+11 3 readjoy read           0.126           0.015
+11 3 readcomp read           0.172           0.017
+11 3 readease read           0.172           0.017
+11 3 female read           0.116           0.014
+11 3 escs read           0.266           0.017
+12 3 ictleis ictschwk           0.496           0.022
+12 3 ictleis usesch           0.432           0.024
+12 3 ictschwk usesch           0.623           0.018
+12 3 readjoy readcomp           0.310           0.016
+12 3 readjoy readease           0.204           0.017
+12 3 readcomp readease           0.510           0.016
+12 3 immi1gen female          -0.032           0.016
+12 3 immi2gen female          -0.005           0.015
+12 3 immi2gen immi1gen          -0.113           0.009
+12 3 escs female           0.008           0.015
+12 3 escs immi1gen          -0.251           0.018
+12 3 escs immi2gen          -0.161           0.019
+14 3 read           0.701           0.013
+14 3 ictleis           0.997           0.002
+14 3 ictschwk           0.993           0.003
+14 3 usesch           0.995           0.003
+14 3 readjoy           0.914           0.007
+14 3 readcomp           0.952           0.007
+14 3 readease           0.965           0.005
+15 3 female           1.000           0.000
+15 3 immi1gen           1.000           0.000
+15 3 immi2gen           1.000           0.000
+15 3 escs           1.000           0.000
+31 1 escs ictleis           0.064           0.018
+31 1 escs ictschwk           0.065           0.017
+31 1 escs usesch           0.047           0.015
+31 1 ictleis readjoy          -0.086           0.022
+31 1 ictschwk readjoy           0.063           0.025
+31 1 usesch readjoy          -0.025           0.027
+31 1 immi1gen readjoy           0.382           0.084
+31 1 immi2gen readjoy           0.416           0.048
+31 1 female readjoy           0.447           0.033
+31 1 escs readjoy           0.258           0.022
+31 1 ictleis readcomp           0.081           0.026
+31 1 ictschwk readcomp          -0.052           0.024
+31 1 usesch readcomp           0.074           0.028
+31 1 immi1gen readcomp          -0.105           0.082
+31 1 immi2gen readcomp           0.172           0.040
+31 1 female readcomp           0.018           0.032
+31 1 escs readcomp           0.216           0.018
+31 1 ictleis readease           0.005           0.027
+31 1 ictschwk readease          -0.078           0.027
+31 1 usesch readease          -0.012           0.029
+31 1 immi1gen readease          -0.074           0.090
+31 1 immi2gen readease           0.038           0.043
+31 1 female readease          -0.089           0.031
+31 1 escs readease           0.185           0.019
+31 1 ictleis read           4.343           2.360
+31 1 ictschwk read         -14.245           2.490
+31 1 usesch read          -9.944           2.983
+31 1 readjoy read          12.460           1.377
+31 1 readcomp read          21.415           1.973
+31 1 readease read          16.805           1.691
+31 1 female read          24.236           2.580
+31 1 escs read          29.030           1.660
+32 1 ictleis ictschwk           0.340           0.029
+32 1 ictleis usesch           0.280           0.024
+32 1 ictschwk usesch           0.331           0.021
+32 1 readjoy readcomp           0.243           0.015
+32 1 readjoy readease           0.166           0.016
+32 1 readcomp readease           0.432           0.018
+32 1 immi1gen female          -0.001           0.001
+32 1 immi2gen female           0.000           0.002
+32 1 immi2gen immi1gen          -0.002           0.000
+32 1 escs female           0.001           0.005
+32 1 escs immi1gen          -0.014           0.002
+32 1 escs immi2gen          -0.057           0.005
+34 1 read        5874.098         175.422
+34 1 ictleis           0.717           0.042
+34 1 ictschwk           0.685           0.032
+34 1 usesch           0.481           0.023
+34 1 readjoy           0.966           0.022
+34 1 readcomp           0.875           0.020
+34 1 readease           0.869           0.020
+35 1 female           0.250           0.000
+35 1 immi1gen           0.023           0.002
+35 1 immi2gen           0.078           0.005
+35 1 escs           0.586           0.018
+31 2 escs ictleis           0.078           0.016
+31 2 escs ictschwk           0.127           0.019
+31 2 escs usesch           0.059           0.015
+31 2 ictleis readjoy          -0.042           0.023
+31 2 ictschwk readjoy           0.112           0.024
+31 2 usesch readjoy          -0.121           0.028
+31 2 immi1gen readjoy           0.370           0.082
+31 2 immi2gen readjoy           0.081           0.077
+31 2 female readjoy           0.681           0.028
+31 2 escs readjoy           0.300           0.019
+31 2 ictleis readcomp           0.105           0.021
+31 2 ictschwk readcomp           0.000           0.024
+31 2 usesch readcomp          -0.060           0.031
+31 2 immi1gen readcomp          -0.052           0.097
+31 2 immi2gen readcomp          -0.071           0.102
+31 2 female readcomp           0.135           0.029
+31 2 escs readcomp           0.234           0.020
+31 2 ictleis readease           0.052           0.026
+31 2 ictschwk readease          -0.033           0.025
+31 2 usesch readease          -0.135           0.031
+31 2 immi1gen readease          -0.148           0.088
+31 2 immi2gen readease          -0.233           0.097
+31 2 female readease          -0.152           0.029
+31 2 escs readease           0.174           0.019
+31 2 ictleis read           5.711           1.895
+31 2 ictschwk read          -9.293           2.029
+31 2 usesch read         -17.453           2.422
+31 2 readjoy read          18.600           1.227
+31 2 readcomp read          20.457           1.683
+31 2 readease read          13.642           1.480
+31 2 female read          36.205           2.657
+31 2 escs read          26.871           1.851
+32 2 ictleis ictschwk           0.300           0.020
+32 2 ictleis usesch           0.253           0.016
+32 2 ictschwk usesch           0.430           0.020
+32 2 readjoy readcomp           0.381           0.016
+32 2 readjoy readease           0.255           0.016
+32 2 readcomp readease           0.507           0.018
+32 2 immi1gen female           0.000           0.001
+32 2 immi2gen female           0.000           0.001
+32 2 immi2gen immi1gen          -0.001           0.000
+32 2 escs female           0.003           0.005
+32 2 escs immi1gen          -0.021           0.004
+32 2 escs immi2gen          -0.012           0.003
+34 2 read        6274.732         157.666
+34 2 ictleis           0.656           0.031
+34 2 ictschwk           0.804           0.027
+34 2 usesch           0.577           0.023
+34 2 readjoy           1.029           0.021
+34 2 readcomp           0.958           0.020
+34 2 readease           1.057           0.021
+35 2 female           0.250           0.000
+35 2 immi1gen           0.033           0.004
+35 2 immi2gen           0.027           0.003
+35 2 escs           0.631           0.014
+31 3 escs ictleis           0.060           0.019
+31 3 escs ictschwk           0.088           0.022
+31 3 escs usesch           0.068           0.020
+31 3 ictleis readjoy          -0.082           0.021
+31 3 ictschwk readjoy           0.072           0.026
+31 3 usesch readjoy          -0.051           0.026
+31 3 immi1gen readjoy           0.603           0.050
+31 3 immi2gen readjoy           0.303           0.047
+31 3 female readjoy           0.411           0.031
+31 3 escs readjoy           0.247           0.020
+31 3 ictleis readcomp           0.090           0.023
+31 3 ictschwk readcomp           0.015           0.024
+31 3 usesch readcomp          -0.050           0.025
+31 3 immi1gen readcomp           0.061           0.053
+31 3 immi2gen readcomp           0.198           0.057
+31 3 female readcomp           0.145           0.032
+31 3 escs readcomp           0.228           0.020
+31 3 ictleis readease           0.035           0.024
+31 3 ictschwk readease          -0.056           0.026
+31 3 usesch readease          -0.058           0.028
+31 3 immi1gen readease          -0.095           0.057
+31 3 immi2gen readease           0.021           0.053
+31 3 female readease          -0.023           0.034
+31 3 escs readease           0.204           0.018
+31 3 ictleis read           2.431           2.138
+31 3 ictschwk read         -14.456           2.171
+31 3 usesch read         -14.049           2.264
+31 3 readjoy read          12.292           1.433
+31 3 readcomp read          17.702           1.756
+31 3 readease read          17.210           1.734
+31 3 female read          24.859           3.085
+31 3 escs read          32.125           2.030
+32 3 ictleis ictschwk           0.432           0.034
+32 3 ictleis usesch           0.350           0.029
+32 3 ictschwk usesch           0.502           0.028
+32 3 readjoy readcomp           0.332           0.019
+32 3 readjoy readease           0.227           0.019
+32 3 readcomp readease           0.546           0.019
+32 3 immi1gen female          -0.005           0.002
+32 3 immi2gen female          -0.001           0.002
+32 3 immi2gen immi1gen          -0.010           0.002
+32 3 escs female           0.004           0.007
+32 3 escs immi1gen          -0.066           0.007
+32 3 escs immi2gen          -0.045           0.006
+34 3 read        8096.868         253.652
+34 3 ictleis           0.876           0.050
+34 3 ictschwk           0.867           0.037
+34 3 usesch           0.750           0.030
+34 3 readjoy           1.113           0.027
+34 3 readcomp           1.033           0.022
+34 3 readease           1.111           0.030
+35 3 female           0.250           0.000
+35 3 immi1gen           0.087           0.007
+35 3 immi2gen           0.098           0.008
+35 3 escs           0.794           0.025

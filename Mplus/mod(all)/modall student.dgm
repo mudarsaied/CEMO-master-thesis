@@ -1,0 +1,139 @@
+VERSION 1.1.0
+INPUT
+TITLE:
+
+    M1 Student-level only
+
+
+DATA:
+    file = "C:\Users\Mudar Saied\read7.dat";
+VARIABLE:
+      names =
+          CNTRYID CNTSCHID CNTSTUID W_STU READ
+          FEMALE IMMI1GEN IMMI2GEN ESCS
+          Q3 Q4 Q5 Q7 Q8
+          Q9 Q10 Q1 Q2 Q6
+          ACAHOM USESCH LEIHOM
+          READJOY READCOMP  READEASE
+          W_SCH
+          Q05HA
+        ;
+   usevar =
+        READ
+        FEMALE IMMI1GEN IMMI2GEN ESCS
+        Q3 Q4 Q5 Q7 Q8
+        Q9 Q10 Q1 Q2 Q6
+        LEIHOM ACAHOM
+        READJOY READCOMP READEASE
+    ;
+    weight = W_STU;
+ANALYSIS:
+    processors = 8;
+    estimator = MLR;
+OUTPUT:
+    mod(all);
+MODEL:
+    ACASCH by Q3 Q4 Q5 Q7 Q8 Q9 Q10;
+    LEISCH by Q1 Q2 Q6;
+    READJOY on
+        ACAHOM LEIHOM ACASCH LEISCH
+        ;
+    READCOMP on
+        ACAHOM LEIHOM ACASCH LEISCH
+        ;
+    READEASE on
+        ACAHOM LEIHOM ACASCH LEISCH
+        ;
+    READ on
+        ACAHOM LEIHOM ACASCH LEISCH
+        READJOY READCOMP READEASE
+        ;
+    ESCS with ACAHOM LEIHOM ACASCH LEISCH;
+    READCOMP with READJOY;
+    READJOY with READ;
+    READCOMP with READ;
+INPUT_END
+1
+0
+0
+0
+MLR
+1
+GENERAL
+0
+20
+2
+0
+read female immi1gen immi2gen escs q3 q4 q5 q7 q8 q9 q10 q1 q2 q6 readjoy readcomp readease leihom acahom acasch leisch
+3
+2 0 0 0 0 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 1 1 1 0 0 0 0
+0
+2
+acasch
+q3 q4 q5 q7 q8 q9 q10
+leisch
+q1 q2 q6
+1 1 acasch q3    1.000
+1 1 acasch q4    1.712
+1 1 acasch q5    1.597
+1 1 acasch q7    1.637
+1 1 acasch q8    1.758
+1 1 acasch q9    1.526
+1 1 acasch q10    1.663
+1 1 leisch q1    1.000
+1 1 leisch q2    1.883
+1 1 leisch q6    2.222
+1 1 acahom readjoy    0.139
+1 1 leihom readjoy    0.660
+1 1 acahom readcomp    0.010
+1 1 leihom readcomp    1.789
+1 1 acahom readease   -0.043
+1 1 leihom readease    1.680
+1 1 acahom read   -9.101
+1 1 leihom read   -2.733
+1 1 readjoy read   15.926
+1 1 readcomp read   17.021
+1 1 readease read   18.903
+1 1 acasch readjoy    4.616
+1 1 leisch readjoy   -8.857
+1 1 acasch readcomp   10.084
+1 1 leisch readcomp  -18.874
+1 1 acasch readease    9.465
+1 1 leisch readease  -17.935
+1 1 acasch read   -8.424
+1 1 leisch read   -7.679
+2 1 escs acahom    0.068
+2 1 escs leihom    0.049
+2 1 readcomp readjoy    0.105
+2 1 readcomp read    4.504
+2 1 readjoy read    6.270
+2 1 acahom leihom    0.391
+2 1 escs acasch    0.036
+2 1 escs leisch    0.016
+2 1 leisch acasch    0.199
+2 1 leihom acasch    0.215
+2 1 leihom leisch    0.186
+2 1 acahom acasch    0.356
+2 1 acahom leisch    0.225
+4 1 read 5175.653
+4 1 q3    1.020
+4 1 q4    0.933
+4 1 q5    0.843
+4 1 q7    0.679
+4 1 q8    1.119
+4 1 q9    0.970
+4 1 q10    0.811
+4 1 q1    2.003
+4 1 q2    1.192
+4 1 q6    0.785
+4 1 readjoy    1.057
+4 1 readcomp    0.459
+4 1 readease    0.551
+5 1 female    0.250
+5 1 immi1gen    0.055
+5 1 immi2gen    0.075
+5 1 escs    0.693
+5 1 leihom    0.787
+5 1 acahom    0.837
+5 1 acasch    0.336
+5 1 leisch    0.124

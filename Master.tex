@@ -1,0 +1,293 @@
+\documentclass[a4paper,11pt,UKenglish,twoside,openright]{report}\usepackage[]{graphicx}\usepackage[]{color}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\usepackage{Sweavel}
+
+
+
+\usepackage{uiothesis}
+
+\title{Identifying School Climate Variables Associated with Students' Financial Literacy Outcomes}
+\subtitle{A Cross-Country Comparison\\Using {PISA} 2018 Data}
+\author{Tony C. A. Tan}
+
+\begin{document}
+
+% Input faculty etc info
+\duoforside[
+    fac={Faculty of Educational Sciences},
+    dept={Centre for Educational Measurement},
+    program={Assessment, Measurement and Evaluation},
+    date={Spring 2021},
+%  printer={X-press printing house},
+    short
+]
+
+% Change page numbering to roman
+\pagenumbering{roman}
+
+% Create an acknowledgement page
+\thispagestyle{empty}
+
+% This is where I generated the Chinese characters
+%//ref http://www.akuziti.com/mb/
+% I used font 24.Huawen Xingkai and 100 pixel
+\vspace*{\fill}
+\begin{figure*}[h]
+    \includegraphics[width=\textwidth]{./Figures/To-parents.png}
+\end{figure*}
+\begin{flushright}
+To my parents
+\end{flushright}
+\vspace*{\fill}
+%\newpage
+\clearpage
+\thispagestyle{empty}
+
+\vspace*{3cm}
+
+\begin{quote}
+    \calligra\huge      % Changes the font to caligraphy and huge size.
+\hyphenchar\font=-1     % Stops LaTeX from splitting/hyphenating words
+Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.
+\end{quote}
+
+\begin{figure*}[h]
+    \flushright
+    \includegraphics[width=0.50\textwidth]{./Figures/Feynman-Signature.jpg}
+\end{figure*}
+\vspace*{-1cm}
+
+%\begin{flushright}
+%--- Richard P. Feynman
+%\end{flushright}
+
+\setcounter{page}{0}
+% End of acknowledgement page
+
+% Put Table of Content here
+\tableofcontents
+
+% Put a List of Tables here
+\listoftables
+
+% Put a List of Figures here
+\listoffigures
+
+
+
+% APA7 Rule 2.21 Line Spacing
+%\onehalfspacing
+\doublespacing
+
+% Acknowledgement
+
+\chapter*{Acknowledgement}
+\label{Ack}
+
+
+
+% Popular Abstract
+
+\chapter*{Popular Abstract}
+\label{Ab.0}
+
+
+
+% Abstract
+
+\chapter*{Abstract}
+\label{Ab.1}
+
+
+% End of front matter. None of the pages so far counts towards the page limit.
+\clearpage
+\thispagestyle{empty}
+
+% Restart page number. Page count starts here.
+\pagenumbering{arabic}
+\setcounter{page}{0} % Do not swap these two command. Need new chapter to be "Open right".
+
+% Chapter 1 Introduction
+%<<child="Chapters/Ch1.Rnw", tidy=FALSE, message=FALSE, warning=FALSE>>=
+%@
+
+% Chapter 2 Theoretical framework
+%<<child="Chapters/Ch2.Rnw", tidy=FALSE, message=FALSE, warning=FALSE>>=
+%@
+
+% Chapter 3 Methods
+
+\chapter{Methods}
+\label{chp:3}
+
+\section{Model Equations}
+
+\newpage
+
+Student-Level ($L_1$):
+
+\begin{equation}
+    \begin{aligned}
+        \texttt{LEISURE}_{ij} &= \alpha_{0j}^{M_1} + \gamma_{11}\texttt{ESCS}_{ij} + \gamma_{21}\texttt{FEMALE}_{ij} + r^{M_1}_{ij}\\
+        \texttt{SCHWK}_{ij} &= \alpha_{0j}^{M_2} + \gamma_{12}\texttt{ESCS}_{ij} + \gamma_{22}\texttt{FEMALE}_{ij} + r^{M_3}_{ij}\\
+        \texttt{USESCH}_{ij} &= \alpha_{0j}^{M_3} + \gamma_{13}\texttt{ESCS}_{ij} + \gamma_{23}\texttt{FEMALE}_{ij} + r^{M_4}_{ij}\\
+        \texttt{READJOY}_{ij}  &= \alpha_{0j}^{M_4} + \beta_{14}\texttt{LEISURE}_{ij} + \beta_{24}\texttt{SCHWK}_{ij} + \beta_{34}\texttt{USESCH}_{ij} + \gamma_{34}\texttt{IMMI1} + \gamma_{44}\texttt{IMMI2}_{ij} + r^{M_4}_{ij}\\
+        \texttt{READCOMP}_{ij} &= \alpha_{0j}^{M_5} \beta_{15}\texttt{LEISURE}_{ij} + \beta_{25}\texttt{SCHWK}_{ij} +  \beta_{35}\texttt{USESCH}_{ij} + \gamma_{35}\texttt{IMMI1}_{ij} + \gamma_{45}\texttt{IMMI2}_{ij} + r^{M_5}_{ij}\\
+        \texttt{READEASE}_{ij} &= \alpha_{0j}^{M_6} + \beta_{16}\texttt{LEISURE}_{ij} + \beta_{26}\texttt{SCHWK}_{ij} +  \beta_{36}\texttt{USESCH}_{ij} + \gamma_{36}\texttt{IMMI1}_{ij} + \gamma_{46}\texttt{IMMI2}_{ij} + r^{M_6}_{ij}\\
+        \texttt{READ}_{ij} &= \alpha_{0j}^{M_7} + \beta_{17}\texttt{LEISURE}_{ij} + \beta_{27}\texttt{SCHWK}_{ij} + \beta_{37}\texttt{USESCH}_{ij}\\
+        &+ \beta_{47}\texttt{READJOY}_{ij} + \beta_{57}\texttt{READCOMP}_{ij} + \beta_{67}\texttt{READEASE}_{ij} + r^{M_7}_{ij}
+    \end{aligned}
+\end{equation}
+
+School-Level ($L_2$):
+
+\begin{equation}
+    \alpha_{0j}^{M_7} = \alpha_{00} + a_1\texttt{LEISURE}_j + a_2\texttt{SCHWK}_j + a_3\texttt{USESCH}_j + a_4\texttt{POLICY}_j + \epsilon_j
+\end{equation}
+
+\newpage
+
+
+\begin{equation}
+    \begin{aligned}
+        \text{Student-Level ($L_1$):}\\
+        \begin{bmatrix}
+            \texttt{LEISURE}_{ij}\\
+            \texttt{SCHWK}_{ij}\\
+            \texttt{USESCH}_{ij}\\
+            \texttt{READJOY}_{ij}\\
+            \texttt{READCOMP}_{ij}\\
+            \texttt{READEASE}_{ij}\\
+            \texttt{READ}_{ij}
+        \end{bmatrix} &=
+        \begin{pmatrix}
+            \alpha_{0j}^{M_1}\\
+            \alpha_{0j}^{M_2}\\
+            \alpha_{0j}^{M_3}\\
+            \alpha_{0j}^{M_4}\\
+            \alpha_{0j}^{M_5}\\
+            \alpha_{0j}^{M_6}\\
+            \alpha_{0j}^{M_7}
+        \end{pmatrix} +
+        \begin{pmatrix}
+            0   &0  &0  &\beta_{14}   &\beta_{15}  &\beta_{16}   &\beta_{17}\\
+            0   &0  &0  &\beta_{24}   &\beta_{25}  &\beta_{26}   &\beta_{27}\\
+            0   &0  &0  &\beta_{34}   &\beta_{35}  &\beta_{36}   &\beta_{37}\\
+            0   &0  &0  &0            &0           &0            &\beta_{47}\\
+            0   &0  &0  &0            &0           &0            &\beta_{57}\\
+            0   &0  &0  &0            &0           &0            &\beta_{67}\\
+            0   &0  &0  &0            &0           &0            &0\\
+        \end{pmatrix}\Ts
+        \begin{bmatrix}
+            \texttt{LEISURE}_{ij}\\
+            \texttt{SCHWK}_{ij}\\
+            \texttt{USESCH}_{ij}\\
+            \texttt{READJOY}_{ij}\\
+            \texttt{READCOMP}_{ij}\\
+            \texttt{READEASE}_{ij}\\
+            \texttt{READ}_{ij}
+        \end{bmatrix}\\
+        &+
+        \begin{pmatrix}
+            \gamma_{11}  &\gamma_{12}   &\gamma_{13}    &0  &0   &0   &0\\
+            \gamma_{21}  &\gamma_{22}   &\gamma_{23}    &0  &0   &0   &0\\
+            0   &0   &0  &\gamma_{34}   &\gamma_{35}    &\gamma_{36}  &0\\
+            0   &0   &0  &\gamma_{44}   &\gamma_{45}    &\gamma_{46}  &0
+        \end{pmatrix}\Ts
+        \begin{bmatrix}
+            \texttt{ESCS}_{ij}\\
+            \texttt{FEMALE}_{ij}\\
+            \texttt{IMMI1GEN}_{ij}\\
+            \texttt{IMMI2GEN}_{ij}
+        \end{bmatrix} +
+        \begin{pmatrix}
+            r^{M_1}_{ij}\\
+            r^{M_2}_{ij}\\
+            r^{M_3}_{ij}\\
+            r^{M_4}_{ij}\\
+            r^{M_5}_{ij}\\
+            r^{M_6}_{ij}\\
+            r^{M_7}_{ij}
+        \end{pmatrix}\\
+        \text{School-Level ($L_2$):}\\
+        \alpha^{M_7}_{0j} &= \alpha_{00} +
+        \begin{pmatrix}
+            a_1\\
+            a_2\\
+            a_3\\
+            a_4
+        \end{pmatrix}\Ts
+        \begin{bmatrix}
+            \texttt{LEISURE}_j\\
+            \texttt{SCHWK}_j\\
+            \texttt{USESCH}_j\\
+            \texttt{POLICY}_j
+        \end{bmatrix}
+        + \epsilon_j
+    \end{aligned}
+\end{equation}
+
+% Chapter 4 Results
+%<<child="Chapters/Ch4.Rnw", tidy=FALSE, message=FALSE, warning=FALSE>>=
+%@
+
+% Chapter 5 Discussion
+%<<child="Chapters/Ch5.Rnw", tidy=FALSE, message=FALSE, warning=FALSE>>=
+%@
+
+% Put Reference here
+\newpage
+\printbibliography[title=References]
+
+% New CEMO policy: leave tables and figures close to the paragraphs that discussed them.
+
+% Tables
+%\newpage
+%<<child="Tables/tab.Rnw", tidy=FALSE, message=FALSE, warning=FALSE>>=
+%@
+
+% Figures
+%\newpage
+%<<child="Figures/fig.Rnw", tidy=FALSE, message=FALSE, warning=FALSE>>=
+%@
+
+%\newpage
+
+% Insert appendices
+\begin{appendices}
+    \begin{singlespace}
+%    \include{Appendices/A}
+%    \include{Appendices/B}
+%    \include{Appendices/C}
+%    \include{Appendices/D}
+%    \include{Appendices/E}
+%    \include{Appendices/F}
+%     \include{Appendices/Z}
+    \end{singlespace}
+\end{appendices}
+
+% Put Index here
+%\begin{multicols}{2}
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Name Index}
+\printindex[a]
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Subject Index}
+\printindex
+%\end{multicols}
+
+\end{document}

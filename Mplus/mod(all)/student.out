@@ -1,0 +1,111 @@
+Mplus VERSION 8.3
+MUTHEN & MUTHEN
+02/17/2021   9:53 PM
+
+INPUT INSTRUCTIONS
+
+   TITLE:
+      M1 Student-level only
+
+
+  DATA:
+      file = "C:\Users\Mudar Saied\read1.dat";
+
+
+
+  VARIABLE:
+      names =
+          CNTRYID CNTSCHID CNTSTUID W_STU READ
+          ! Demographic control var
+          FEMALE IMMI1GEN IMMI2GEN ESCS
+          ! ICT Availability
+          ICTHOME ICTSCH ICTRES
+          ! ICT Interest
+          ICTINT ICTCOMP ICTAUT ICTSOC
+          ! ICT Use at Home
+          ICTLEIS IC008Q01TA IC008Q02TA
+          IC008Q04TA IC008Q05TA IC008Q08TA
+          IC008Q03TA IC008Q09TA IC008Q10TA
+          ICTSCHWK USESCH
+          ! Reading Mediation
+          JOYREAD READCOMP READDIFF
+          ! School Weight
+          W_SCH
+          ! School ICT Resources
+          RATCMP1 RATCMP2
+          ! School ICT Policy
+          SC156Q01 SC156Q02 SC156Q05 SC156Q06
+          ;
+
+      usevar =
+          ! Outcome
+          READ
+          ! Student-level
+          FEMALE IMMI1GEN IMMI2GEN ESCS     ! Demographic controls
+              ! ICT-related var
+          ICTLEIS ICTSCHWK !USESCH           ! ICT use at home/ at school
+              ! Mediators
+          JOYREAD READCOMP READDIFF         ! Reading affect
+      ;
+
+      missing = all (-99);
+
+      weight = W_STU;
+
+
+  ANALYSIS:
+      processors = 8;
+
+      estimator = MLR;
+
+
+  MODEL:
+
+      ! SES onto X vars
+      ICTLEIS on ESCS;
+      ICTSCHWK on ESCS;
+      !USESCH on ESCS;
+
+      ! Mediators
+          ! Enjoyment of reading
+      JOYREAD on ICTLEIS ICTSCHWK !USESCH
+          IMMI1GEN (c) IMMI2GEN (c) FEMALE (c);
+          ! Perception of reading competence
+      READCOMP on ICTLEIS ICTSCHWK !USESCH
+          IMMI1GEN IMMI2GEN FEMALE;
+          ! Perception of reading difficulty
+      READDIFF on ICTLEIS ICTSCHWK !USESCH
+      IMMI1GEN IMMI2GEN FEMALE;
+
+      ! Total effect
+      READ on                             ! Y
+          ICTLEIS ICTSCHWK !USESCH         ! X
+          JOYREAD READCOMP READDIFF       ! M
+      ;
+
+
+  MODEL INDIRECT:
+
+      READ ind ICTLEIS;
+      READ ind ICTSCHWK;
+      !READ ind USESCH;
+
+  OUTPUT:
+      mod(all);
+
+*** ERROR in MODEL command
+  There should be no extra characters after the right parenthesis of an equality or parameter label.
+  Problem with the following statement:
+  IMMI1GEN (C) IMMI2GEN (C) FEMALE (C)
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2019 Muthen & Muthen

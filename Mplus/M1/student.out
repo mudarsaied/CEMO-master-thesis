@@ -1,0 +1,1789 @@
+Mplus VERSION 8.3
+MUTHEN & MUTHEN
+03/04/2021  12:46 AM
+
+INPUT INSTRUCTIONS
+
+  TITLE:
+      M1 Student-level only
+
+
+  DATA:
+      file = "C:\Users\Mudar Saied\implist.dat";
+
+      type = imputation;
+
+
+  VARIABLE:
+        names =
+
+            CNTRYID CNTSCHID CNTSTUID W_STU READ
+           ! Demographic control var
+            FEMALE IMMI1GEN IMMI2GEN ESCS
+           ! ICT
+              ! ICT Use at school (10 items)
+            Q3 Q4 Q5 Q7 Q8
+            Q9 Q10 Q1 Q2 Q6
+              !ICT PISA scaled
+            ACAHOM USESCH LEIHOM
+              ! Reading Mediation
+            READJOY READCOMP  READEASE
+           ! School Weight
+            W_SCH
+             ! School ICT Policy
+            Q05HA
+          ;
+
+      !useobs = (CNTRYID EQ 246);             ! 208DNK=7657, 246FIN=5649, 752SWE=5504
+
+      usevar =
+          READ                                ! Outcome
+          FEMALE IMMI1GEN IMMI2GEN ESCS       ! Demographic controls
+          Q3 Q4 Q5 Q7 Q8                      ! ICT Use AT School (10 Items)
+          Q9 Q10 Q1 Q2 Q6                     ! SPSS: IC011
+          LEIHOM ACAHOM                       ! ICT use at home/ at school
+          READJOY READCOMP READEASE           ! Reading affect/Mediators
+      ;
+
+      weight = W_STU;
+
+
+  ANALYSIS:
+
+      processors = 8;
+
+      estimator = MLR;
+
+
+  MODEL:
+
+      ! Measurement Model
+      ACASCH by Q3 Q4 Q7 Q8 Q9 Q10;
+      LEISCH by Q1 Q2 Q6 Q5;
+
+      ! SES onto X vars
+  !    LEIHOM on ESCS FEMALE;
+  !    ACAHOM on ESCS FEMALE;
+  !    USESCH on ESCS FEMALE;
+
+      ! Mediators
+          ! Enjoyment of reading
+      READJOY on
+          ACAHOM LEIHOM ACASCH LEISCH
+          !ESCS FEMALE IMMI1GEN IMMI2GEN
+          ;
+
+          ! Perception of reading competence
+      READCOMP on
+          ACAHOM LEIHOM ACASCH LEISCH
+          !ESCS FEMALE IMMI1GEN IMMI2GEN
+          ;
+
+          ! Perception of reading difficulty
+      READEASE on
+          ACAHOM LEIHOM ACASCH LEISCH
+          !ESCS FEMALE IMMI1GEN IMMI2GEN
+          ;
+
+      ! Total effect
+      READ on
+          ACAHOM LEIHOM ACASCH LEISCH
+          READJOY READCOMP READEASE
+          !ESCS FEMALE IMMI1GEN IMMI2GEN
+          ;
+
+      ! Correlations
+
+          ! Amongst X
+      !ACAHOM with LEIHOM;
+      !LEIHOM with ACASCH;
+      !ACASCH with LEISCH;
+      !ACAHOM with ACASCH;
+      !LEIHOM with LEISCH;
+      ACAHOM with LEISCH;
+
+          ! With ESCS
+
+      ESCS with ACAHOM LEIHOM ACASCH LEISCH;
+      !FEMALE with ACAHOM LEIHOM ACASCH LEISCH;
+      !IMMI1GEN IMMI2GEN with ACAHOM LEIHOM ACASCH LEISCH;
+
+      !ESCS with READJOY READCOMP READEASE;
+      FEMALE with READ;
+
+      !FEMALE with READJOY READCOMP READEASE;
+
+          ! Between M
+      READCOMP with READJOY;
+
+         ! Between M and Y
+      !READJOY with READ;
+      !READCOMP with READ;
+
+
+  MODEL INDIRECT:
+
+      READ ind ACAHOM;
+      READ ind LEIHOM;
+      READ ind ACASCH;
+      READ ind LEISCH;
+
+
+  OUTPUT:
+      stdyx;
+      tech9;
+
+
+
+
+*** WARNING in MODEL command
+  Variable is uncorrelated with all other variables:  IMMI1GEN
+*** WARNING in MODEL command
+  Variable is uncorrelated with all other variables:  IMMI2GEN
+*** WARNING in MODEL command
+  At least one variable is uncorrelated with all other variables in the model.
+  Check that this is what is intended.
+   3 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+
+M1 Student-level only
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Average number of observations                               18810
+
+Number of replications
+    Requested                                                   10
+    Completed                                                    7
+
+Number of dependent variables                                   18
+Number of independent variables                                  2
+Number of continuous latent variables                            2
+
+Observed dependent variables
+
+  Continuous
+   READ        FEMALE      IMMI1GEN    IMMI2GEN    ESCS        Q3
+   Q4          Q5          Q7          Q8          Q9          Q10
+   Q1          Q2          Q6          READJOY     READCOMP    READEASE
+
+Observed independent variables
+   LEIHOM      ACAHOM
+
+Continuous latent variables
+   ACASCH      LEISCH
+
+Variables with special functions
+
+  Weight variable       W_STU
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+
+Input data file(s)
+  Multiple data files from
+    C:\Users\Mudar Saied\implist.dat
+
+Input data format  FREE
+
+
+SAMPLE STATISTICS
+
+NOTE:  These are average results over 10 data sets.
+
+
+     SAMPLE STATISTICS
+
+
+           Means
+              READ          FEMALE        IMMI1GEN      IMMI2GEN      ESCS
+              ________      ________      ________      ________      ________
+              508.288         0.497         0.059         0.081         0.382
+
+
+           Means
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+                3.608         2.464         2.122         2.528         2.529
+
+
+           Means
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+                2.391         2.365         3.357         2.385         1.801
+
+
+           Means
+              READJOY       READCOMP      READEASE      LEIHOM        ACAHOM
+              ________      ________      ________      ________      ________
+               -0.324         0.237         0.072         0.024         0.047
+
+
+           Covariances
+              READ          FEMALE        IMMI1GEN      IMMI2GEN      ESCS
+              ________      ________      ________      ________      ________
+ READ       10291.803
+ FEMALE         9.350         0.250
+ IMMI1GEN      -5.631        -0.002         0.055
+ IMMI2GEN      -4.018         0.000        -0.005         0.074
+ ESCS          26.308         0.002        -0.040        -0.038         0.698
+ Q3            12.726         0.045        -0.001         0.009         0.139
+ Q4           -22.715        -0.044         0.016         0.019         0.091
+ Q5           -32.262        -0.071         0.022         0.014         0.040
+ Q7           -17.574        -0.050         0.015         0.022         0.099
+ Q8           -29.377        -0.050         0.015         0.034         0.071
+ Q9           -23.949        -0.054         0.024         0.022         0.021
+ Q10          -19.149        -0.075         0.019         0.017         0.083
+ Q1            -7.964         0.032        -0.011        -0.017         0.016
+ Q2           -14.384        -0.031         0.015         0.012         0.062
+ Q6           -40.432        -0.136         0.026         0.014        -0.011
+ READJOY       35.399         0.130         0.017         0.010         0.144
+ READCOMP      37.438         0.019        -0.007         0.006         0.156
+ READEASE      35.450        -0.018        -0.016        -0.009         0.132
+ LEIHOM        -7.779        -0.101         0.002         0.003         0.049
+ ACAHOM       -14.986        -0.023         0.018         0.023         0.072
+
+
+           Covariances
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+ Q3             1.346
+ Q4             0.691         1.945
+ Q5             0.430         1.112         1.705
+ Q7             0.646         0.915         0.824         1.586
+ Q8             0.656         0.976         0.863         1.056         2.170
+ Q9             0.462         0.764         0.773         0.810         1.101
+ Q10            0.536         0.907         0.840         0.970         0.990
+ Q1             0.348         0.410         0.336         0.282         0.346
+ Q2             0.476         0.700         0.616         0.559         0.481
+ Q6             0.193         0.766         0.896         0.723         0.737
+ READJOY        0.055        -0.028        -0.077         0.011        -0.092
+ READCOMP       0.170         0.047        -0.033         0.076         0.018
+ READEASE       0.060        -0.065        -0.101        -0.021        -0.062
+ LEIHOM         0.252         0.378         0.349         0.335         0.320
+ ACAHOM         0.393         0.625         0.558         0.569         0.590
+
+
+           Covariances
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+ Q9             1.777
+ Q10            0.981         1.763
+ Q1             0.335         0.335         2.209
+ Q2             0.604         0.605         0.575         1.645
+ Q6             0.726         0.769         0.383         0.601         1.417
+ READJOY       -0.039        -0.004        -0.201        -0.016        -0.170
+ READCOMP       0.006         0.045        -0.020         0.056        -0.084
+ READEASE      -0.082        -0.049        -0.045        -0.033        -0.148
+ LEIHOM         0.333         0.358         0.332         0.389         0.371
+ ACAHOM         0.518         0.612         0.193         0.478         0.480
+
+
+           Covariances
+              READJOY       READCOMP      READEASE      LEIHOM        ACAHOM
+              ________      ________      ________      ________      ________
+ READJOY        1.183
+ READCOMP       0.360         1.021
+ READEASE       0.230         0.530         1.064
+ LEIHOM        -0.084         0.064        -0.003         0.775
+ ACAHOM         0.022         0.049        -0.050         0.379         0.833
+
+
+           Correlations
+              READ          FEMALE        IMMI1GEN      IMMI2GEN      ESCS
+              ________      ________      ________      ________      ________
+ READ           1.000
+ FEMALE         0.184         1.000
+ IMMI1GEN      -0.236        -0.019         1.000
+ IMMI2GEN      -0.145        -0.004        -0.073         1.000
+ ESCS           0.310         0.006        -0.204        -0.168         1.000
+ Q3             0.108         0.078        -0.005         0.028         0.144
+ Q4            -0.161        -0.064         0.048         0.051         0.078
+ Q5            -0.244        -0.108         0.073         0.040         0.037
+ Q7            -0.138        -0.079         0.049         0.065         0.094
+ Q8            -0.197        -0.068         0.043         0.085         0.058
+ Q9            -0.177        -0.081         0.076         0.060         0.019
+ Q10           -0.142        -0.113         0.061         0.047         0.075
+ Q1            -0.053         0.043        -0.030        -0.042         0.013
+ Q2            -0.111        -0.048         0.050         0.035         0.058
+ Q6            -0.335        -0.229         0.092         0.043        -0.011
+ READJOY        0.321         0.239         0.068         0.034         0.159
+ READCOMP       0.365         0.038        -0.031         0.023         0.185
+ READEASE       0.339        -0.034        -0.066        -0.031         0.153
+ LEIHOM        -0.087        -0.229         0.010         0.012         0.066
+ ACAHOM        -0.162        -0.050         0.083         0.093         0.094
+
+
+           Correlations
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+ Q3             1.000
+ Q4             0.427         1.000
+ Q5             0.284         0.611         1.000
+ Q7             0.442         0.521         0.501         1.000
+ Q8             0.384         0.475         0.449         0.569         1.000
+ Q9             0.299         0.411         0.444         0.482         0.561
+ Q10            0.348         0.490         0.485         0.580         0.506
+ Q1             0.202         0.198         0.173         0.151         0.158
+ Q2             0.320         0.391         0.368         0.346         0.255
+ Q6             0.140         0.461         0.577         0.482         0.420
+ READJOY        0.044        -0.019        -0.054         0.008        -0.057
+ READCOMP       0.145         0.033        -0.025         0.059         0.012
+ READEASE       0.050        -0.045        -0.075        -0.017        -0.041
+ LEIHOM         0.246         0.308         0.304         0.302         0.247
+ ACAHOM         0.371         0.491         0.468         0.495         0.439
+
+
+           Correlations
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+ Q9             1.000
+ Q10            0.554         1.000
+ Q1             0.169         0.170         1.000
+ Q2             0.353         0.355         0.302         1.000
+ Q6             0.458         0.486         0.216         0.394         1.000
+ READJOY       -0.027        -0.003        -0.124        -0.011        -0.131
+ READCOMP       0.004         0.033        -0.013         0.043        -0.070
+ READEASE      -0.060        -0.036        -0.029        -0.025        -0.121
+ LEIHOM         0.284         0.307         0.254         0.344         0.354
+ ACAHOM         0.426         0.505         0.142         0.408         0.442
+
+
+           Correlations
+              READJOY       READCOMP      READEASE      LEIHOM        ACAHOM
+              ________      ________      ________      ________      ________
+ READJOY        1.000
+ READCOMP       0.328         1.000
+ READEASE       0.205         0.508         1.000
+ LEIHOM        -0.088         0.072        -0.003         1.000
+ ACAHOM         0.022         0.053        -0.053         0.472         1.000
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       81
+
+Loglikelihood
+
+    H0 Value
+
+        Mean                           -554597.728
+        Std Dev                            123.561
+        Number of successful computations        7
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000      -554885.168    -554745.642
+           0.980       1.000      -554851.486    -554745.642
+           0.950       1.000      -554800.974    -554745.642
+           0.900       1.000      -554756.084    -554745.642
+           0.800       0.714      -554701.717    -554745.642
+           0.700       0.571      -554662.524    -554724.336
+           0.500       0.571      -554597.728    -554696.751
+           0.300       0.286      -554532.933    -554584.722
+           0.200       0.143      -554493.739    -554553.543
+           0.100       0.143      -554439.372    -554498.698
+           0.050       0.143      -554394.483    -554498.698
+           0.020       0.000      -554343.971    -554498.698
+           0.010       0.000      -554310.288    -554498.698
+
+    H1 Value
+
+        Mean                           -545210.411
+        Std Dev                            150.838
+        Number of successful computations        7
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000      -545561.307    -545416.079
+           0.980       1.000      -545520.188    -545416.079
+           0.950       1.000      -545458.525    -545416.079
+           0.900       0.857      -545403.726    -545416.079
+           0.800       0.714      -545337.357    -545416.079
+           0.700       0.714      -545289.511    -545386.212
+           0.500       0.571      -545210.411    -545280.277
+           0.300       0.286      -545131.312    -545175.913
+           0.200       0.143      -545083.466    -545133.026
+           0.100       0.143      -545017.097    -545131.206
+           0.050       0.143      -544962.298    -545131.206
+           0.020       0.000      -544900.635    -545131.206
+           0.010       0.000      -544859.516    -545131.206
+
+Information Criteria
+
+    Akaike (AIC)
+
+        Mean                           1109357.456
+        Std Dev                            247.122
+        Number of successful computations        7
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000      1108782.576    1108922.810
+           0.980       1.000      1108849.942    1108922.810
+           0.950       0.857      1108950.965    1108922.810
+           0.900       0.857      1109040.745    1108922.810
+           0.800       0.857      1109149.478    1108922.810
+           0.700       0.714      1109227.865    1109159.396
+           0.500       0.429      1109357.456    1109269.085
+           0.300       0.429      1109487.047    1109331.444
+           0.200       0.286      1109565.434    1109555.502
+           0.100       0.000      1109674.168    1109610.672
+           0.050       0.000      1109763.948    1109610.672
+           0.020       0.000      1109864.971    1109610.672
+           0.010       0.000      1109932.337    1109610.672
+
+    Bayesian (BIC)
+
+        Mean                           1109992.670
+        Std Dev                            247.122
+        Number of successful computations        7
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000      1109417.790    1109558.024
+           0.980       1.000      1109485.155    1109558.024
+           0.950       0.857      1109586.179    1109558.024
+           0.900       0.857      1109675.958    1109558.024
+           0.800       0.857      1109784.692    1109558.024
+           0.700       0.714      1109863.079    1109794.610
+           0.500       0.429      1109992.670    1109904.299
+           0.300       0.429      1110122.261    1109966.658
+           0.200       0.286      1110200.648    1110190.716
+           0.100       0.000      1110309.382    1110245.886
+           0.050       0.000      1110399.161    1110245.886
+           0.020       0.000      1110500.185    1110245.886
+           0.010       0.000      1110567.550    1110245.886
+
+    Sample-Size Adjusted BIC (n* = (n + 2) / 24)
+
+        Mean                           1109735.256
+        Std Dev                            247.122
+        Number of successful computations        7
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000      1109160.376    1109300.610
+           0.980       1.000      1109227.742    1109300.610
+           0.950       0.857      1109328.765    1109300.610
+           0.900       0.857      1109418.545    1109300.610
+           0.800       0.857      1109527.278    1109300.610
+           0.700       0.714      1109605.665    1109537.196
+           0.500       0.429      1109735.256    1109646.885
+           0.300       0.429      1109864.847    1109709.244
+           0.200       0.286      1109943.234    1109933.302
+           0.100       0.000      1110051.968    1109988.472
+           0.050       0.000      1110141.747    1109988.472
+           0.020       0.000      1110242.771    1109988.472
+           0.010       0.000      1110310.137    1109988.472
+
+Chi-Square Test of Model Fit
+
+        Degrees of freedom                     149
+
+        Mean                             13312.587
+        Std Dev                             58.245
+        Number of successful computations        7
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000          111.802      13235.024
+           0.980       1.000          115.726      13235.024
+           0.950       1.000          121.787      13235.024
+           0.900       1.000          127.349      13235.024
+           0.800       1.000          134.311      13235.024
+           0.700       1.000          139.487      13248.226
+           0.500       1.000          148.334      13293.015
+           0.300       1.000          157.547      13325.149
+           0.200       1.000          163.300      13330.880
+           0.100       1.000          171.507      13332.194
+           0.050       1.000          178.485      13332.194
+           0.020       1.000          186.560      13332.194
+           0.010       1.000          192.073      13332.194
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+        Mean                                 0.069
+        Std Dev                              0.000
+        Number of successful computations        7
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            0.068          0.068
+           0.980       1.000            0.068          0.068
+           0.950       1.000            0.068          0.068
+           0.900       0.857            0.068          0.068
+           0.800       0.714            0.068          0.068
+           0.700       0.714            0.068          0.068
+           0.500       0.571            0.069          0.068
+           0.300       0.143            0.069          0.069
+           0.200       0.143            0.069          0.069
+           0.100       0.143            0.069          0.069
+           0.050       0.143            0.069          0.069
+           0.020       0.000            0.069          0.069
+           0.010       0.000            0.069          0.069
+
+CFI/TLI
+
+    CFI
+
+        Mean                                 0.822
+        Std Dev                              0.001
+        Number of successful computations        7
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            0.820          0.821
+           0.980       1.000            0.820          0.821
+           0.950       1.000            0.820          0.821
+           0.900       1.000            0.821          0.821
+           0.800       0.714            0.821          0.821
+           0.700       0.714            0.821          0.821
+           0.500       0.286            0.822          0.821
+           0.300       0.286            0.822          0.821
+           0.200       0.143            0.822          0.822
+           0.100       0.143            0.823          0.822
+           0.050       0.143            0.823          0.822
+           0.020       0.143            0.823          0.822
+           0.010       0.000            0.824          0.822
+
+    TLI
+
+        Mean                                 0.774
+        Std Dev                              0.001
+        Number of successful computations        7
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            0.771          0.773
+           0.980       1.000            0.772          0.773
+           0.950       1.000            0.772          0.773
+           0.900       1.000            0.772          0.773
+           0.800       0.714            0.773          0.773
+           0.700       0.714            0.773          0.773
+           0.500       0.286            0.774          0.773
+           0.300       0.286            0.774          0.773
+           0.200       0.143            0.775          0.774
+           0.100       0.143            0.775          0.775
+           0.050       0.143            0.776          0.775
+           0.020       0.143            0.776          0.775
+           0.010       0.000            0.776          0.775
+
+SRMR (Standardized Root Mean Square Residual)
+
+        Mean                                 0.059
+        Std Dev                              0.000
+        Number of successful computations        7
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            0.059          0.059
+           0.980       1.000            0.059          0.059
+           0.950       0.857            0.059          0.059
+           0.900       0.857            0.059          0.059
+           0.800       0.714            0.059          0.059
+           0.700       0.714            0.059          0.059
+           0.500       0.571            0.059          0.059
+           0.300       0.429            0.060          0.060
+           0.200       0.143            0.060          0.060
+           0.100       0.143            0.060          0.060
+           0.050       0.000            0.060          0.060
+           0.020       0.000            0.060          0.060
+           0.010       0.000            0.060          0.060
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+ ACASCH   BY
+    Q3                 1.000      0.000    999.000    999.000      0.000
+    Q4                 1.713      0.029     58.613      0.000      0.212
+    Q7                 1.627      0.032     51.379      0.000      0.455
+    Q8                 1.751      0.035     50.186      0.000      0.408
+    Q9                 1.538      0.033     46.223      0.000      0.381
+    Q10                1.677      0.036     47.241      0.000      0.446
+
+ LEISCH   BY
+    Q1                 1.000      0.000    999.000    999.000      0.000
+    Q2                 1.599      0.051     31.165      0.000      0.258
+    Q6                 1.941      0.066     29.331      0.000      0.295
+    Q5                 2.197      0.073     29.984      0.000      0.248
+
+ READJOY  ON
+    ACASCH             4.797      0.444     10.813      0.000      0.243
+    LEISCH            -7.333      0.644    -11.391      0.000      0.218
+
+ READCOMP ON
+    ACASCH             9.846      0.887     11.097      0.000      0.232
+    LEISCH           -14.617      1.280    -11.418      0.000      0.202
+
+ READEASE ON
+    ACASCH             8.376      0.716     11.706      0.000      0.211
+    LEISCH           -12.549      1.026    -12.228      0.000      0.172
+
+ READ     ON
+    ACASCH          3267.182    466.519      7.003      0.000      0.169
+    LEISCH         -4913.947    684.197     -7.182      0.000      0.155
+
+ READJOY  ON
+    ACAHOM             0.079      0.046      1.722      0.085      0.147
+    LEIHOM             0.358      0.053      6.742      0.000      0.117
+
+ READCOMP ON
+    ACAHOM            -0.117      0.093     -1.260      0.208      0.198
+    LEIHOM             1.069      0.108      9.935      0.000      0.182
+
+ READEASE ON
+    ACAHOM            -0.171      0.079     -2.169      0.030      0.178
+    LEIHOM             0.898      0.091      9.835      0.000      0.211
+
+ READ     ON
+    ACAHOM           -51.330     31.328     -1.638      0.101      0.198
+    LEIHOM           351.305     51.965      6.760      0.000      0.149
+    READJOY           -7.316      3.373     -2.169      0.030      0.062
+    READCOMP        -125.997     16.567     -7.605      0.000      0.101
+    READEASE         -68.653      6.447    -10.649      0.000      0.032
+
+ ACAHOM   WITH
+    LEISCH             0.256      0.011     23.460      0.000      0.324
+    ACASCH             0.354      0.010     35.080      0.000      0.265
+
+ ESCS     WITH
+    ACASCH             0.046      0.006      7.760      0.000      0.401
+    LEISCH             0.021      0.004      4.883      0.000      0.405
+
+ LEISCH   WITH
+    ACASCH             0.239      0.010     23.905      0.000      0.284
+
+ LEIHOM   WITH
+    ACASCH             0.211      0.009     24.622      0.000      0.185
+    LEISCH             0.191      0.010     18.452      0.000      0.282
+
+ ESCS     WITH
+    ACAHOM             0.072      0.008      8.692      0.000      0.240
+    LEIHOM             0.048      0.008      5.895      0.000      0.196
+
+ FEMALE   WITH
+    READ               5.914      0.424     13.940      0.000      0.191
+
+ READCOMP WITH
+    READJOY            0.060      0.016      3.681      0.000      0.068
+
+ ACAHOM   WITH
+    LEIHOM             0.379      0.015     25.229      0.000      0.076
+
+ Means
+    FEMALE             0.497      0.004    120.547      0.000      0.000
+    IMMI1GEN           0.059      0.002     27.529      0.000      0.057
+    IMMI2GEN           0.081      0.002     34.363      0.000      0.039
+    ESCS               0.382      0.007     54.358      0.000      0.017
+    LEIHOM             0.025      0.008      3.115      0.002      0.165
+    ACAHOM             0.046      0.008      5.535      0.000      0.167
+
+ Intercepts
+    READ             534.002      4.705    113.503      0.000      0.119
+    Q3                 3.608      0.010    362.122      0.000      0.085
+    Q4                 2.463      0.013    192.919      0.000      0.177
+    Q5                 2.121      0.013    158.328      0.000      0.356
+    Q7                 2.527      0.011    221.601      0.000      0.176
+    Q8                 2.528      0.014    185.659      0.000      0.225
+    Q9                 2.391      0.013    190.457      0.000      0.242
+    Q10                2.363      0.014    173.686      0.000      0.371
+    Q1                 3.358      0.013    252.905      0.000      0.122
+    Q2                 2.385      0.012    196.062      0.000      0.251
+    Q6                 1.801      0.012    149.169      0.000      0.376
+    READJOY           -0.337      0.010    -32.823      0.000      0.077
+    READCOMP           0.214      0.013     16.493      0.000      0.188
+    READEASE           0.057      0.012      4.655      0.000      0.152
+
+ Variances
+    FEMALE             0.250      0.000  11849.661      0.000      0.000
+    IMMI1GEN           0.055      0.002     29.362      0.000      0.057
+    IMMI2GEN           0.074      0.002     37.669      0.000      0.039
+    ESCS               0.698      0.011     65.394      0.000      0.022
+    LEIHOM             0.775      0.022     35.800      0.000      0.022
+    ACAHOM             0.833      0.016     51.113      0.000      0.037
+    ACASCH             0.339      0.013     26.281      0.000      0.355
+    LEISCH             0.174      0.012     14.047      0.000      0.352
+
+ Residual Variances
+    READ           *********   2458.566     -5.337      0.000      0.097
+    Q3                 1.006      0.013     78.059      0.000      0.283
+    Q4                 0.948      0.015     61.698      0.000      0.090
+    Q5                 0.868      0.017     52.239      0.000      0.258
+    Q7                 0.686      0.014     49.900      0.000      0.386
+    Q8                 1.126      0.018     62.350      0.000      0.219
+    Q9                 0.975      0.014     69.852      0.000      0.080
+    Q10                0.809      0.014     57.979      0.000      0.196
+    Q1                 2.037      0.024     86.360      0.000      0.453
+    Q2                 1.202      0.015     78.256      0.000      0.094
+    Q6                 0.757      0.014     55.754      0.000      0.308
+    READJOY            1.012      0.017     58.956      0.000      0.053
+    READCOMP           0.406      0.026     15.508      0.000      0.095
+    READEASE           0.609      0.022     27.846      0.000      0.067
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+ ACASCH   BY
+    Q3                 0.502      0.008     61.738      0.000      0.353
+    Q4                 0.715      0.005    134.618      0.000      0.099
+    Q7                 0.753      0.006    125.007      0.000      0.430
+    Q8                 0.693      0.006    122.635      0.000      0.164
+    Q9                 0.672      0.006    108.328      0.000      0.182
+    Q10                0.736      0.005    142.548      0.000      0.114
+
+ LEISCH   BY
+    Q1                 0.280      0.010     29.281      0.000      0.347
+    Q2                 0.519      0.008     66.532      0.000      0.088
+    Q6                 0.681      0.007     98.207      0.000      0.158
+    Q5                 0.701      0.007     99.004      0.000      0.284
+
+ READJOY  ON
+    ACASCH             2.568      0.227     11.329      0.000      0.233
+    LEISCH            -2.810      0.234    -11.997      0.000      0.224
+
+ READCOMP ON
+    ACASCH             5.670      0.489     11.597      0.000      0.216
+    LEISCH            -6.027      0.502    -11.998      0.000      0.203
+
+ READEASE ON
+    ACASCH             4.729      0.388     12.192      0.000      0.210
+    LEISCH            -5.073      0.399    -12.721      0.000      0.205
+
+ READ     ON
+    ACASCH            18.997      2.670      7.114      0.000      0.164
+    LEISCH           -20.454      2.792     -7.325      0.000      0.155
+
+ READJOY  ON
+    ACAHOM             0.067      0.039      1.722      0.085      0.147
+    LEIHOM             0.289      0.043      6.726      0.000      0.123
+
+ READCOMP ON
+    ACAHOM            -0.106      0.084     -1.260      0.208      0.198
+    LEIHOM             0.931      0.094      9.866      0.000      0.190
+
+ READEASE ON
+    ACAHOM            -0.152      0.070     -2.170      0.030      0.178
+    LEIHOM             0.766      0.078      9.785      0.000      0.222
+
+ READ     ON
+    ACAHOM            -0.468      0.285     -1.640      0.101      0.197
+    LEIHOM             3.088      0.459      6.733      0.000      0.156
+    READJOY           -0.079      0.037     -2.168      0.030      0.062
+    READCOMP          -1.272      0.168     -7.575      0.000      0.104
+    READEASE          -0.707      0.066    -10.672      0.000      0.032
+
+ ACAHOM   WITH
+    LEISCH             0.673      0.010     67.748      0.000      0.121
+    ACASCH             0.666      0.008     84.069      0.000      0.135
+
+ ESCS     WITH
+    ACASCH             0.095      0.012      8.139      0.000      0.384
+    LEISCH             0.061      0.012      4.944      0.000      0.407
+
+ LEISCH   WITH
+    ACASCH             0.983      0.002    556.853      0.000      0.163
+
+ LEIHOM   WITH
+    ACASCH             0.411      0.010     39.411      0.000      0.096
+    LEISCH             0.521      0.013     40.046      0.000      0.157
+
+ ESCS     WITH
+    ACAHOM             0.094      0.011      8.712      0.000      0.249
+    LEIHOM             0.066      0.011      5.898      0.000      0.191
+
+ FEMALE   WITH
+    READ               0.000    999.000    999.000    999.000      0.000
+
+ READCOMP WITH
+    READJOY            0.094      0.023      4.078      0.000      0.062
+
+ ACAHOM   WITH
+    LEIHOM             0.472      0.012     38.365      0.000      0.116
+
+ Means
+    FEMALE             0.994      0.008    121.156      0.000      0.001
+    IMMI1GEN           0.250      0.005     51.828      0.000      0.056
+    IMMI2GEN           0.296      0.005     63.178      0.000      0.039
+    ESCS               0.457      0.010     43.892      0.000      0.018
+    LEIHOM             0.028      0.009      3.166      0.002      0.172
+    ACAHOM             0.050      0.009      5.606      0.000      0.173
+
+ Intercepts
+    READ               5.333      0.057     93.368      0.000      0.047
+    Q3                 3.110      0.021    145.979      0.000      0.184
+    Q4                 1.767      0.011    165.561      0.000      0.336
+    Q5                 1.624      0.013    127.268      0.000      0.682
+    Q7                 2.008      0.012    171.740      0.000      0.170
+    Q8                 1.718      0.010    177.415      0.000      0.198
+    Q9                 1.794      0.010    175.697      0.000      0.243
+    Q10                1.780      0.013    134.956      0.000      0.578
+    Q1                 2.258      0.017    134.096      0.000      0.231
+    Q2                 1.859      0.010    177.435      0.000      0.167
+    Q6                 1.515      0.011    132.472      0.000      0.653
+    READJOY           -0.310      0.010    -32.087      0.000      0.066
+    READCOMP           0.212      0.013     16.423      0.000      0.185
+    READEASE           0.055      0.012      4.632      0.000      0.152
+
+ Variances
+    FEMALE             1.000      0.000  *********      0.000      0.000
+    IMMI1GEN           1.000      0.000  *********      0.000      0.000
+    IMMI2GEN           1.000      0.000  *********      0.000      0.000
+    ESCS               1.000      0.000  *********      0.000      0.000
+    LEIHOM             1.000      0.000  *********      0.000      0.000
+    ACAHOM             1.000      0.000  *********      0.000      0.000
+    ACASCH             1.000      0.000  *********      0.000      0.000
+    LEISCH             1.000      0.000  *********      0.000      0.000
+
+ Residual Variances
+    READ              -1.309    999.000    999.000    999.000      0.000
+    Q3                 0.748      0.008     91.691      0.000      0.352
+    Q4                 0.488      0.008     64.209      0.000      0.098
+    Q5                 0.509      0.010     51.234      0.000      0.283
+    Q7                 0.433      0.009     47.745      0.000      0.430
+    Q8                 0.520      0.008     66.486      0.000      0.164
+    Q9                 0.549      0.008     65.852      0.000      0.182
+    Q10                0.459      0.008     60.457      0.000      0.114
+    Q1                 0.921      0.005    171.406      0.000      0.349
+    Q2                 0.730      0.008     90.055      0.000      0.088
+    Q6                 0.537      0.009     56.844      0.000      0.158
+    READJOY            0.855      0.011     76.998      0.000      0.049
+    READCOMP           0.397      0.026     15.519      0.000      0.096
+    READEASE           0.573      0.019     29.674      0.000      0.068
+
+
+R-SQUARE
+
+    Observed                                        Two-Tailed   Rate of
+    Variable        Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+    READ               0.000    999.000    999.000    999.000      0.000
+    Q3                 0.252      0.008     30.888      0.000      0.353
+    Q4                 0.512      0.008     67.329      0.000      0.098
+    Q5                 0.491      0.010     49.516      0.000      0.283
+    Q7                 0.567      0.009     62.505      0.000      0.430
+    Q8                 0.480      0.008     61.322      0.000      0.164
+    Q9                 0.451      0.008     54.162      0.000      0.182
+    Q10                0.541      0.008     71.273      0.000      0.114
+    Q1                 0.079      0.005     14.627      0.000      0.349
+    Q2                 0.270      0.008     33.273      0.000      0.088
+    Q6                 0.463      0.009     49.108      0.000      0.158
+    READJOY            0.145      0.011     13.035      0.000      0.049
+    READCOMP           0.603      0.026     23.586      0.000      0.096
+    READEASE           0.427      0.019     22.111      0.000      0.068
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Average Condition Number for the Information Matrix      0.135E-09
+       (ratio of smallest to largest eigenvalue)
+
+
+TOTAL, TOTAL INDIRECT, SPECIFIC INDIRECT, AND DIRECT EFFECTS
+
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+Effects from ACAHOM to READ
+
+  Total              -25.264     13.536     -1.866      0.062      0.203
+  Total indirect      26.066     17.924      1.454      0.146      0.194
+
+  Specific indirect 1
+    READ
+    READJOY
+    ACAHOM            -0.574      0.408     -1.406      0.160      0.066
+
+  Specific indirect 2
+    READ
+    READCOMP
+    ACAHOM            14.885     12.280      1.212      0.225      0.209
+
+  Specific indirect 3
+    READ
+    READEASE
+    ACAHOM            11.755      5.651      2.080      0.038      0.166
+
+  Direct
+    READ
+    ACAHOM           -51.330     31.328     -1.638      0.101      0.198
+
+
+Effects from LEIHOM to READ
+
+  Total              152.265     18.310      8.316      0.000      0.179
+  Total indirect    -199.040     34.840     -5.713      0.000      0.132
+
+  Specific indirect 1
+    READ
+    READJOY
+    LEIHOM            -2.619      1.428     -1.834      0.067      0.057
+
+  Specific indirect 2
+    READ
+    READCOMP
+    LEIHOM          -134.764     27.716     -4.862      0.000      0.126
+
+  Specific indirect 3
+    READ
+    READEASE
+    LEIHOM           -61.657     10.490     -5.877      0.000      0.114
+
+  Direct
+    READ
+    LEIHOM           351.305     51.965      6.760      0.000      0.149
+
+
+Effects from ACASCH to READ
+
+  Total             1415.273    160.942      8.794      0.000      0.217
+  Total indirect   -1851.909    315.620     -5.868      0.000      0.142
+
+  Specific indirect 1
+    READ
+    READJOY
+    ACASCH           -35.172     18.249     -1.927      0.054      0.076
+
+  Specific indirect 2
+    READ
+    READCOMP
+    ACASCH         -1241.529    253.107     -4.905      0.000      0.139
+
+  Specific indirect 3
+    READ
+    READEASE
+    ACASCH          -575.208     93.365     -6.161      0.000      0.094
+
+  Direct
+    READ
+    ACASCH          3267.182    466.519      7.003      0.000      0.169
+
+
+Effects from LEISCH to READ
+
+  Total            -2155.265    234.228     -9.202      0.000      0.198
+  Total indirect    2758.682    464.833      5.935      0.000      0.132
+
+  Specific indirect 1
+    READ
+    READJOY
+    LEISCH            53.756     27.769      1.936      0.053      0.076
+
+  Specific indirect 2
+    READ
+    READCOMP
+    LEISCH          1843.174    373.368      4.937      0.000      0.133
+
+  Specific indirect 3
+    READ
+    READEASE
+    LEISCH           861.751    137.810      6.253      0.000      0.083
+
+  Direct
+    READ
+    LEISCH         -4913.947    684.197     -7.182      0.000      0.155
+
+
+
+STANDARDIZED TOTAL, TOTAL INDIRECT, SPECIFIC INDIRECT, AND DIRECT EFFECTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+Effects from ACAHOM to READ
+
+  Total               -0.230      0.123     -1.868      0.062      0.202
+  Total indirect       0.238      0.163      1.455      0.146      0.193
+
+  Specific indirect 1
+    READ
+    READJOY
+    ACAHOM            -0.005      0.004     -1.405      0.160      0.067
+
+  Specific indirect 2
+    READ
+    READCOMP
+    ACAHOM             0.136      0.112      1.213      0.225      0.208
+
+  Specific indirect 3
+    READ
+    READEASE
+    ACAHOM             0.107      0.051      2.083      0.037      0.165
+
+  Direct
+    READ
+    ACAHOM            -0.468      0.285     -1.640      0.101      0.197
+
+
+Effects from LEIHOM to READ
+
+  Total                1.339      0.162      8.241      0.000      0.189
+  Total indirect      -1.750      0.307     -5.702      0.000      0.137
+
+  Specific indirect 1
+    READ
+    READJOY
+    LEIHOM            -0.023      0.013     -1.833      0.067      0.057
+
+  Specific indirect 2
+    READ
+    READCOMP
+    LEIHOM            -1.185      0.244     -4.856      0.000      0.129
+
+  Specific indirect 3
+    READ
+    READEASE
+    LEIHOM            -0.542      0.092     -5.864      0.000      0.121
+
+  Direct
+    READ
+    LEIHOM             3.088      0.459      6.733      0.000      0.156
+
+
+Effects from ACASCH to READ
+
+  Total                8.229      0.915      8.998      0.000      0.213
+  Total indirect     -10.768      1.814     -5.936      0.000      0.138
+
+  Specific indirect 1
+    READ
+    READJOY
+    ACASCH            -0.204      0.106     -1.933      0.053      0.073
+
+  Specific indirect 2
+    READ
+    READCOMP
+    ACASCH            -7.219      1.459     -4.948      0.000      0.136
+
+  Specific indirect 3
+    READ
+    READEASE
+    ACASCH            -3.345      0.538     -6.222      0.000      0.094
+
+  Direct
+    READ
+    ACASCH            18.997      2.670      7.114      0.000      0.164
+
+
+Effects from LEISCH to READ
+
+  Total               -8.972      0.949     -9.454      0.000      0.205
+  Total indirect      11.483      1.906      6.026      0.000      0.130
+
+  Specific indirect 1
+    READ
+    READJOY
+    LEISCH             0.224      0.115      1.943      0.052      0.070
+
+  Specific indirect 2
+    READ
+    READCOMP
+    LEISCH             7.672      1.535      4.996      0.000      0.129
+
+  Specific indirect 3
+    READ
+    READEASE
+    LEISCH             3.587      0.568      6.318      0.000      0.092
+
+  Direct
+    READ
+    LEISCH           -20.454      2.792     -7.325      0.000      0.155
+
+
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION
+
+
+           NU
+              READ          FEMALE        IMMI1GEN      IMMI2GEN      ESCS
+              ________      ________      ________      ________      ________
+                  0             0             1             2             0
+
+
+           NU
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+                  3             4             5             6             7
+
+
+           NU
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+                  8             9            10            11            12
+
+
+           NU
+              READJOY       READCOMP      READEASE      LEIHOM        ACAHOM
+              ________      ________      ________      ________      ________
+                  0             0             0             0             0
+
+
+           LAMBDA
+              ACASCH        LEISCH        READ          FEMALE        ESCS
+              ________      ________      ________      ________      ________
+ READ               0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+ Q3                 0             0             0             0             0
+ Q4                13             0             0             0             0
+ Q5                 0            14             0             0             0
+ Q7                15             0             0             0             0
+ Q8                16             0             0             0             0
+ Q9                17             0             0             0             0
+ Q10               18             0             0             0             0
+ Q1                 0             0             0             0             0
+ Q2                 0            19             0             0             0
+ Q6                 0            20             0             0             0
+ READJOY            0             0             0             0             0
+ READCOMP           0             0             0             0             0
+ READEASE           0             0             0             0             0
+ LEIHOM             0             0             0             0             0
+ ACAHOM             0             0             0             0             0
+
+
+           LAMBDA
+              READJOY       READCOMP      READEASE      LEIHOM        ACAHOM
+              ________      ________      ________      ________      ________
+ READ               0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+ Q3                 0             0             0             0             0
+ Q4                 0             0             0             0             0
+ Q5                 0             0             0             0             0
+ Q7                 0             0             0             0             0
+ Q8                 0             0             0             0             0
+ Q9                 0             0             0             0             0
+ Q10                0             0             0             0             0
+ Q1                 0             0             0             0             0
+ Q2                 0             0             0             0             0
+ Q6                 0             0             0             0             0
+ READJOY            0             0             0             0             0
+ READCOMP           0             0             0             0             0
+ READEASE           0             0             0             0             0
+ LEIHOM             0             0             0             0             0
+ ACAHOM             0             0             0             0             0
+
+
+           THETA
+              READ          FEMALE        IMMI1GEN      IMMI2GEN      ESCS
+              ________      ________      ________      ________      ________
+ READ               0
+ FEMALE             0             0
+ IMMI1GEN           0             0            21
+ IMMI2GEN           0             0             0            22
+ ESCS               0             0             0             0             0
+ Q3                 0             0             0             0             0
+ Q4                 0             0             0             0             0
+ Q5                 0             0             0             0             0
+ Q7                 0             0             0             0             0
+ Q8                 0             0             0             0             0
+ Q9                 0             0             0             0             0
+ Q10                0             0             0             0             0
+ Q1                 0             0             0             0             0
+ Q2                 0             0             0             0             0
+ Q6                 0             0             0             0             0
+ READJOY            0             0             0             0             0
+ READCOMP           0             0             0             0             0
+ READEASE           0             0             0             0             0
+ LEIHOM             0             0             0             0             0
+ ACAHOM             0             0             0             0             0
+
+
+           THETA
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+ Q3                23
+ Q4                 0            24
+ Q5                 0             0            25
+ Q7                 0             0             0            26
+ Q8                 0             0             0             0            27
+ Q9                 0             0             0             0             0
+ Q10                0             0             0             0             0
+ Q1                 0             0             0             0             0
+ Q2                 0             0             0             0             0
+ Q6                 0             0             0             0             0
+ READJOY            0             0             0             0             0
+ READCOMP           0             0             0             0             0
+ READEASE           0             0             0             0             0
+ LEIHOM             0             0             0             0             0
+ ACAHOM             0             0             0             0             0
+
+
+           THETA
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+ Q9                28
+ Q10                0            29
+ Q1                 0             0            30
+ Q2                 0             0             0            31
+ Q6                 0             0             0             0            32
+ READJOY            0             0             0             0             0
+ READCOMP           0             0             0             0             0
+ READEASE           0             0             0             0             0
+ LEIHOM             0             0             0             0             0
+ ACAHOM             0             0             0             0             0
+
+
+           THETA
+              READJOY       READCOMP      READEASE      LEIHOM        ACAHOM
+              ________      ________      ________      ________      ________
+ READJOY            0
+ READCOMP           0             0
+ READEASE           0             0             0
+ LEIHOM             0             0             0             0
+ ACAHOM             0             0             0             0             0
+
+
+           ALPHA
+              ACASCH        LEISCH        READ          FEMALE        ESCS
+              ________      ________      ________      ________      ________
+                  0             0            33            34            35
+
+
+           ALPHA
+              READJOY       READCOMP      READEASE      LEIHOM        ACAHOM
+              ________      ________      ________      ________      ________
+                 36            37            38            39            40
+
+
+           BETA
+              ACASCH        LEISCH        READ          FEMALE        ESCS
+              ________      ________      ________      ________      ________
+ ACASCH             0             0             0             0             0
+ LEISCH             0             0             0             0             0
+ READ              41            42             0             0             0
+ FEMALE             0             0             0             0             0
+ ESCS               0             0             0             0             0
+ READJOY           48            49             0             0             0
+ READCOMP          52            53             0             0             0
+ READEASE          56            57             0             0             0
+ LEIHOM             0             0             0             0             0
+ ACAHOM             0             0             0             0             0
+
+
+           BETA
+              READJOY       READCOMP      READEASE      LEIHOM        ACAHOM
+              ________      ________      ________      ________      ________
+ ACASCH             0             0             0             0             0
+ LEISCH             0             0             0             0             0
+ READ              43            44            45            46            47
+ FEMALE             0             0             0             0             0
+ ESCS               0             0             0             0             0
+ READJOY            0             0             0            50            51
+ READCOMP           0             0             0            54            55
+ READEASE           0             0             0            58            59
+ LEIHOM             0             0             0             0             0
+ ACAHOM             0             0             0             0             0
+
+
+           PSI
+              ACASCH        LEISCH        READ          FEMALE        ESCS
+              ________      ________      ________      ________      ________
+ ACASCH            60
+ LEISCH            61            62
+ READ               0             0            63
+ FEMALE             0             0            64            65
+ ESCS              66            67             0             0            68
+ READJOY            0             0             0             0             0
+ READCOMP           0             0             0             0             0
+ READEASE           0             0             0             0             0
+ LEIHOM            73            74             0             0            75
+ ACAHOM            77            78             0             0            79
+
+
+           PSI
+              READJOY       READCOMP      READEASE      LEIHOM        ACAHOM
+              ________      ________      ________      ________      ________
+ READJOY           69
+ READCOMP          70            71
+ READEASE           0             0            72
+ LEIHOM             0             0             0            76
+ ACAHOM             0             0             0            80            81
+
+
+     STARTING VALUES
+
+
+           NU
+              READ          FEMALE        IMMI1GEN      IMMI2GEN      ESCS
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+                3.609         2.464         2.129         2.531         2.535
+
+
+           NU
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+                2.394         2.361         3.360         2.388         1.801
+
+
+           NU
+              READJOY       READCOMP      READEASE      LEIHOM        ACAHOM
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              ACASCH        LEISCH        READ          FEMALE        ESCS
+              ________      ________      ________      ________      ________
+ READ           0.000         0.000         1.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         1.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         1.000
+ Q3             1.000         0.000         0.000         0.000         0.000
+ Q4             2.073         0.000         0.000         0.000         0.000
+ Q5             0.000         1.808         0.000         0.000         0.000
+ Q7             2.115         0.000         0.000         0.000         0.000
+ Q8             3.250         0.000         0.000         0.000         0.000
+ Q9             3.113         0.000         0.000         0.000         0.000
+ Q10            2.835         0.000         0.000         0.000         0.000
+ Q1             0.000         1.000         0.000         0.000         0.000
+ Q2             0.000         1.001         0.000         0.000         0.000
+ Q6             0.000         1.856         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ LEIHOM         0.000         0.000         0.000         0.000         0.000
+ ACAHOM         0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              READJOY       READCOMP      READEASE      LEIHOM        ACAHOM
+              ________      ________      ________      ________      ________
+ READ           0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+ Q3             0.000         0.000         0.000         0.000         0.000
+ Q4             0.000         0.000         0.000         0.000         0.000
+ Q5             0.000         0.000         0.000         0.000         0.000
+ Q7             0.000         0.000         0.000         0.000         0.000
+ Q8             0.000         0.000         0.000         0.000         0.000
+ Q9             0.000         0.000         0.000         0.000         0.000
+ Q10            0.000         0.000         0.000         0.000         0.000
+ Q1             0.000         0.000         0.000         0.000         0.000
+ Q2             0.000         0.000         0.000         0.000         0.000
+ Q6             0.000         0.000         0.000         0.000         0.000
+ READJOY        1.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         1.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         1.000         0.000         0.000
+ LEIHOM         0.000         0.000         0.000         1.000         0.000
+ ACAHOM         0.000         0.000         0.000         0.000         1.000
+
+
+           THETA
+              READ          FEMALE        IMMI1GEN      IMMI2GEN      ESCS
+              ________      ________      ________      ________      ________
+ READ           0.000
+ FEMALE         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.027
+ IMMI2GEN       0.000         0.000         0.000         0.037
+ ESCS           0.000         0.000         0.000         0.000         0.000
+ Q3             0.000         0.000         0.000         0.000         0.000
+ Q4             0.000         0.000         0.000         0.000         0.000
+ Q5             0.000         0.000         0.000         0.000         0.000
+ Q7             0.000         0.000         0.000         0.000         0.000
+ Q8             0.000         0.000         0.000         0.000         0.000
+ Q9             0.000         0.000         0.000         0.000         0.000
+ Q10            0.000         0.000         0.000         0.000         0.000
+ Q1             0.000         0.000         0.000         0.000         0.000
+ Q2             0.000         0.000         0.000         0.000         0.000
+ Q6             0.000         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ LEIHOM         0.000         0.000         0.000         0.000         0.000
+ ACAHOM         0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              Q3            Q4            Q5            Q7            Q8
+              ________      ________      ________      ________      ________
+ Q3             0.674
+ Q4             0.000         0.975
+ Q5             0.000         0.000         0.853
+ Q7             0.000         0.000         0.000         0.790
+ Q8             0.000         0.000         0.000         0.000         1.084
+ Q9             0.000         0.000         0.000         0.000         0.000
+ Q10            0.000         0.000         0.000         0.000         0.000
+ Q1             0.000         0.000         0.000         0.000         0.000
+ Q2             0.000         0.000         0.000         0.000         0.000
+ Q6             0.000         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ LEIHOM         0.000         0.000         0.000         0.000         0.000
+ ACAHOM         0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              Q9            Q10           Q1            Q2            Q6
+              ________      ________      ________      ________      ________
+ Q9             0.895
+ Q10            0.000         0.888
+ Q1             0.000         0.000         1.106
+ Q2             0.000         0.000         0.000         0.823
+ Q6             0.000         0.000         0.000         0.000         0.700
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ LEIHOM         0.000         0.000         0.000         0.000         0.000
+ ACAHOM         0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              READJOY       READCOMP      READEASE      LEIHOM        ACAHOM
+              ________      ________      ________      ________      ________
+ READJOY        0.000
+ READCOMP       0.000         0.000
+ READEASE       0.000         0.000         0.000
+ LEIHOM         0.000         0.000         0.000         0.000
+ ACAHOM         0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              ACASCH        LEISCH        READ          FEMALE        ESCS
+              ________      ________      ________      ________      ________
+                0.000         0.000       508.367         0.497         0.381
+
+
+           ALPHA
+              READJOY       READCOMP      READEASE      LEIHOM        ACAHOM
+              ________      ________      ________      ________      ________
+               -0.322         0.236         0.073         0.026         0.047
+
+
+           BETA
+              ACASCH        LEISCH        READ          FEMALE        ESCS
+              ________      ________      ________      ________      ________
+ ACASCH         0.000         0.000         0.000         0.000         0.000
+ LEISCH         0.000         0.000         0.000         0.000         0.000
+ READ           0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ LEIHOM         0.000         0.000         0.000         0.000         0.000
+ ACAHOM         0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              READJOY       READCOMP      READEASE      LEIHOM        ACAHOM
+              ________      ________      ________      ________      ________
+ ACASCH         0.000         0.000         0.000         0.000         0.000
+ LEISCH         0.000         0.000         0.000         0.000         0.000
+ READ           0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ LEIHOM         0.000         0.000         0.000         0.000         0.000
+ ACAHOM         0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              ACASCH        LEISCH        READ          FEMALE        ESCS
+              ________      ________      ________      ________      ________
+ ACASCH         0.050
+ LEISCH         0.000         0.050
+ READ           0.000         0.000      5134.482
+ FEMALE         0.000         0.000         0.000         0.125
+ ESCS           0.000         0.000         0.000         0.000         0.349
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ LEIHOM         0.000         0.000         0.000         0.000         0.000
+ ACAHOM         0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              READJOY       READCOMP      READEASE      LEIHOM        ACAHOM
+              ________      ________      ________      ________      ________
+ READJOY        0.592
+ READCOMP       0.000         0.511
+ READEASE       0.000         0.000         0.532
+ LEIHOM         0.000         0.000         0.000         0.385
+ ACAHOM         0.000         0.000         0.000         0.000         0.419
+
+
+THE FOLLOWING DATA SET(S) DID NOT RESULT IN A COMPLETED REPLICATION:
+
+  C:\Users\Mudar Saied\read3.dat
+  C:\Users\Mudar Saied\read4.dat
+  C:\Users\Mudar Saied\read5.dat
+
+
+TECHNICAL 9 OUTPUT
+
+
+Errors for replication with data file C:\Users\Mudar Saied\read1.dat:
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS      -0.418D-16.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 22, IMMI2GEN
+
+     THIS IS MOST LIKELY DUE TO VARIABLE FEMALE BEING DICHOTOMOUS BUT
+     DECLARED AS CONTINUOUS.
+
+
+     WARNING:  THE LATENT VARIABLE COVARIANCE MATRIX (PSI) IS NOT POSITIVE
+     DEFINITE.  THIS COULD INDICATE A NEGATIVE VARIANCE/RESIDUAL VARIANCE FOR A
+     LATENT VARIABLE, A CORRELATION GREATER OR EQUAL TO ONE BETWEEN TWO LATENT
+     VARIABLES, OR A LINEAR DEPENDENCY AMONG MORE THAN TWO LATENT VARIABLES.
+     CHECK THE TECH4 OUTPUT FOR MORE INFORMATION.
+     PROBLEM INVOLVING VARIABLE READ.
+
+
+Errors for replication with data file C:\Users\Mudar Saied\read2.dat:
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS      -0.725D-16.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 21, IMMI1GEN
+
+     THIS IS MOST LIKELY DUE TO VARIABLE FEMALE BEING DICHOTOMOUS BUT
+     DECLARED AS CONTINUOUS.
+
+
+     WARNING:  THE LATENT VARIABLE COVARIANCE MATRIX (PSI) IS NOT POSITIVE
+     DEFINITE.  THIS COULD INDICATE A NEGATIVE VARIANCE/RESIDUAL VARIANCE FOR A
+     LATENT VARIABLE, A CORRELATION GREATER OR EQUAL TO ONE BETWEEN TWO LATENT
+     VARIABLES, OR A LINEAR DEPENDENCY AMONG MORE THAN TWO LATENT VARIABLES.
+     CHECK THE TECH4 OUTPUT FOR MORE INFORMATION.
+     PROBLEM INVOLVING VARIABLE READ.
+
+
+Errors for replication with data file C:\Users\Mudar Saied\read3.dat:
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES COULD NOT BE
+     COMPUTED.  THE MODEL MAY NOT BE IDENTIFIED.  CHECK YOUR MODEL.
+     PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 63, READ
+
+     THE CONDITION NUMBER IS       0.907D-10.
+
+     THE ROBUST CHI-SQUARE COULD NOT BE COMPUTED.
+
+Errors for replication with data file C:\Users\Mudar Saied\read4.dat:
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES COULD NOT BE
+     COMPUTED.  THE MODEL MAY NOT BE IDENTIFIED.  CHECK YOUR MODEL.
+     PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 63, READ
+
+     THE CONDITION NUMBER IS       0.863D-10.
+
+     THE ROBUST CHI-SQUARE COULD NOT BE COMPUTED.
+
+Errors for replication with data file C:\Users\Mudar Saied\read5.dat:
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES COULD NOT BE
+     COMPUTED.  THE MODEL MAY NOT BE IDENTIFIED.  CHECK YOUR MODEL.
+     PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 63, READ
+
+     THE CONDITION NUMBER IS       0.654D-10.
+
+     THE ROBUST CHI-SQUARE COULD NOT BE COMPUTED.
+
+Errors for replication with data file C:\Users\Mudar Saied\read6.dat:
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS       0.410D-22.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 21, IMMI1GEN
+
+     THIS IS MOST LIKELY DUE TO VARIABLE FEMALE BEING DICHOTOMOUS BUT
+     DECLARED AS CONTINUOUS.
+
+
+     WARNING:  THE LATENT VARIABLE COVARIANCE MATRIX (PSI) IS NOT POSITIVE
+     DEFINITE.  THIS COULD INDICATE A NEGATIVE VARIANCE/RESIDUAL VARIANCE FOR A
+     LATENT VARIABLE, A CORRELATION GREATER OR EQUAL TO ONE BETWEEN TWO LATENT
+     VARIABLES, OR A LINEAR DEPENDENCY AMONG MORE THAN TWO LATENT VARIABLES.
+     CHECK THE TECH4 OUTPUT FOR MORE INFORMATION.
+     PROBLEM INVOLVING VARIABLE READ.
+
+
+Errors for replication with data file C:\Users\Mudar Saied\read7.dat:
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS      -0.882D-16.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 21, IMMI1GEN
+
+     THIS IS MOST LIKELY DUE TO VARIABLE FEMALE BEING DICHOTOMOUS BUT
+     DECLARED AS CONTINUOUS.
+
+
+     WARNING:  THE LATENT VARIABLE COVARIANCE MATRIX (PSI) IS NOT POSITIVE
+     DEFINITE.  THIS COULD INDICATE A NEGATIVE VARIANCE/RESIDUAL VARIANCE FOR A
+     LATENT VARIABLE, A CORRELATION GREATER OR EQUAL TO ONE BETWEEN TWO LATENT
+     VARIABLES, OR A LINEAR DEPENDENCY AMONG MORE THAN TWO LATENT VARIABLES.
+     CHECK THE TECH4 OUTPUT FOR MORE INFORMATION.
+     PROBLEM INVOLVING VARIABLE READ.
+
+
+Errors for replication with data file C:\Users\Mudar Saied\read8.dat:
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS       0.159D-21.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 21, IMMI1GEN
+
+     THIS IS MOST LIKELY DUE TO VARIABLE FEMALE BEING DICHOTOMOUS BUT
+     DECLARED AS CONTINUOUS.
+
+
+     WARNING:  THE LATENT VARIABLE COVARIANCE MATRIX (PSI) IS NOT POSITIVE
+     DEFINITE.  THIS COULD INDICATE A NEGATIVE VARIANCE/RESIDUAL VARIANCE FOR A
+     LATENT VARIABLE, A CORRELATION GREATER OR EQUAL TO ONE BETWEEN TWO LATENT
+     VARIABLES, OR A LINEAR DEPENDENCY AMONG MORE THAN TWO LATENT VARIABLES.
+     CHECK THE TECH4 OUTPUT FOR MORE INFORMATION.
+     PROBLEM INVOLVING VARIABLE READ.
+
+
+Errors for replication with data file C:\Users\Mudar Saied\read9.dat:
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS      -0.118D-15.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 21, IMMI1GEN
+
+     THIS IS MOST LIKELY DUE TO VARIABLE FEMALE BEING DICHOTOMOUS BUT
+     DECLARED AS CONTINUOUS.
+
+
+     WARNING:  THE LATENT VARIABLE COVARIANCE MATRIX (PSI) IS NOT POSITIVE
+     DEFINITE.  THIS COULD INDICATE A NEGATIVE VARIANCE/RESIDUAL VARIANCE FOR A
+     LATENT VARIABLE, A CORRELATION GREATER OR EQUAL TO ONE BETWEEN TWO LATENT
+     VARIABLES, OR A LINEAR DEPENDENCY AMONG MORE THAN TWO LATENT VARIABLES.
+     CHECK THE TECH4 OUTPUT FOR MORE INFORMATION.
+     PROBLEM INVOLVING VARIABLE READ.
+
+
+Errors for replication with data file C:\Users\Mudar Saied\read10.dat:
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS      -0.565D-16.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 21, IMMI1GEN
+
+     THIS IS MOST LIKELY DUE TO VARIABLE FEMALE BEING DICHOTOMOUS BUT
+     DECLARED AS CONTINUOUS.
+
+
+     WARNING:  THE LATENT VARIABLE COVARIANCE MATRIX (PSI) IS NOT POSITIVE
+     DEFINITE.  THIS COULD INDICATE A NEGATIVE VARIANCE/RESIDUAL VARIANCE FOR A
+     LATENT VARIABLE, A CORRELATION GREATER OR EQUAL TO ONE BETWEEN TWO LATENT
+     VARIABLES, OR A LINEAR DEPENDENCY AMONG MORE THAN TWO LATENT VARIABLES.
+     CHECK THE TECH4 OUTPUT FOR MORE INFORMATION.
+     PROBLEM INVOLVING VARIABLE READ.
+
+
+
+DIAGRAM INFORMATION
+
+  Use View Diagram under the Diagram menu in the Mplus Editor to view the diagram.
+  If running Mplus from the Mplus Diagrammer, the diagram opens automatically.
+
+  Diagram output
+    m:\pc\dokumenter\msc\thesis\mplus\m1\student.dgm
+
+     Beginning Time:  00:46:42
+        Ending Time:  00:47:06
+       Elapsed Time:  00:00:24
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2019 Muthen & Muthen

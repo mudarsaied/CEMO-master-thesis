@@ -1,0 +1,88 @@
+TITLE:
+    Multilevel multiple imputation
+
+
+DATA:
+    file = "C:\Users\Mudar Saied\readallpv.dat";
+
+
+VARIABLE:
+    names =
+
+        CNTRYID CNTSCHID CNTSTUID W_STU
+
+          !PVs
+        PV1READ PV2READ PV3READ PV4READ PV5READ
+        PV6READ PV7READ PV8READ PV9READ PV10READ
+         ! Demographic control var
+        FEMALE IMMI1GEN IMMI2GEN ESCS
+         ! ICT
+            ! ICT Use at school (10 items)
+        Q3 Q4 Q5 Q7 Q8
+        Q9 Q10 Q1 Q2 Q6
+            !ICT PISA scaled
+        ACAHOM USESCH LEIHOM
+            ! Reading Mediation
+        READJOY READCOMP  READEASE
+         ! School Weight
+        W_SCH
+           ! School ICT Policy
+        Q05HA
+        ;
+   
+    usevar =
+        PV1READ PV2READ PV3READ PV4READ PV5READ
+        PV6READ PV7READ PV8READ PV9READ PV10READ
+                                                    ! Student-level
+        FEMALE IMMI1GEN IMMI2GEN ESCS
+        Q3 Q4 Q5 Q7 Q8
+        Q9 Q10 Q1 Q2 Q6                   
+        LEIHOM USESCH  ACAHOM                              ! ICT use at home/ at school
+        READJOY READCOMP READEASE                   ! Mediators: reading affect
+        Q05HA                                       ! School-level
+        ;
+
+    within =
+        FEMALE IMMI1GEN IMMI2GEN ESCS
+        Q3 Q4 Q5 Q7 Q8
+        Q9 Q10 Q1 Q2 Q6
+        LEIHOM USESCH  ACAHOM
+        READJOY READCOMP READEASE
+        ;
+
+    between =
+        Q05HA
+        ;
+
+    auxiliary =
+        CNTRYID CNTSTUID W_STU W_SCH               ! "Administrative' vars
+        ;
+
+    missing = all (-99);
+
+    cluster = CNTSCHID;
+
+
+ANALYSIS:
+    processors = 8;
+
+    type = basic twolevel;
+
+    fbiterations = 50000;                           ! Number of burn-in iterations
+    chains = 4;
+    bseed = 1234;
+
+
+DATA IMPUTATION:
+    impute =
+        FEMALE (c) IMMI1GEN (c) IMMI2GEN (c) ESCS
+        Q3 Q4 Q5 Q7 Q8
+        Q9 Q10 Q1 Q2 Q6
+        LEIHOM USESCH  ACAHOM
+        READJOY READCOMP READEASE
+        Q05HA
+        ;
+    ndatasets = 10;
+    save = Read_MMI_*.dat;
+    thin = 5000;                                    ! Separations to avoid autocorrelation
+

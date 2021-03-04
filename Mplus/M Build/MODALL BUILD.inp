@@ -1,0 +1,69 @@
+ TITLE:
+    M1 Student-level only
+
+
+DATA:
+    file = "C:\Users\Mudar Saied\read2.dat";
+
+
+
+VARIABLE:
+    names =
+        
+        CNTRYID CNTSCHID CNTSTUID W_STU READ
+        ! Demographic control var
+        FEMALE IMMI1GEN IMMI2GEN ESCS
+        ! ICT Availability
+        ICTHOME ICTSCH ICTRES
+        ! ICT Interest
+        ICTINT ICTCOMP ICTAUT ICTSOC
+        ! ICT Use at Home
+        ICTLEIS IC008Q01TA IC008Q02TA
+        IC008Q04TA IC008Q05TA IC008Q08TA
+        IC008Q03TA IC008Q09TA IC008Q10TA
+        ICTSCHWK USESCH
+        ! Reading Mediation
+        READJOY READCOMP READDIFF READEASE 
+        ! School Weight
+        W_SCH
+        ! School ICT Resources
+        RATCMP1 RATCMP2
+        ! School ICT Policy
+        SC156Q01 SC156Q02 SC156Q05 SC156Q06
+        SC156Q03 SC156Q04
+        ;
+     
+    usevar =
+        ! Outcome
+        READ
+        ! Student-level
+        FEMALE IMMI1GEN IMMI2GEN ESCS     ! Demographic controls
+            ! ICT-related var
+        ICTLEIS ICTSCHWK USESCH           ! ICT use at home/ at school
+            ! Mediators
+        READJOY READCOMP READEASE         ! Reading affect
+    ;
+
+    missing = all (-99);
+
+    weight = W_STU;
+
+ANALYSIS:
+    processors = 8;
+
+    estimator = MLR;
+    
+
+MODEL:
+
+
+    READ;
+
+
+
+
+OUTPUT:
+    mod(all);
+    
+
+

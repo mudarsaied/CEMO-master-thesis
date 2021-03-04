@@ -1,0 +1,129 @@
+TITLE:
+    M1 Student-level only
+
+
+DATA:
+    file = "C:\Users\Mudar Saied\implist.dat";
+
+    type = imputation;
+
+
+VARIABLE:
+      names =
+
+          CNTRYID CNTSCHID CNTSTUID W_STU READ
+         ! Demographic control var
+          FEMALE IMMI1GEN IMMI2GEN ESCS
+         ! ICT
+            ! ICT Use at school (10 items)
+          Q3 Q4 Q5 Q7 Q8
+          Q9 Q10 Q1 Q2 Q6
+            !ICT PISA scaled
+          ACAHOM USESCH LEIHOM
+            ! Reading Mediation
+          READJOY READCOMP  READEASE
+         ! School Weight
+          W_SCH
+           ! School ICT Policy
+          Q05HA
+        ;
+
+    !useobs = (CNTRYID EQ 246);             ! 208DNK=7657, 246FIN=5649, 752SWE=5504
+
+    usevar =
+        READ                                ! Outcome
+        FEMALE IMMI1GEN IMMI2GEN ESCS       ! Demographic controls
+        Q3 Q4 Q5 Q7 Q8                      ! ICT Use AT School (10 Items)
+        Q9 Q10 Q1 Q2 Q6                     ! SPSS: IC011
+        LEIHOM ACAHOM                       ! ICT use at home/ at school
+        READJOY READCOMP READEASE           ! Reading affect/Mediators
+    ;
+
+    weight = W_STU;
+
+
+ANALYSIS:
+
+    processors = 8;
+
+    estimator = MLR;
+
+
+MODEL:
+
+    ! Measurement Model
+    ACASCH by Q3 Q4 Q7 Q8 Q9 Q10;
+    LEISCH by Q1 Q2 Q6 Q5;
+
+    ! SES onto X vars
+!    LEIHOM on ESCS FEMALE;
+!    ACAHOM on ESCS FEMALE;
+!    USESCH on ESCS FEMALE;
+
+    ! Mediators
+        ! Enjoyment of reading
+    READJOY on
+        ACAHOM LEIHOM ACASCH LEISCH
+        !ESCS FEMALE IMMI1GEN IMMI2GEN
+        ;
+
+        ! Perception of reading competence
+    READCOMP on
+        ACAHOM LEIHOM ACASCH LEISCH
+        !ESCS FEMALE IMMI1GEN IMMI2GEN
+        ;
+
+        ! Perception of reading difficulty
+    READEASE on
+        ACAHOM LEIHOM ACASCH LEISCH
+        !ESCS FEMALE IMMI1GEN IMMI2GEN
+        ;
+
+    ! Total effect
+    READ on        
+        ACAHOM LEIHOM ACASCH LEISCH
+        READJOY READCOMP READEASE
+        !ESCS FEMALE IMMI1GEN IMMI2GEN                        
+        ;
+
+    ! Correlations
+
+        ! Amongst X
+    !ACAHOM with LEIHOM;
+    !LEIHOM with ACASCH;
+    !ACASCH with LEISCH;
+    !ACAHOM with ACASCH;
+    !LEIHOM with LEISCH;
+    ACAHOM with LEISCH;
+
+        ! With ESCS
+    
+    ESCS with ACAHOM LEIHOM ACASCH LEISCH;
+    !FEMALE with ACAHOM LEIHOM ACASCH LEISCH;
+    !IMMI1GEN IMMI2GEN with ACAHOM LEIHOM ACASCH LEISCH;
+
+    !ESCS with READJOY READCOMP READEASE;
+    FEMALE with READ;
+
+    !FEMALE with READJOY READCOMP READEASE;
+
+        ! Between M
+    READCOMP with READJOY;
+
+       ! Between M and Y
+    !READJOY with READ;
+    !READCOMP with READ;
+  
+
+MODEL INDIRECT:
+    
+    READ ind ACAHOM;
+    READ ind LEIHOM;
+    READ ind ACASCH;
+    READ ind LEISCH;
+
+
+OUTPUT:
+    stdyx;
+    tech9;
+    

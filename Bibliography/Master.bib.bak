@@ -1,0 +1,27 @@
+% Encoding: UTF-8
+
+@Article{yurttaskumlu:2020,
+  author  = {Gülfem Dilek {Yurtta{\c{s}} Kumlu} and Nuri Do{\u{g}}an},
+  doi     = {10.21031/epod.581379},
+  journal = {Journal of Measurement and Evaluation in Education and Psychology},
+  number  = {3},
+  pages   = {219--242},
+  title   = {How does the {ICT} access and usage influence student achievement in {PISA} 2009 and 2012?},
+  volume  = {11},
+  year    = {2020},
+  file    = {How does the ICT access and usage influence student achievement in PISA 2009 and 2012?:/home/mudar/uio/pc/Dokumenter/MSc/Thesis/Bibliography/Yurttas Kumlu & Dogan (2020).pdf:PDF},
+}
+
+@Article{park:2020,
+  author  = {Park, Seoyeon and Weng, Wenting},
+  journal = {Educational Technology & Society},
+  number  = {3},
+  pages   = {1--15},
+  title   = {The relationship between {ICT}-related factors and student academic achievement and the moderating effect of country economic indexes across 39 countries: Using mutilevel structural equation modelling},
+  volume  = {23},
+  year    = {2020},
+  url     = {https://www.jstor.org/stable/26926422},
+  file    = {The relationship between ICT-related factors and student academic achievement and the moderating effect of country economic indexes across 39 countries\: Using mutilevel structural equation modelling:/home/mudar/uio/pc/Dokumenter/MSc/Thesis/Bibliography/Park & Weng (2020).pdf:PDF},
+}
+
+@Comment{jabref-meta: databaseType:bibtex;}

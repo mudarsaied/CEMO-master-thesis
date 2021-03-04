@@ -1,0 +1,13 @@
+\chapter{Results}
+\label{chp:4}
+
+\section{Descriptive statistics}
+
+\section{Correlation matrices}
+
+\subsection{Across countries}
+
+\section{Examination of measurement models}
+
+\section{Address the research question}
+

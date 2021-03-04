@@ -1,0 +1,2548 @@
+Mplus VERSION 8.3
+MUTHEN & MUTHEN
+02/27/2021   7:31 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE:
+      M2 Full model
+
+
+  DATA:
+      file = "C:\Users\Mudar Saied\implist.dat";
+
+      type = imputation;
+
+
+  VARIABLE:
+     names =
+          CNTRYID CNTSCHID CNTSTUID W_STU READ
+          ! Demographic control var
+          FEMALE IMMI1GEN IMMI2GEN ESCS
+          ! ICT Use at Home
+          ICTLEIS ICTSCHWK USESCH
+          ! Reading Mediation
+          READJOY READCOMP  READEASE
+          ! School Weight
+          W_SCH
+          ! School ICT Policy
+          Q05HA
+          ;
+
+      usevar =
+          ! Outcome
+          READ
+          ! Student-level
+          FEMALE IMMI1GEN IMMI2GEN ESCS   ! Demographic controls
+              ! ICT-related var
+          ICTLEIS ICTSCHWK USESCH         ! ICT use at home/at school
+              ! Mediators
+          READJOY READCOMP READEASE       ! Reading affect
+          ! School-level
+          Q05HA                           ! School ICT policy
+      ;
+
+      within =
+          FEMALE IMMI1GEN IMMI2GEN        ! Demographic controls
+          READJOY READCOMP READEASE       ! Reading affect
+      ;
+
+      between =
+          Q05HA                           ! School ICT policy
+      ;
+
+      cluster = CNTSCHID;                 ! Cluster by school ID
+
+      missing = all (-99);
+
+      weight = W_STU;                     ! Student weight
+      wtscale = cluster;                  ! Scale L1 weight to cluster
+      bweight = W_SCH;                    ! School weight
+      bwtscale = sample;                  ! Scale L2 weight to sample
+
+
+  ANALYSIS:
+      processors = 8;
+
+      type = twolevel;
+
+
+  MODEL:
+
+  %Within%
+  ! SES onto X vars
+      ICTLEIS on ESCS FEMALE;
+      ICTSCHWK on ESCS FEMALE;
+      USESCH on ESCS FEMALE;
+
+      ! Mediators
+          ! Enjoyment of reading
+      READJOY on ICTLEIS ICTSCHWK USESCH
+                 FEMALE ESCS IMMI1GEN IMMI2GEN;
+
+
+          ! Perception of reading competence
+           READCOMP on ICTLEIS ICTSCHWK USESCH
+                       FEMALE ESCS IMMI1GEN IMMI2GEN;
+
+          ! Perception of reading difficulty
+      READEASE on ICTLEIS ICTSCHWK USESCH
+                  FEMALE ESCS IMMI1GEN IMMI2GEN;
+
+      ! Total effect
+      READ on                             ! Y
+          ICTLEIS ICTSCHWK USESCH         ! X
+          READJOY READCOMP READEASE       ! M
+          FEMALE ESCS                     ! controls
+      ;
+
+      ! Correlations
+
+      ! Correlation amongst X
+      ICTLEIS with ICTSCHWK;
+      ICTSCHWK with USESCH;
+      ICTLEIS with USESCH;
+
+      ! Correlation amongst M
+      READJOY with READCOMP;
+      READCOMP with READEASE;
+      READEASE with READJOY;
+
+      ! Correlation M with Y
+      READJOY with READ;
+
+  %Between%
+
+  ! Measurement part
+
+      ! Lat var: School ICT policy
+      !SCHPOL by SC156Q01 SC156Q02 SC156Q05 SC156Q06;
+
+  ! Structural part
+
+      ! Total effect
+      READ on
+          Q05HA                           ! School ICT policy
+          ICTLEIS ICTSCHWK  USESCH        ! From L1 <- contextual effect
+          ESCS                            ! School average SES
+      ;
+
+
+  MODEL INDIRECT:
+
+      READ ind ICTLEIS;
+      READ ind ICTSCHWK;
+      REad ind USESCH;
+
+
+  OUTPUT:
+
+      mod (all);
+
+
+
+*** WARNING in MODEL command
+  In the MODEL command, the following variable is an x-variable on the BETWEEN
+  level and a y-variable on the WITHIN level.  This variable will be treated
+  as a y-variable on both levels:  ICTLEIS
+*** WARNING in MODEL command
+  In the MODEL command, the following variable is an x-variable on the BETWEEN
+  level and a y-variable on the WITHIN level.  This variable will be treated
+  as a y-variable on both levels:  ICTSCHWK
+*** WARNING in MODEL command
+  In the MODEL command, the following variable is an x-variable on the BETWEEN
+  level and a y-variable on the WITHIN level.  This variable will be treated
+  as a y-variable on both levels:  USESCH
+*** WARNING in OUTPUT command
+  MODINDICES option is not available for multiple imputation.
+  Request for MODINDICES is ignored.
+   4 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+
+M2 Full model
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Average number of observations                               18810
+
+Number of replications
+    Requested                                                   10
+    Completed                                                    8
+
+Number of dependent variables                                    7
+Number of independent variables                                  5
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Continuous
+   READ        ICTLEIS     ICTSCHWK    USESCH      READJOY     READCOMP
+   READEASE
+
+Observed independent variables
+   FEMALE      IMMI1GEN    IMMI2GEN    ESCS        Q05HA
+
+Variables with special functions
+
+  Cluster variable      CNTSCHID
+  Weight variable (cluster-size scaling)
+    W_STU
+  Between weight variable (sample-size scaling)
+    W_SCH
+
+  Within variables
+   FEMALE      IMMI1GEN    IMMI2GEN    READJOY     READCOMP    READEASE
+
+  Between variables
+   Q05HA
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                   100
+Convergence criterion                                    0.100D-05
+Maximum number of EM iterations                                500
+Convergence criteria for the EM algorithm
+  Loglikelihood change                                   0.100D-02
+  Relative loglikelihood change                          0.100D-05
+  Derivative                                             0.100D-03
+Minimum variance                                         0.100D-03
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+
+Input data file(s)
+  Multiple data files from
+    C:\Users\Mudar Saied\implist.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA FOR THE FIRST DATA SET
+
+     Number of missing data patterns             1
+     Number of clusters                        785
+
+     Average cluster size       23.962
+
+     Estimated Intraclass Correlations for the Y Variables
+
+                Intraclass              Intraclass              Intraclass
+     Variable  Correlation   Variable  Correlation   Variable  Correlation
+
+     READ         0.077      ICTLEIS      0.007      ICTSCHWK     0.078
+     USESCH       0.078      READJOY      0.000      READCOMP     0.000
+     READEASE     0.000
+
+
+
+SUMMARY OF MISSING DATA PATTERNS FOR THE FIRST DATA SET
+
+
+     MISSING DATA PATTERNS (x = not missing)
+
+           1
+ READ      x
+ ICTLEIS   x
+ ICTSCHWK  x
+ USESCH    x
+ READJOY   x
+ READCOMP  x
+ READEASE  x
+ FEMALE    x
+ IMMI1GEN  x
+ IMMI2GEN  x
+ ESCS      x
+ Q05HA     x
+
+
+     MISSING DATA PATTERN FREQUENCIES
+
+    Pattern   Frequency
+          1       18810
+
+
+COVARIANCE COVERAGE OF DATA FOR THE FIRST DATA SET
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ           1.000
+ ICTLEIS        1.000         1.000
+ ICTSCHWK       1.000         1.000         1.000
+ USESCH         1.000         1.000         1.000         1.000
+ READJOY        1.000         1.000         1.000         1.000         1.000
+ READCOMP       1.000         1.000         1.000         1.000         1.000
+ READEASE       1.000         1.000         1.000         1.000         1.000
+ FEMALE         1.000         1.000         1.000         1.000         1.000
+ IMMI1GEN       1.000         1.000         1.000         1.000         1.000
+ IMMI2GEN       1.000         1.000         1.000         1.000         1.000
+ ESCS           1.000         1.000         1.000         1.000         1.000
+ Q05HA          1.000         1.000         1.000         1.000         1.000
+
+
+           Covariance Coverage
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP       1.000
+ READEASE       1.000         1.000
+ FEMALE         1.000         1.000         1.000
+ IMMI1GEN       1.000         1.000         1.000         1.000
+ IMMI2GEN       1.000         1.000         1.000         1.000         1.000
+ ESCS           1.000         1.000         1.000         1.000         1.000
+ Q05HA          1.000         1.000         1.000         1.000         1.000
+
+
+           Covariance Coverage
+              ESCS          Q05HA
+              ________      ________
+ ESCS           1.000
+ Q05HA          1.000         1.000
+
+
+SAMPLE STATISTICS
+
+NOTE:  The sample statistics for within and between refer to the
+       maximum-likelihood estimated within and between covariance
+       matrices, respectively.
+
+NOTE:  These are average results over 10 data sets.
+
+
+     ESTIMATED SAMPLE STATISTICS FOR WITHIN
+
+
+           Means
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000        -0.329
+
+
+           Means
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                0.234         0.072         0.496         0.058         0.078
+
+
+           Means
+              ESCS          Q05HA
+              ________      ________
+                0.000         0.000
+
+
+           Covariances
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ        9166.357
+ ICTLEIS       -7.071         0.766
+ ICTSCHWK     -13.722         0.363         0.766
+ USESCH       -13.051         0.295         0.409         0.599
+ READJOY       34.054        -0.083         0.021        -0.026         1.190
+ READCOMP      37.399         0.057         0.028         0.012         0.366
+ READEASE      34.965         0.001        -0.053        -0.047         0.234
+ FEMALE         8.908        -0.101        -0.024        -0.032         0.131
+ IMMI1GEN      -5.056         0.001         0.016         0.011         0.017
+ IMMI2GEN      -3.410         0.001         0.017         0.005         0.009
+ ESCS          20.375         0.042         0.042         0.033         0.132
+ Q05HA          0.000         0.000         0.000         0.000         0.000
+
+
+           Covariances
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP       1.026
+ READEASE       0.538         1.071
+ FEMALE         0.019        -0.018         0.250
+ IMMI1GEN      -0.007        -0.016        -0.002         0.055
+ IMMI2GEN       0.005        -0.010         0.000        -0.004         0.072
+ ESCS           0.140         0.126        -0.001        -0.035        -0.037
+ Q05HA          0.000         0.000         0.000         0.000         0.000
+
+
+           Covariances
+              ESCS          Q05HA
+              ________      ________
+ ESCS           0.613
+ Q05HA          0.000         0.000
+
+
+           Correlations
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ           1.000
+ ICTLEIS       -0.084         1.000
+ ICTSCHWK      -0.164         0.474         1.000
+ USESCH        -0.176         0.436         0.604         1.000
+ READJOY        0.326        -0.087         0.022        -0.030         1.000
+ READCOMP       0.386         0.065         0.031         0.015         0.331
+ READEASE       0.353         0.001        -0.058        -0.059         0.207
+ FEMALE         0.186        -0.230        -0.054        -0.082         0.240
+ IMMI1GEN      -0.226         0.006         0.076         0.060         0.066
+ IMMI2GEN      -0.133         0.003         0.071         0.026         0.031
+ ESCS           0.272         0.061         0.062         0.055         0.155
+ Q05HA          0.000         0.000         0.000         0.000         0.000
+
+
+           Correlations
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP       1.000
+ READEASE       0.514         1.000
+ FEMALE         0.037        -0.035         1.000
+ IMMI1GEN      -0.030        -0.065        -0.018         1.000
+ IMMI2GEN       0.018        -0.035        -0.002        -0.070         1.000
+ ESCS           0.176         0.155        -0.003        -0.194        -0.178
+ Q05HA          0.000         0.000         0.000         0.000         0.000
+
+
+           Correlations
+              ESCS          Q05HA
+              ________      ________
+ ESCS           1.000
+ Q05HA          0.000         0.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR BETWEEN
+
+
+           Means
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+              508.451         0.022         0.043         0.410         0.000
+
+
+           Means
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           Means
+              ESCS          Q05HA
+              ________      ________
+                0.384         1.517
+
+
+           Covariances
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ         764.797
+ ICTLEIS       -0.494         0.005
+ ICTSCHWK      -1.029         0.014         0.065
+ USESCH        -1.680         0.012         0.047         0.050
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           3.561         0.007         0.033         0.020         0.000
+ Q05HA         -2.346        -0.007        -0.011        -0.009         0.000
+
+
+           Covariances
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP       0.000
+ READEASE       0.000         0.000
+ FEMALE         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+ Q05HA          0.000         0.000         0.000         0.000         0.000
+
+
+           Covariances
+              ESCS          Q05HA
+              ________      ________
+ ESCS           0.071
+ Q05HA         -0.023         0.249
+
+
+           Correlations
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ           1.000
+ ICTLEIS       -0.243         1.000
+ ICTSCHWK      -0.146         0.729         1.000
+ USESCH        -0.273         0.732         0.837         1.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.484         0.350         0.493         0.332         0.000
+ Q05HA         -0.170        -0.182        -0.086        -0.078         0.000
+
+
+           Correlations
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP       0.000
+ READEASE       0.000         0.000
+ FEMALE         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+ Q05HA          0.000         0.000         0.000         0.000         0.000
+
+
+           Correlations
+              ESCS          Q05HA
+              ________      ________
+ ESCS           1.000
+ Q05HA         -0.174         1.000
+
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       65
+
+Loglikelihood
+
+    H0 Value
+
+        Mean                           -271231.887
+        Std Dev                             99.539
+        Number of successful computations        8
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000      -271463.446    -271382.498
+           0.980       1.000      -271436.311    -271382.498
+           0.950       1.000      -271395.620    -271382.498
+           0.900       0.875      -271359.457    -271382.498
+           0.800       0.625      -271315.660    -271382.498
+           0.700       0.625      -271284.086    -271328.129
+           0.500       0.625      -271231.887    -271226.230
+           0.300       0.375      -271179.689    -271199.094
+           0.200       0.125      -271148.115    -271174.972
+           0.100       0.125      -271104.318    -271149.557
+           0.050       0.125      -271068.155    -271149.557
+           0.020       0.000      -271027.464    -271149.557
+           0.010       0.000      -271000.329    -271149.557
+
+    H1 Value
+
+        Mean                           -270827.115
+        Std Dev                             96.908
+        Number of successful computations        8
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000      -271052.552    -270971.778
+           0.980       1.000      -271026.135    -270971.778
+           0.950       1.000      -270986.519    -270971.778
+           0.900       0.875      -270951.312    -270971.778
+           0.800       0.625      -270908.673    -270971.778
+           0.700       0.625      -270877.934    -270920.162
+           0.500       0.500      -270827.115    -270854.821
+           0.300       0.500      -270776.296    -270774.548
+           0.200       0.250      -270745.557    -270766.709
+           0.100       0.125      -270702.918    -270737.148
+           0.050       0.000      -270667.711    -270737.148
+           0.020       0.000      -270628.095    -270737.148
+           0.010       0.000      -270601.678    -270737.148
+
+Information Criteria
+
+    Akaike (AIC)
+
+        Mean                            542593.775
+        Std Dev                            199.078
+        Number of successful computations        8
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000       542130.659     542264.612
+           0.980       1.000       542184.927     542264.612
+           0.950       0.875       542266.311     542264.612
+           0.900       0.875       542338.636     542264.612
+           0.800       0.875       542426.231     542264.612
+           0.700       0.625       542489.378     542429.115
+           0.500       0.375       542593.775     542528.187
+           0.300       0.375       542698.172     542582.459
+           0.200       0.375       542761.319     542784.630
+           0.100       0.125       542848.914     542786.257
+           0.050       0.000       542921.239     542786.257
+           0.020       0.000       543002.622     542786.257
+           0.010       0.000       543056.891     542786.257
+
+    Bayesian (BIC)
+
+        Mean                            543103.514
+        Std Dev                            199.078
+        Number of successful computations        8
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000       542640.398     542774.351
+           0.980       1.000       542694.667     542774.351
+           0.950       0.875       542776.050     542774.351
+           0.900       0.875       542848.375     542774.351
+           0.800       0.875       542935.970     542774.351
+           0.700       0.625       542999.118     542938.854
+           0.500       0.375       543103.514     543037.927
+           0.300       0.375       543207.911     543092.199
+           0.200       0.375       543271.059     543294.369
+           0.100       0.125       543358.653     543295.997
+           0.050       0.000       543430.978     543295.997
+           0.020       0.000       543512.362     543295.997
+           0.010       0.000       543566.631     543295.997
+
+    Sample-Size Adjusted BIC (n* = (n + 2) / 24)
+
+        Mean                            542896.948
+        Std Dev                            199.078
+        Number of successful computations        8
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000       542433.831     542567.784
+           0.980       1.000       542488.100     542567.784
+           0.950       0.875       542569.484     542567.784
+           0.900       0.875       542641.809     542567.784
+           0.800       0.875       542729.403     542567.784
+           0.700       0.625       542792.551     542732.287
+           0.500       0.375       542896.948     542831.360
+           0.300       0.375       543001.344     542885.632
+           0.200       0.375       543064.492     543087.802
+           0.100       0.125       543152.087     543089.430
+           0.050       0.000       543224.412     543089.430
+           0.020       0.000       543305.795     543089.430
+           0.010       0.000       543360.064     543089.430
+
+Chi-Square Test of Model Fit
+
+        Degrees of freedom                      16
+
+        Mean                               541.230
+        Std Dev                             24.559
+        Number of successful computations        8
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            5.812        498.383
+           0.980       1.000            6.614        498.383
+           0.950       1.000            7.962        498.383
+           0.900       1.000            9.312        498.383
+           0.800       1.000           11.152        498.383
+           0.700       1.000           12.624        519.889
+           0.500       1.000           15.338        537.628
+           0.300       1.000           18.418        543.374
+           0.200       1.000           20.465        550.419
+           0.100       1.000           23.542        562.787
+           0.050       1.000           26.296        562.787
+           0.020       1.000           29.633        562.787
+           0.010       1.000           32.000        562.787
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+        Mean                                 0.042
+        Std Dev                              0.001
+        Number of successful computations        8
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            0.039          0.040
+           0.980       1.000            0.040          0.040
+           0.950       0.875            0.040          0.040
+           0.900       0.875            0.041          0.040
+           0.800       0.750            0.041          0.040
+           0.700       0.750            0.041          0.041
+           0.500       0.500            0.042          0.042
+           0.300       0.250            0.042          0.042
+           0.200       0.250            0.043          0.042
+           0.100       0.125            0.043          0.043
+           0.050       0.125            0.043          0.043
+           0.020       0.000            0.044          0.043
+           0.010       0.000            0.044          0.043
+
+CFI/TLI
+
+    CFI
+
+        Mean                                 0.972
+        Std Dev                              0.001
+        Number of successful computations        8
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            0.969          0.970
+           0.980       1.000            0.970          0.970
+           0.950       0.875            0.970          0.970
+           0.900       0.875            0.971          0.970
+           0.800       0.875            0.971          0.970
+           0.700       0.875            0.972          0.972
+           0.500       0.500            0.972          0.972
+           0.300       0.250            0.973          0.972
+           0.200       0.250            0.974          0.972
+           0.100       0.125            0.974          0.974
+           0.050       0.125            0.975          0.974
+           0.020       0.000            0.975          0.974
+           0.010       0.000            0.976          0.974
+
+    TLI
+
+        Mean                                 0.891
+        Std Dev                              0.005
+        Number of successful computations        8
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            0.879          0.881
+           0.980       1.000            0.880          0.881
+           0.950       0.875            0.882          0.881
+           0.900       0.875            0.884          0.881
+           0.800       0.875            0.887          0.881
+           0.700       0.875            0.889          0.889
+           0.500       0.500            0.891          0.890
+           0.300       0.250            0.894          0.892
+           0.200       0.250            0.896          0.892
+           0.100       0.125            0.898          0.896
+           0.050       0.125            0.900          0.896
+           0.020       0.000            0.903          0.896
+           0.010       0.000            0.904          0.896
+
+SRMR (Standardized Root Mean Square Residual) for the WITHIN level
+
+        Mean                                 0.020
+        Std Dev                              0.001
+        Number of successful computations        8
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            0.018          0.019
+           0.980       1.000            0.019          0.019
+           0.950       1.000            0.019          0.019
+           0.900       0.875            0.019          0.019
+           0.800       0.750            0.020          0.019
+           0.700       0.500            0.020          0.020
+           0.500       0.500            0.020          0.020
+           0.300       0.375            0.021          0.020
+           0.200       0.250            0.021          0.021
+           0.100       0.125            0.021          0.021
+           0.050       0.000            0.022          0.021
+           0.020       0.000            0.022          0.021
+           0.010       0.000            0.022          0.021
+
+SRMR (Standardized Root Mean Square Residual) for the BETWEEN level
+
+        Mean                                 0.360
+        Std Dev                              0.012
+        Number of successful computations        8
+
+             Proportions                   Percentiles
+        Expected    Observed         Expected       Observed
+           0.990       1.000            0.332          0.345
+           0.980       1.000            0.335          0.345
+           0.950       1.000            0.340          0.345
+           0.900       1.000            0.344          0.345
+           0.800       0.750            0.350          0.345
+           0.700       0.625            0.354          0.349
+           0.500       0.375            0.360          0.355
+           0.300       0.250            0.367          0.360
+           0.200       0.125            0.371          0.365
+           0.100       0.125            0.376          0.369
+           0.050       0.125            0.381          0.369
+           0.020       0.125            0.386          0.369
+           0.010       0.000            0.389          0.369
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+Within Level
+
+ ICTLEIS    ON
+    ESCS               0.068      0.012      5.740      0.000      0.112
+    FEMALE            -0.403      0.015    -26.496      0.000      0.069
+
+ ICTSCHWK   ON
+    ESCS               0.080      0.014      5.786      0.000      0.321
+    FEMALE            -0.093      0.017     -5.626      0.000      0.127
+
+ USESCH     ON
+    ESCS               0.059      0.012      5.112      0.000      0.267
+    FEMALE            -0.127      0.015     -8.443      0.000      0.133
+
+ READJOY    ON
+    ICTLEIS           -0.071      0.013     -5.284      0.000      0.088
+    ICTSCHWK           0.075      0.016      4.840      0.000      0.034
+    USESCH            -0.060      0.017     -3.513      0.000      0.117
+    FEMALE             0.501      0.019     26.291      0.000      0.013
+    ESCS               0.266      0.013     20.248      0.000      0.036
+    IMMI1GEN           0.496      0.037     13.304      0.000      0.065
+    IMMI2GEN           0.312      0.025     12.558      0.000      0.060
+
+ READCOMP   ON
+    ICTLEIS            0.093      0.015      6.273      0.000      0.135
+    ICTSCHWK          -0.006      0.015     -0.383      0.702      0.249
+    USESCH            -0.026      0.017     -1.501      0.133      0.163
+    FEMALE             0.111      0.019      5.920      0.000      0.047
+    ESCS               0.241      0.013     18.377      0.000      0.061
+    IMMI1GEN           0.047      0.042      1.111      0.266      0.064
+    IMMI2GEN           0.193      0.039      4.999      0.000      0.107
+
+ READEASE   ON
+    ICTLEIS            0.035      0.016      2.278      0.023      0.217
+    ICTSCHWK          -0.057      0.018     -3.244      0.001      0.286
+    USESCH            -0.067      0.020     -3.420      0.001      0.184
+    FEMALE            -0.072      0.019     -3.779      0.000      0.028
+    ESCS               0.201      0.012     16.212      0.000      0.033
+    IMMI1GEN          -0.141      0.044     -3.215      0.001      0.121
+    IMMI2GEN          -0.027      0.036     -0.752      0.452      0.039
+
+ READ       ON
+    ICTLEIS          -12.398      2.743     -4.520      0.000      0.112
+    ICTSCHWK           2.225      2.904      0.766      0.444      0.023
+    USESCH           -19.963      2.904     -6.875      0.000      0.104
+    READJOY         -139.676     12.676    -11.019      0.000      0.039
+    READCOMP          65.730      4.441     14.801      0.000      0.046
+    READEASE          25.849      2.194     11.782      0.000      0.111
+    FEMALE            98.660      6.907     14.283      0.000      0.027
+    ESCS              44.647      2.936     15.206      0.000      0.040
+
+ ICTLEIS  WITH
+    ICTSCHWK           0.357      0.018     19.829      0.000      0.044
+    USESCH             0.287      0.015     18.837      0.000      0.037
+
+ ICTSCHWK WITH
+    USESCH             0.413      0.016     26.449      0.000      0.134
+
+ READJOY  WITH
+    READCOMP           0.324      0.011     28.561      0.000      0.037
+    READEASE           0.222      0.011     20.265      0.000      0.084
+    READ             149.970     12.222     12.271      0.000      0.040
+
+ READCOMP WITH
+    READEASE           0.511      0.011     44.961      0.000      0.049
+
+ Intercepts
+    READJOY           -0.646      0.014    -45.362      0.000      0.018
+    READCOMP           0.177      0.014     12.459      0.000      0.057
+    READEASE           0.118      0.014      8.686      0.000      0.038
+
+ Residual Variances
+    READ           29404.986   3791.486      7.756      0.000      0.041
+    ICTLEIS            0.728      0.027     27.354      0.000      0.010
+    ICTSCHWK           0.767      0.021     36.636      0.000      0.150
+    USESCH             0.601      0.017     36.313      0.000      0.051
+    READJOY            1.070      0.015     70.766      0.000      0.038
+    READCOMP           0.983      0.013     75.198      0.000      0.040
+    READEASE           1.035      0.017     61.375      0.000      0.064
+
+Between Level
+
+ READ       ON
+    Q05HA             -5.157      2.459     -2.097      0.036      0.143
+    ICTLEIS         -482.229   1151.143     -0.419      0.675      0.072
+    ICTSCHWK         -30.185      8.476     -3.561      0.000      0.121
+    USESCH           -47.541      9.972     -4.767      0.000      0.138
+    ESCS              66.341      6.131     10.820      0.000      0.046
+
+ Means
+    ICTLEIS            0.221      0.013     16.431      0.000      0.078
+    ICTSCHWK           0.088      0.018      4.942      0.000      0.075
+    USESCH             0.472      0.015     30.802      0.000      0.125
+
+ Intercepts
+    READ             506.585    255.183      1.985      0.047      0.070
+
+ Variances
+    ICTLEIS            0.001      0.001      0.603      0.546      0.088
+    ICTSCHWK           0.044      0.005      8.949      0.000      0.093
+    USESCH             0.031      0.004      8.512      0.000      0.119
+
+ Residual Variances
+    READ             218.441    439.410      0.497      0.619      0.081
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Average Condition Number for the Information Matrix     -0.933E-06
+       (ratio of smallest to largest eigenvalue)
+
+
+TOTAL, TOTAL INDIRECT, SPECIFIC INDIRECT, AND DIRECT EFFECTS
+
+
+                                                    Two-Tailed   Rate of
+                    Estimate       S.E.  Est./S.E.    P-Value    Missing
+
+WITHIN
+
+Effects from ICTLEIS to READ
+
+  Total                4.578      1.336      3.426      0.001      0.174
+  Total indirect      16.976      2.527      6.717      0.000      0.130
+
+  Specific indirect 1
+    READ
+    READJOY
+    ICTLEIS            9.965      2.067      4.821      0.000      0.098
+
+  Specific indirect 2
+    READ
+    READCOMP
+    ICTLEIS            6.096      1.073      5.682      0.000      0.096
+
+  Specific indirect 3
+    READ
+    READEASE
+    ICTLEIS            0.915      0.412      2.220      0.026      0.196
+
+  Direct
+    READ
+    ICTLEIS          -12.398      2.743     -4.520      0.000      0.112
+
+
+Effects from ICTSCHWK to READ
+
+  Total              -10.172      1.275     -7.980      0.000      0.111
+  Total indirect     -12.397      2.505     -4.948      0.000      0.040
+
+  Specific indirect 1
+    READ
+    READJOY
+    ICTSCHWK         -10.546      2.420     -4.358      0.000      0.039
+
+  Specific indirect 2
+    READ
+    READCOMP
+    ICTSCHWK          -0.377      0.993     -0.380      0.704      0.244
+
+  Specific indirect 3
+    READ
+    READEASE
+    ICTSCHWK          -1.473      0.477     -3.090      0.002      0.291
+
+  Direct
+    READ
+    ICTSCHWK           2.225      2.904      0.766      0.444      0.023
+
+
+Effects from USESCH to READ
+
+  Total              -15.024      1.556     -9.654      0.000      0.237
+  Total indirect       4.939      2.358      2.094      0.036      0.081
+
+  Specific indirect 1
+    READ
+    READJOY
+    USESCH             8.389      2.413      3.476      0.001      0.094
+
+  Specific indirect 2
+    READ
+    READCOMP
+    USESCH            -1.719      1.156     -1.487      0.137      0.171
+
+  Specific indirect 3
+    READ
+    READEASE
+    USESCH            -1.731      0.533     -3.247      0.001      0.181
+
+  Direct
+    READ
+    USESCH           -19.963      2.904     -6.875      0.000      0.104
+
+
+BETWEEN
+
+Effects from ICTLEIS to READ
+
+  Total             -482.229   1151.143     -0.419      0.675      0.072
+  Total indirect       0.000      0.000    999.000      0.000      0.200
+
+  Direct
+    READ
+    ICTLEIS         -482.229   1151.143     -0.419      0.675      0.072
+
+
+Effects from ICTSCHWK to READ
+
+  Total              -30.185      8.476     -3.561      0.000      0.121
+  Total indirect       0.000      0.000    999.000      0.000      0.200
+
+  Direct
+    READ
+    ICTSCHWK         -30.185      8.476     -3.561      0.000      0.121
+
+
+Effects from USESCH to READ
+
+  Total              -47.541      9.972     -4.767      0.000      0.138
+  Total indirect       0.000      0.000    999.000      0.000      0.200
+
+  Direct
+    READ
+    USESCH           -47.541      9.972     -4.767      0.000      0.138
+
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR WITHIN
+
+
+           NU
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           NU
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           NU
+              ESCS
+              ________
+                    0
+
+
+           LAMBDA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ               0             0             0             0             0
+ ICTLEIS            0             0             0             0             0
+ ICTSCHWK           0             0             0             0             0
+ USESCH             0             0             0             0             0
+ READJOY            0             0             0             0             0
+ READCOMP           0             0             0             0             0
+ READEASE           0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           LAMBDA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READ               0             0             0             0             0
+ ICTLEIS            0             0             0             0             0
+ ICTSCHWK           0             0             0             0             0
+ USESCH             0             0             0             0             0
+ READJOY            0             0             0             0             0
+ READCOMP           0             0             0             0             0
+ READEASE           0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           LAMBDA
+              ESCS
+              ________
+ READ               0
+ ICTLEIS            0
+ ICTSCHWK           0
+ USESCH             0
+ READJOY            0
+ READCOMP           0
+ READEASE           0
+ FEMALE             0
+ IMMI1GEN           0
+ IMMI2GEN           0
+ ESCS               0
+
+
+           THETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ               0
+ ICTLEIS            0             0
+ ICTSCHWK           0             0             0
+ USESCH             0             0             0             0
+ READJOY            0             0             0             0             0
+ READCOMP           0             0             0             0             0
+ READEASE           0             0             0             0             0
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           THETA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP           0
+ READEASE           0             0
+ FEMALE             0             0             0
+ IMMI1GEN           0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           THETA
+              ESCS
+              ________
+ ESCS               0
+
+
+           ALPHA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+                    0             0             0             0             1
+
+
+           ALPHA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                    2             3             0             0             0
+
+
+           ALPHA
+              ESCS
+              ________
+                    0
+
+
+           BETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ               0             4             5             6             7
+ ICTLEIS            0             0             0             0             0
+ ICTSCHWK           0             0             0             0             0
+ USESCH             0             0             0             0             0
+ READJOY            0            18            19            20             0
+ READCOMP           0            25            26            27             0
+ READEASE           0            32            33            34             0
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           BETA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READ               8             9            10             0             0
+ ICTLEIS            0             0            12             0             0
+ ICTSCHWK           0             0            14             0             0
+ USESCH             0             0            16             0             0
+ READJOY            0             0            21            22            23
+ READCOMP           0             0            28            29            30
+ READEASE           0             0            35            36            37
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           BETA
+              ESCS
+              ________
+ READ              11
+ ICTLEIS           13
+ ICTSCHWK          15
+ USESCH            17
+ READJOY           24
+ READCOMP          31
+ READEASE          38
+ FEMALE             0
+ IMMI1GEN           0
+ IMMI2GEN           0
+ ESCS               0
+
+
+           PSI
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ              39
+ ICTLEIS            0            40
+ ICTSCHWK           0            41            42
+ USESCH             0            43            44            45
+ READJOY           46             0             0             0            47
+ READCOMP           0             0             0             0            48
+ READEASE           0             0             0             0            50
+ FEMALE             0             0             0             0             0
+ IMMI1GEN           0             0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           PSI
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP          49
+ READEASE          51            52
+ FEMALE             0             0             0
+ IMMI1GEN           0             0             0             0
+ IMMI2GEN           0             0             0             0             0
+ ESCS               0             0             0             0             0
+
+
+           PSI
+              ESCS
+              ________
+ ESCS               0
+
+
+     PARAMETER SPECIFICATION FOR BETWEEN
+
+
+           NU
+              READ          ICTLEIS       ICTSCHWK      USESCH        ESCS
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           NU
+              Q05HA
+              ________
+                    0
+
+
+           LAMBDA
+              READ          ICTLEIS       ICTSCHWK      USESCH        ESCS
+              ________      ________      ________      ________      ________
+ READ               0             0             0             0             0
+ ICTLEIS            0             0             0             0             0
+ ICTSCHWK           0             0             0             0             0
+ USESCH             0             0             0             0             0
+ ESCS               0             0             0             0             0
+ Q05HA              0             0             0             0             0
+
+
+           LAMBDA
+              Q05HA
+              ________
+ READ               0
+ ICTLEIS            0
+ ICTSCHWK           0
+ USESCH             0
+ ESCS               0
+ Q05HA              0
+
+
+           THETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        ESCS
+              ________      ________      ________      ________      ________
+ READ               0
+ ICTLEIS            0             0
+ ICTSCHWK           0             0             0
+ USESCH             0             0             0             0
+ ESCS               0             0             0             0             0
+ Q05HA              0             0             0             0             0
+
+
+           THETA
+              Q05HA
+              ________
+ Q05HA              0
+
+
+           ALPHA
+              READ          ICTLEIS       ICTSCHWK      USESCH        ESCS
+              ________      ________      ________      ________      ________
+                   53            54            55            56             0
+
+
+           ALPHA
+              Q05HA
+              ________
+                    0
+
+
+           BETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        ESCS
+              ________      ________      ________      ________      ________
+ READ               0            57            58            59            60
+ ICTLEIS            0             0             0             0             0
+ ICTSCHWK           0             0             0             0             0
+ USESCH             0             0             0             0             0
+ ESCS               0             0             0             0             0
+ Q05HA              0             0             0             0             0
+
+
+           BETA
+              Q05HA
+              ________
+ READ              61
+ ICTLEIS            0
+ ICTSCHWK           0
+ USESCH             0
+ ESCS               0
+ Q05HA              0
+
+
+           PSI
+              READ          ICTLEIS       ICTSCHWK      USESCH        ESCS
+              ________      ________      ________      ________      ________
+ READ              62
+ ICTLEIS            0            63
+ ICTSCHWK           0             0            64
+ USESCH             0             0             0            65
+ ESCS               0             0             0             0             0
+ Q05HA              0             0             0             0             0
+
+
+           PSI
+              Q05HA
+              ________
+ Q05HA              0
+
+
+     STARTING VALUES FOR WITHIN
+
+
+           NU
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              ESCS
+              ________
+                0.000
+
+
+           LAMBDA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ           1.000         0.000         0.000         0.000         0.000
+ ICTLEIS        0.000         1.000         0.000         0.000         0.000
+ ICTSCHWK       0.000         0.000         1.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         1.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         1.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READ           0.000         0.000         0.000         0.000         0.000
+ ICTLEIS        0.000         0.000         0.000         0.000         0.000
+ ICTSCHWK       0.000         0.000         0.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       1.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         1.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         1.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         1.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         1.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              ESCS
+              ________
+ READ           0.000
+ ICTLEIS        0.000
+ ICTSCHWK       0.000
+ USESCH         0.000
+ READJOY        0.000
+ READCOMP       0.000
+ READEASE       0.000
+ FEMALE         0.000
+ IMMI1GEN       0.000
+ IMMI2GEN       0.000
+ ESCS           1.000
+
+
+           THETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ           0.000
+ ICTLEIS        0.000         0.000
+ ICTSCHWK       0.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP       0.000
+ READEASE       0.000         0.000
+ FEMALE         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              ESCS
+              ________
+ ESCS           0.000
+
+
+           ALPHA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000        -0.319
+
+
+           ALPHA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+                0.223         0.073         0.000         0.000         0.000
+
+
+           ALPHA
+              ESCS
+              ________
+                0.000
+
+
+           BETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ           0.000         0.000         0.000         0.000         0.000
+ ICTLEIS        0.000         0.000         0.000         0.000         0.000
+ ICTSCHWK       0.000         0.000         0.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READ           0.000         0.000         0.000         0.000         0.000
+ ICTLEIS        0.000         0.000         0.000         0.000         0.000
+ ICTSCHWK       0.000         0.000         0.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         0.000         0.000
+ READJOY        0.000         0.000         0.000         0.000         0.000
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              ESCS
+              ________
+ READ           0.000
+ ICTLEIS        0.000
+ ICTSCHWK       0.000
+ USESCH         0.000
+ READJOY        0.000
+ READCOMP       0.000
+ READEASE       0.000
+ FEMALE         0.000
+ IMMI1GEN       0.000
+ IMMI2GEN       0.000
+ ESCS           0.000
+
+
+           PSI
+              READ          ICTLEIS       ICTSCHWK      USESCH        READJOY
+              ________      ________      ________      ________      ________
+ READ        5070.175
+ ICTLEIS        0.000         0.384
+ ICTSCHWK       0.000         0.000         0.420
+ USESCH         0.000         0.000         0.000         0.312
+ READJOY        0.000         0.000         0.000         0.000         0.579
+ READCOMP       0.000         0.000         0.000         0.000         0.000
+ READEASE       0.000         0.000         0.000         0.000         0.000
+ FEMALE         0.000         0.000         0.000         0.000         0.000
+ IMMI1GEN       0.000         0.000         0.000         0.000         0.000
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              READCOMP      READEASE      FEMALE        IMMI1GEN      IMMI2GEN
+              ________      ________      ________      ________      ________
+ READCOMP       0.496
+ READEASE       0.000         0.513
+ FEMALE         0.000         0.000         0.125
+ IMMI1GEN       0.000         0.000         0.000         0.025
+ IMMI2GEN       0.000         0.000         0.000         0.000         0.047
+ ESCS           0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              ESCS
+              ________
+ ESCS           0.354
+
+
+     STARTING VALUES FOR BETWEEN
+
+
+           NU
+              READ          ICTLEIS       ICTSCHWK      USESCH        ESCS
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              Q05HA
+              ________
+                0.000
+
+
+           LAMBDA
+              READ          ICTLEIS       ICTSCHWK      USESCH        ESCS
+              ________      ________      ________      ________      ________
+ READ           1.000         0.000         0.000         0.000         0.000
+ ICTLEIS        0.000         1.000         0.000         0.000         0.000
+ ICTSCHWK       0.000         0.000         1.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         1.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         1.000
+ Q05HA          0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              Q05HA
+              ________
+ READ           0.000
+ ICTLEIS        0.000
+ ICTSCHWK       0.000
+ USESCH         0.000
+ ESCS           0.000
+ Q05HA          1.000
+
+
+           THETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        ESCS
+              ________      ________      ________      ________      ________
+ READ           0.000
+ ICTLEIS        0.000         0.000
+ ICTSCHWK       0.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+ Q05HA          0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              Q05HA
+              ________
+ Q05HA          0.000
+
+
+           ALPHA
+              READ          ICTLEIS       ICTSCHWK      USESCH        ESCS
+              ________      ________      ________      ________      ________
+              503.099         0.027         0.041         0.431         0.000
+
+
+           ALPHA
+              Q05HA
+              ________
+                0.000
+
+
+           BETA
+              READ          ICTLEIS       ICTSCHWK      USESCH        ESCS
+              ________      ________      ________      ________      ________
+ READ           0.000         0.000         0.000         0.000         0.000
+ ICTLEIS        0.000         0.000         0.000         0.000         0.000
+ ICTSCHWK       0.000         0.000         0.000         0.000         0.000
+ USESCH         0.000         0.000         0.000         0.000         0.000
+ ESCS           0.000         0.000         0.000         0.000         0.000
+ Q05HA          0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              Q05HA
+              ________
+ READ           0.000
+ ICTLEIS        0.000
+ ICTSCHWK       0.000
+ USESCH         0.000
+ ESCS           0.000
+ Q05HA          0.000
+
+
+           PSI
+              READ          ICTLEIS       ICTSCHWK      USESCH        ESCS
+              ________      ________      ________      ________      ________
+ READ        5070.175
+ ICTLEIS        0.000         0.384
+ ICTSCHWK       0.000         0.000         0.420
+ USESCH         0.000         0.000         0.000         0.312
+ ESCS           0.000         0.000         0.000         0.000         0.354
+ Q05HA          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              Q05HA
+              ________
+ Q05HA          0.124
+
+
+THE FOLLOWING DATA SET(S) DID NOT RESULT IN A COMPLETED REPLICATION:
+
+  C:\Users\Mudar Saied\read5.dat
+  C:\Users\Mudar Saied\read6.dat
+
+
+TECHNICAL 9 OUTPUT
+
+
+Errors for replication with data file C:\Users\Mudar Saied\read1.dat:
+
+*** WARNING
+  One or more individual-level variables have no variation within a
+  cluster for the following clusters.
+
+     Variable   Cluster IDs with no within-cluster variation
+
+      FEMALE      20800205 75200066 20800338 75200103 24600141 24600066 24600192 24600205 20800280
+                  20800011
+      IMMI1GEN    20800205 75200066 20800338 75200103 20800188 24600141 24600066 75200021 75200109
+                  75200062 20800110 75200156 75200076 20800232 20800020 20800073 24600209 75200153
+                  75200006 24600039 75200029 24600192 24600205 75200202 20800134 20800280 20800111
+                  20800034 24600170 24600086 20800184 75200154 20800271 20800061 20800047 20800207
+                  75200075 20800011 20800244 75200008 20800159 20800165 20800092 24600210 75200077
+                  20800028 20800090 20800323 24600185 20800057 24600177 20800218 20800098 20800006
+                  20800190 20800051 24600004 24600026 20800260 20800107 20800163 20800070 20800236
+                  20800305 20800239 20800270 20800292 20800054 20800194 20800372 20800202 20800295
+                  20800186 20800118 20800017 20800158 75200152 20800337 20800063 24600145 20800312
+                  24600172 20800067 75200089 20800166 20800360 20800077 20800213 20800378 20800261
+                  20800178 20800275 24600155 20800048 20800315 20800149 20800324 20800018 20800278
+                  20800247 20800227 20800038 20800112 24600147 20800080 20800290 75200176 20800339
+                  20800087 20800182 20800306 20800238 20800150 20800240 20800156 20800119 20800122
+                  20800351 75200163 20800066 20800082 20800303 20800060 75200098 75200107 20800046
+                  75200137 20800251 20800341 20800059 20800296 20800259 20800368 20800154 20800241
+                  20800035 20800088 20800127 20800335 20800208 20800064 20800297 20800298 20800021
+                  20800162 75200047 24600137 20800216 20800016 20800308 20800044 20800055 20800121
+                  20800316 20800377 20800015 20800286 20800269 20800095 20800131 20800096 20800274
+                  20800327 20800196 20800140 20800342 20800169 20800359 75200135 24600204 20800246
+                  20800172 20800299 20800212 20800370 20800301 20800152 20800125 75200191 20800263
+                  24600052 20800268 24600073 75200046 20800265 20800223 75200136 24600163 20800352
+                  20800043 24600047 20800101 24600057 20800104 20800366 20800257 20800113 20800079
+                  75200209 20800373 20800108 20800355 75200124 20800356 20800033 75200129 24600034
+                  24600154 20800157 20800056 20800030 24600169 75200158 20800161 24600180 24600183
+                  24600189 20800180 24600079 20800001 24600006 24600094 24600008 24600097 24600014
+                  75200014 20800039 24600081 24600024 24600182 20800105 20800264 20800231 24600191
+                  24600042 24600198 24600045 75200083 24600206 24600134 20800374 75200189 20800234
+                  75200196 20800074 24600013 75200019 75200214 20800062 24600159 20800330 24600122
+                  24600128 75200122 20800155 24600051 24600140 24600010 24600058 24600059 20800320
+                  20800343 75200048 24600166 24600076 24600077 24600173 24600080 75200072 24600083
+                  24600181 20800114 24600029 24600030 24600188 20800349 24600038 24600102 24600103
+                  20800102 24600109 24600114 24600115 20800289 24600049 75200041 24600050 20800363
+                  24600011 24600186 20800144 20800283 20800357 24600142 24600144 24600017 24600203
+                  24600149 24600018 24600153 75200179 24600099 75200186 24600216 24600002 75200205
+                  24600020 20800235 24600072 75200018 24600005 24600111 20800177 24600146 20800103
+                  24600124 24600151 75200127 75200183 24600021 24600157 24600130 24600107 24600110
+                  75200208 24600193 24600112 24600138 24600048 24600082 24600171 24600070 24600003
+                  75200194 24600031 75200131 24600085 75200204 20800331 20800325 24600116 75200149
+                  24600150 20800010 20800273 20800226 75200022 75200045 20800364 75200182 75200079
+                  75200059 20800132 20800333 75200002 75200025 75200167 75200166 75200193
+      IMMI2GEN    75200066 20800338 75200103 20800188 24600141 24600066 75200021 75200109 75200062
+                  75200156 75200076 20800020 24600209 75200006 24600039 24600096 75200029 24600192
+                  24600205 75200202 20800280 20800123 75200221 20800034 24600170 24600175 24600086
+                  75200224 20800184 20800271 20800047 75200112 20800207 75200009 75200075 20800011
+                  24600123 20800040 75200008 20800165 24600210 75200077 20800028 20800323 20800057
+                  24600177 20800218 20800006 24600004 24600026 20800260 20800163 20800305 20800239
+                  20800270 20800054 20800202 20800295 20800186 20800118 24600055 20800209 20800158
+                  20800171 20800347 20800063 24600145 24600172 20800067 24600195 20800213 20800261
+                  75200133 24600155 20800315 20800149 75200173 20800250 20800227 24600147 75200176
+                  20800182 20800306 20800156 20800351 75200163 20800200 20800082 20800302 20800303
+                  20800060 20800266 75200005 24600040 75200137 24600152 20800259 20800241 20800035
+                  20800208 24600135 24600137 20800016 20800308 20800044 20800377 20800286 20800319
+                  20800321 20800096 20800327 20800116 20800336 75200108 20800140 75200126 20800004
+                  20800359 24600204 20800172 20800299 75200160 20800109 20800219 20800012 24600052
+                  75200071 75200046 75200136 24600162 24600037 20800043 24600046 24600047 75200081
+                  20800101 24600057 20800257 20800113 75200209 20800204 20800019 20800108 20800356
+                  20800033 24600035 75200158 20800161 24600056 24600180 24600189 24600069 20800139
+                  24600094 24600008 24600097 75200014 24600081 24600024 24600090 24600178 75200057
+                  20800231 24600191 24600042 24600198 24600199 24600045 75200165 75200080 24600133
+                  24600206 24600134 20800374 20800026 20800234 75200096 20800074 20800252 24600013
+                  75200019 20800141 75200225 24600119 24600122 24600128 24600129 24600051 24600009
+                  24600140 24600010 24600012 24600148 24600058 75200039 24600062 24600071 75200053
+                  75200055 24600023 24600074 24600076 24600077 24600173 24600176 75200185 24600083
+                  24600181 24600087 24600028 24600029 24600030 24600033 20800349 24600197 24600038
+                  24600102 24600103 75200223 24600104 24600115 24600007 24600120 24600186 75200054
+                  24600136 20800283 75200150 24600194 20800357 24600142 24600144 24600036 24600017
+                  24600201 24600203 24600065 24600149 24600018 24600067 24600099 24600158 24600161
+                  24600020 75200100 24600072 24600105 75200015 24600106 24600168 24600111 20800177
+                  24600146 24600061 20800103 24600124 24600151 24600211 24600091 24600157 24600131
+                  24600107 24600110 75200144 75200145 75200208 75200151 75200104 75200017 24600112
+                  24600048 75200227 24600054 24600031 24600085 75200086 75200175 24600116 75200092
+                  24600089 75200149 20800010 20800273 20800364 20800132 20800009 75200002 75200067
+                  75200167
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+Errors for replication with data file C:\Users\Mudar Saied\read2.dat:
+
+*** WARNING
+  One or more individual-level variables have no variation within a
+  cluster for the following clusters.
+
+     Variable   Cluster IDs with no within-cluster variation
+
+      FEMALE      20800205 75200066 20800338 75200103 24600141 24600066 24600192 24600205 20800280
+                  20800011
+      IMMI1GEN    20800205 75200066 20800338 75200103 20800188 24600141 24600066 75200021 75200109
+                  75200062 20800110 75200156 75200076 20800232 20800020 20800073 24600209 75200153
+                  75200006 24600039 75200029 24600192 24600205 75200202 20800134 20800280 20800111
+                  20800034 24600170 24600086 20800184 75200154 20800271 20800061 20800047 20800207
+                  75200075 20800011 20800244 75200008 20800159 20800165 20800092 24600210 75200077
+                  20800028 20800090 20800323 24600185 20800057 24600177 20800218 20800098 20800006
+                  20800190 20800051 24600004 24600026 20800260 20800107 20800163 20800070 20800236
+                  20800305 20800239 20800270 20800292 20800194 20800372 20800202 20800295 20800186
+                  20800118 24600055 20800017 20800158 75200152 20800337 20800063 20800312 24600172
+                  20800067 75200089 20800166 20800360 20800378 20800261 20800178 20800275 24600155
+                  20800048 20800315 20800149 20800324 20800018 20800278 20800247 24600214 20800227
+                  20800038 20800112 24600147 20800080 20800290 75200176 20800087 20800182 20800306
+                  20800238 20800150 20800240 20800156 20800119 20800122 20800351 75200163 20800066
+                  20800200 20800082 20800303 20800060 75200098 75200107 20800046 75200137 20800341
+                  20800059 20800296 20800368 20800369 20800154 20800241 20800035 20800088 20800335
+                  20800208 20800064 20800297 20800298 20800021 20800162 75200047 24600135 24600137
+                  20800216 20800016 20800308 20800044 20800055 20800121 20800316 20800377 20800015
+                  20800286 20800269 20800095 20800131 20800096 20800274 20800327 20800196 20800140
+                  20800342 20800169 20800359 75200135 20800293 24600204 20800246 20800172 20800299
+                  20800212 20800370 20800301 20800152 75200191 20800263 24600052 20800268 24600073
+                  75200046 20800265 20800223 75200136 24600163 20800130 20800352 20800043 24600047
+                  20800101 24600057 20800104 20800366 20800257 20800113 20800079 75200209 20800373
+                  20800108 20800355 75200124 20800356 20800033 75200129 24600154 20800157 20800056
+                  20800030 24600169 75200158 20800161 24600180 24600183 24600189 24600079 20800001
+                  24600006 24600008 24600097 24600014 75200014 20800039 24600081 24600024 24600182
+                  20800105 20800264 20800231 24600191 24600042 24600198 24600045 75200083 24600206
+                  24600134 20800374 75200189 20800234 75200196 20800074 24600013 75200019 75200214
+                  20800062 24600159 20800099 20800330 24600122 24600128 75200122 20800155 24600051
+                  24600140 24600010 24600148 24600058 24600059 20800320 20800343 75200048 24600166
+                  24600076 24600077 24600173 75200072 24600083 24600181 20800114 24600029 24600030
+                  24600188 20800349 24600038 24600102 20800102 24600109 24600114 24600115 20800289
+                  24600049 75200041 24600050 24600027 20800363 24600011 24600186 20800144 20800357
+                  24600142 24600144 24600017 24600201 24600203 24600149 24600018 24600153 75200179
+                  24600099 75200186 24600213 24600216 24600002 75200205 24600020 20800235 24600072
+                  75200018 24600005 24600111 20800177 24600146 20800103 24600124 24600151 75200127
+                  75200183 24600126 24600021 24600157 24600130 24600107 24600110 75200208 24600193
+                  24600112 24600138 24600082 24600171 24600070 24600003 75200194 24600031 75200131
+                  75200204 20800331 20800325 24600116 75200149 24600150 20800010 20800273 20800226
+                  75200022 75200045 20800364 75200182 75200079 75200059 20800132 20800333 75200002
+                  75200025 75200167 75200166 75200193
+      IMMI2GEN    75200066 20800338 75200103 20800188 24600141 24600066 75200021 75200109 75200062
+                  75200156 75200076 20800020 24600209 24600039 24600096 75200029 24600192 24600205
+                  75200202 20800280 20800123 75200221 20800034 24600170 24600175 24600086 75200224
+                  20800184 20800271 20800047 75200112 20800207 75200009 75200075 20800011 24600123
+                  20800040 75200008 20800165 24600210 75200077 20800323 20800057 24600177 20800218
+                  20800006 24600004 20800260 20800163 20800305 20800239 20800270 20800054 20800202
+                  20800295 20800186 20800118 24600055 20800209 20800158 20800171 20800347 20800063
+                  20800067 24600195 20800261 75200133 24600155 20800315 20800149 75200173 20800250
+                  20800227 24600147 75200061 75200176 20800339 20800182 20800306 20800156 20800351
+                  75200163 20800200 20800082 20800302 20800303 20800060 75200107 20800266 75200005
+                  24600040 75200137 20800249 24600152 20800035 20800208 24600135 24600137 20800016
+                  20800308 20800044 20800377 20800286 20800319 20800321 20800096 20800116 20800336
+                  75200108 20800140 75200126 20800004 20800359 75200135 24600204 20800172 20800299
+                  75200160 20800109 20800219 20800012 24600052 75200071 75200136 24600156 24600162
+                  75200069 24600037 20800043 24600046 24600047 75200081 20800101 24600057 20800257
+                  20800113 75200209 20800204 20800019 20800108 20800356 20800033 24600035 75200158
+                  20800161 24600056 24600180 24600189 24600069 20800139 24600094 24600008 24600097
+                  75200014 24600081 24600024 24600090 24600178 75200057 24600095 24600191 24600042
+                  24600198 24600199 75200165 75200080 24600133 24600206 24600134 20800374 20800026
+                  20800234 75200096 20800252 24600013 75200019 20800141 75200225 24600119 24600122
+                  24600128 24600129 24600051 24600009 24600140 24600010 24600012 24600148 24600058
+                  75200039 24600062 24600071 75200053 75200055 24600023 24600074 24600077 24600173
+                  24600176 24600083 24600087 24600028 24600029 24600030 24600033 20800349 24600197
+                  24600038 24600102 24600103 75200223 24600104 24600115 24600007 24600120 24600186
+                  75200054 24600136 20800283 75200150 24600194 20800357 24600142 24600144 24600036
+                  24600017 24600203 24600149 24600018 24600153 24600067 24600099 24600158 24600161
+                  24600020 24600072 24600105 75200015 24600106 24600168 24600111 20800177 24600146
+                  75200171 24600061 20800103 24600124 24600151 24600091 24600157 24600131 24600107
+                  24600110 75200144 75200145 75200208 75200151 75200104 75200017 24600112 24600048
+                  24600171 75200227 24600054 24600031 75200086 75200175 24600116 75200092 24600089
+                  75200149 20800010 20800273 20800364 20800132 75200120 20800009 75200002 75200067
+                  75200167
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+Errors for replication with data file C:\Users\Mudar Saied\read3.dat:
+
+*** WARNING
+  One or more individual-level variables have no variation within a
+  cluster for the following clusters.
+
+     Variable   Cluster IDs with no within-cluster variation
+
+      FEMALE      20800205 75200066 20800338 75200103 24600141 24600066 24600192 24600205 20800280
+                  20800011
+      IMMI1GEN    20800205 20800338 75200103 20800188 24600141 24600066 75200021 75200109 75200062
+                  20800110 75200156 75200076 20800232 20800020 20800073 24600209 75200153 75200006
+                  24600039 75200029 24600192 24600205 75200202 20800134 20800280 20800111 20800034
+                  24600170 24600086 20800184 75200154 20800271 20800061 20800047 20800207 75200075
+                  20800011 75200008 20800159 20800165 20800092 24600210 75200077 20800028 20800090
+                  20800323 24600185 20800057 24600177 20800218 20800098 20800006 20800190 20800051
+                  24600004 24600026 20800260 20800107 20800163 20800070 20800236 20800305 20800239
+                  20800270 20800292 20800054 20800194 20800372 20800202 20800295 20800186 20800118
+                  24600055 20800017 20800158 75200152 20800337 20800063 24600145 20800312 24600172
+                  20800067 75200089 20800166 20800077 20800213 20800378 20800261 20800178 20800275
+                  24600155 20800048 20800315 20800149 20800324 20800018 20800278 20800247 24600214
+                  20800227 20800038 20800112 24600147 20800080 75200176 20800087 20800182 20800306
+                  20800238 20800150 20800240 20800156 20800119 20800122 20800351 75200163 20800066
+                  20800200 20800082 20800303 20800060 75200098 75200107 20800046 75200137 20800251
+                  20800341 20800059 20800296 20800368 20800369 20800154 20800241 20800035 20800088
+                  20800127 20800335 20800208 20800064 20800297 20800298 20800021 20800162 75200047
+                  24600135 24600137 20800216 20800016 20800308 20800044 20800055 20800121 20800316
+                  20800377 20800015 20800286 20800269 20800095 20800096 20800274 20800327 20800140
+                  20800282 20800342 20800169 20800359 24600204 20800246 20800172 20800299 20800212
+                  20800370 20800301 20800152 20800125 20800263 24600052 20800268 24600073 75200046
+                  20800265 20800223 75200136 24600163 20800130 20800352 20800043 24600047 20800101
+                  24600057 20800104 20800366 20800257 20800113 20800079 75200209 20800373 20800108
+                  20800355 75200124 20800356 20800033 75200129 24600034 24600154 20800157 20800056
+                  20800030 24600169 75200158 20800161 24600056 24600180 24600183 24600189 20800180
+                  24600079 20800001 24600006 24600094 24600008 24600097 24600014 75200014 20800039
+                  24600081 24600024 24600182 20800105 20800264 20800231 24600191 24600042 24600198
+                  24600045 75200083 24600206 24600134 20800374 75200189 20800234 20800074 24600013
+                  75200019 75200214 20800062 24600159 20800099 20800330 24600122 24600128 75200122
+                  20800155 24600051 24600140 24600010 24600058 24600059 20800320 20800343 75200048
+                  24600166 24600076 24600077 24600173 24600080 75200072 24600083 24600181 20800114
+                  24600029 24600030 24600188 20800349 24600038 24600102 24600103 20800102 24600109
+                  24600114 24600115 20800289 24600049 75200041 24600050 24600027 20800363 24600011
+                  24600186 20800144 20800283 20800357 24600142 24600144 24600017 24600201 24600203
+                  24600149 24600018 75200179 24600099 75200186 24600216 24600002 75200205 24600020
+                  75200100 20800235 24600072 75200018 24600005 24600111 20800177 24600146 20800103
+                  24600124 24600151 75200127 75200183 24600126 24600021 24600157 24600130 24600107
+                  24600110 75200208 24600112 24600138 24600082 24600171 24600070 24600003 75200194
+                  24600031 75200131 24600085 75200204 20800331 20800325 24600116 75200149 20800201
+                  24600150 20800010 20800273 20800226 75200022 75200045 20800364 75200182 75200079
+                  75200059 20800132 20800333 75200002 75200025 75200167 75200166 75200193
+      IMMI2GEN    75200066 20800338 75200103 20800188 24600141 24600066 75200021 75200109 75200062
+                  75200156 75200076 20800020 24600209 75200006 24600039 24600096 75200029 24600192
+                  24600205 75200202 20800280 20800123 75200221 20800034 24600170 24600175 24600086
+                  75200224 20800184 20800271 20800047 75200112 20800207 75200009 75200075 20800011
+                  24600123 20800040 75200008 20800165 24600210 75200077 20800028 20800323 20800057
+                  24600177 20800218 20800006 24600004 24600026 20800260 20800163 20800305 20800239
+                  20800270 20800202 20800295 20800186 20800118 24600055 20800209 20800158 20800171
+                  20800347 20800063 24600145 24600172 20800067 24600195 20800261 75200133 24600155
+                  20800315 20800149 75200173 20800250 20800227 24600147 75200061 75200176 20800339
+                  20800182 20800306 20800156 20800351 75200163 20800200 20800082 20800302 20800303
+                  20800060 75200107 20800266 75200005 24600040 75200137 24600152 20800259 20800035
+                  20800208 24600135 24600137 20800016 20800308 20800044 20800377 20800286 20800319
+                  20800321 20800096 20800327 20800116 20800336 75200108 20800140 75200126 20800004
+                  20800359 75200135 24600204 20800172 20800299 75200160 20800109 20800219 20800012
+                  24600052 75200071 75200046 75200136 24600156 24600162 75200069 24600037 20800043
+                  24600046 24600047 75200081 20800101 24600057 20800257 20800113 75200209 20800204
+                  20800019 20800108 20800356 20800033 24600035 75200158 20800161 24600056 24600180
+                  24600189 24600069 20800139 24600006 24600094 24600008 24600097 75200014 24600081
+                  24600024 24600090 24600178 75200057 24600095 24600191 24600042 24600198 24600199
+                  75200080 24600133 24600206 24600134 20800374 20800026 20800234 75200096 20800074
+                  20800252 24600013 75200019 20800141 75200225 24600119 24600122 24600128 24600129
+                  24600051 24600009 24600140 24600010 24600012 24600058 75200039 24600062 24600071
+                  75200053 75200055 24600023 24600074 24600076 24600077 24600173 24600176 75200185
+                  24600083 24600181 24600087 24600028 24600030 24600033 20800349 24600196 24600197
+                  24600038 24600102 24600103 75200223 24600104 24600115 24600007 24600120 24600186
+                  75200054 24600136 75200150 24600194 20800357 24600142 24600144 24600036 24600017
+                  24600201 24600203 24600065 24600149 24600018 24600153 24600067 24600099 24600158
+                  24600161 24600072 24600105 24600106 24600168 24600111 20800177 24600146 75200171
+                  24600061 20800103 24600124 24600151 24600091 24600157 24600131 24600107 24600110
+                  75200144 75200145 75200208 75200151 75200104 75200017 24600112 24600048 24600171
+                  75200227 24600054 24600031 24600085 75200086 75200175 24600116 75200092 24600089
+                  75200149 20800010 20800273 20800364 20800132 75200120 20800009 75200002 75200067
+                  75200167
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+Errors for replication with data file C:\Users\Mudar Saied\read4.dat:
+
+*** WARNING
+  One or more individual-level variables have no variation within a
+  cluster for the following clusters.
+
+     Variable   Cluster IDs with no within-cluster variation
+
+      FEMALE      20800205 75200066 20800338 75200103 24600141 24600066 24600192 24600205 20800280
+                  20800011
+      IMMI1GEN    20800205 75200066 20800338 75200103 20800188 24600141 24600066 75200021 75200109
+                  75200062 20800110 75200156 75200076 20800232 20800020 20800073 24600209 75200153
+                  75200006 24600039 75200029 24600192 24600205 75200202 20800134 20800280 20800111
+                  20800034 24600170 24600086 20800184 75200154 20800271 20800061 20800047 20800207
+                  75200075 20800011 20800244 75200008 20800159 20800165 20800092 24600210 75200077
+                  20800028 20800090 20800323 20800057 24600177 20800218 20800098 20800006 20800190
+                  20800051 24600004 24600026 20800260 20800107 20800163 20800070 20800236 20800305
+                  20800239 20800270 20800292 20800054 20800194 20800372 20800202 20800295 20800186
+                  20800118 24600055 20800017 20800158 75200152 20800337 20800063 24600145 20800312
+                  24600172 20800067 75200089 20800166 20800360 20800077 20800213 20800378 20800261
+                  20800178 20800275 24600155 20800048 20800315 20800149 20800324 20800018 20800278
+                  20800247 24600214 20800227 20800038 20800112 24600147 20800080 75200176 20800339
+                  20800087 20800182 20800306 20800238 20800150 20800240 20800156 20800119 20800122
+                  20800351 75200163 20800066 20800200 20800082 20800303 20800060 75200098 75200107
+                  20800046 75200137 20800251 20800341 20800059 20800296 20800259 20800368 20800154
+                  20800241 20800035 20800088 20800127 20800335 20800208 20800297 20800298 20800021
+                  20800162 75200047 24600137 20800216 20800016 20800308 20800044 20800055 20800121
+                  20800316 20800377 20800015 20800286 20800269 20800095 20800131 20800096 20800274
+                  20800327 20800196 20800140 20800282 20800342 20800359 75200135 20800293 24600204
+                  20800246 20800172 20800299 20800212 20800370 20800301 20800152 20800125 75200191
+                  20800263 24600052 20800268 24600073 75200046 20800265 20800223 75200136 20800130
+                  20800352 20800043 24600047 20800101 24600057 20800104 20800366 20800257 20800113
+                  20800079 75200209 20800373 20800108 20800355 75200124 20800356 20800033 75200129
+                  24600034 24600154 20800157 20800056 20800030 24600169 75200158 20800161 24600056
+                  24600180 24600183 24600189 20800180 24600079 20800001 24600006 24600094 24600008
+                  24600097 24600014 75200014 20800039 24600081 24600024 24600182 20800105 20800264
+                  20800231 24600191 24600042 24600198 75200083 24600206 24600134 20800374 75200189
+                  20800234 20800074 24600013 75200019 75200214 20800062 24600159 20800099 20800330
+                  24600122 24600128 75200122 20800155 24600051 24600140 24600010 24600058 24600059
+                  20800320 20800343 24600166 24600076 24600077 24600080 75200072 24600083 24600181
+                  20800114 24600029 24600030 24600188 20800349 24600038 24600102 24600103 20800102
+                  24600109 24600114 24600115 20800289 24600049 75200041 24600050 24600027 20800363
+                  24600011 24600186 20800144 20800357 24600142 24600144 24600017 24600201 24600203
+                  24600149 24600018 24600153 75200179 24600099 75200186 24600216 24600002 24600020
+                  75200100 20800235 24600072 75200018 24600005 24600111 20800177 24600146 20800103
+                  24600124 24600151 75200127 75200183 24600126 24600021 24600157 24600107 24600110
+                  75200208 24600193 24600112 24600138 24600048 24600082 24600070 24600003 75200194
+                  24600031 24600085 75200204 20800331 20800325 24600116 75200149 20800201 24600150
+                  20800010 20800273 20800226 75200022 75200045 20800364 75200182 75200079 75200059
+                  20800132 20800333 75200002 75200025 75200167 75200166 75200193
+      IMMI2GEN    75200066 20800338 75200103 20800188 24600141 75200021 75200109 75200062 75200156
+                  75200076 20800020 24600209 75200006 24600039 24600096 75200029 24600192 24600205
+                  75200202 20800280 20800123 75200221 20800034 24600170 24600175 24600086 75200224
+                  20800184 20800271 20800047 75200112 20800207 75200009 75200075 20800011 24600123
+                  20800040 75200008 20800165 24600210 75200077 20800028 20800323 20800057 24600177
+                  20800218 20800006 24600004 24600026 20800260 20800163 20800305 20800239 20800270
+                  20800054 20800202 20800295 20800186 20800118 24600055 20800209 20800158 20800171
+                  20800347 20800063 24600145 24600172 20800067 24600195 24600155 20800315 20800149
+                  75200173 20800250 20800227 24600147 75200061 75200176 20800182 20800306 20800156
+                  20800351 75200163 20800082 20800302 20800303 20800060 75200107 20800266 75200005
+                  24600040 75200137 20800249 24600152 20800259 20800241 20800035 20800208 24600135
+                  24600137 20800016 20800308 20800044 20800377 20800286 20800319 20800321 20800096
+                  20800327 20800116 20800336 75200108 20800140 75200126 20800004 20800359 75200135
+                  24600204 20800172 20800299 75200160 20800109 20800219 20800012 24600052 75200071
+                  75200046 75200136 24600162 24600163 24600037 20800043 24600046 24600047 75200081
+                  20800101 24600057 20800257 20800113 75200209 20800204 20800019 20800108 20800356
+                  20800033 24600035 75200158 20800161 24600180 24600189 24600069 20800139 24600094
+                  24600008 24600097 75200014 24600081 24600024 24600090 24600178 75200057 24600095
+                  20800231 24600191 24600042 24600199 24600045 75200165 75200080 24600133 24600206
+                  24600134 20800374 20800026 20800234 75200096 20800074 20800252 24600013 75200019
+                  20800141 75200225 24600119 24600122 24600128 24600129 24600051 24600009 24600140
+                  24600010 24600012 24600148 24600058 75200039 24600062 24600071 75200053 75200055
+                  24600023 24600074 24600076 24600077 24600173 24600176 75200185 24600083 24600181
+                  24600087 24600028 24600030 24600033 20800349 24600196 24600197 24600038 24600102
+                  24600103 75200223 24600104 24600115 24600007 24600120 24600186 75200054 24600136
+                  75200150 24600194 20800357 24600142 24600144 24600036 24600017 24600201 24600203
+                  24600065 24600149 24600018 24600153 24600067 24600099 24600158 24600161 24600020
+                  75200100 24600072 24600105 75200015 24600106 24600168 24600111 20800177 24600146
+                  75200171 24600061 20800103 24600124 24600151 24600211 24600091 24600157 24600131
+                  24600107 24600110 75200144 75200208 75200151 75200104 75200017 24600112 24600171
+                  75200227 24600054 24600031 75200086 75200175 24600116 75200092 24600089 75200149
+                  20800010 20800273 20800364 20800132 75200120 20800009 75200002 75200067 75200167
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+Errors for replication with data file C:\Users\Mudar Saied\read5.dat:
+
+*** WARNING
+  One or more individual-level variables have no variation within a
+  cluster for the following clusters.
+
+     Variable   Cluster IDs with no within-cluster variation
+
+      FEMALE      20800205 75200066 20800338 75200103 24600141 24600066 24600192 24600205 20800280
+                  20800011
+      IMMI1GEN    20800205 75200066 20800338 75200103 20800188 24600141 24600066 75200021 75200109
+                  75200062 20800110 75200156 75200076 20800232 20800020 20800073 24600209 75200153
+                  75200006 24600039 75200029 24600192 24600205 75200202 20800134 20800280 20800111
+                  20800034 24600170 24600086 20800184 75200154 20800271 20800061 20800047 20800207
+                  75200075 20800011 20800244 75200008 20800159 20800165 20800092 24600210 75200077
+                  20800028 20800243 20800090 20800323 24600185 20800057 24600177 20800218 20800098
+                  20800006 20800190 20800051 24600004 24600026 20800260 20800107 20800163 20800070
+                  20800236 20800305 20800239 20800270 20800292 20800054 20800194 20800372 20800202
+                  20800295 20800186 20800118 24600055 20800017 20800158 75200152 20800337 20800063
+                  24600145 20800312 24600172 20800067 75200089 20800166 20800077 20800213 20800378
+                  20800261 20800178 20800275 24600155 20800048 20800315 20800149 20800324 20800018
+                  20800278 20800247 20800227 20800112 24600147 20800080 20800290 75200176 20800339
+                  20800087 20800182 20800306 20800238 20800150 20800156 20800119 20800122 20800351
+                  75200163 20800066 20800200 20800082 20800303 20800060 75200098 75200107 20800046
+                  75200137 20800341 20800059 20800259 20800368 20800369 20800154 20800241 20800035
+                  20800088 20800127 20800335 20800208 20800064 20800297 20800298 20800021 20800162
+                  75200047 24600135 24600137 20800216 20800016 20800308 20800044 20800055 20800121
+                  20800316 20800377 20800015 20800286 20800269 20800095 20800131 20800096 20800274
+                  20800327 20800196 20800140 20800342 20800169 20800359 75200135 24600204 20800246
+                  20800172 20800299 20800212 20800370 20800301 20800152 20800125 75200191 20800263
+                  24600052 20800268 24600073 75200046 20800265 20800223 75200136 24600163 20800352
+                  20800043 24600047 20800101 24600057 20800104 20800366 20800257 20800113 20800079
+                  75200209 20800373 20800108 20800355 75200124 20800356 20800033 75200129 24600154
+                  20800157 20800056 20800030 24600169 75200158 20800161 24600056 24600180 24600183
+                  24600189 20800180 24600079 20800001 24600094 24600097 24600014 75200014 20800039
+                  24600081 24600024 24600182 20800105 20800264 20800231 24600191 24600042 24600045
+                  75200083 24600206 24600134 20800374 75200189 20800234 20800074 24600013 75200019
+                  75200214 24600159 20800099 20800330 24600122 24600128 75200122 20800155 24600051
+                  24600140 24600010 24600058 24600059 20800320 20800343 75200048 24600166 24600076
+                  24600077 24600173 75200072 24600083 24600181 20800114 24600029 24600030 24600188
+                  20800349 24600038 24600102 24600103 20800102 24600109 24600114 24600115 20800289
+                  24600049 75200041 24600050 24600027 20800363 24600011 24600186 20800144 20800357
+                  24600142 24600144 24600017 24600203 24600149 24600018 24600153 75200179 24600099
+                  75200186 24600213 24600216 24600002 24600020 75200100 20800235 24600072 75200018
+                  24600005 24600111 20800177 24600146 20800103 24600124 24600151 75200127 75200183
+                  24600126 24600021 24600157 24600130 24600107 24600110 75200208 24600193 24600112
+                  24600138 24600082 24600171 24600070 24600003 75200194 24600031 75200131 24600085
+                  75200204 20800331 20800325 24600116 75200149 20800201 24600150 20800010 20800273
+                  20800226 75200022 75200045 20800364 75200182 75200079 75200059 20800132 20800333
+                  75200002 75200025 75200167 75200166 75200193
+      IMMI2GEN    75200066 20800338 75200103 20800188 24600141 24600066 75200021 75200109 75200062
+                  75200156 75200076 20800020 24600209 75200006 24600039 24600096 75200029 24600192
+                  24600205 75200202 20800280 20800123 75200221 20800034 24600170 24600175 24600086
+                  75200224 20800184 20800271 20800047 75200112 20800207 75200009 75200075 20800011
+                  24600123 20800040 75200008 20800159 20800165 24600210 75200077 20800323 20800057
+                  24600177 20800218 20800006 24600004 24600026 20800260 20800163 20800305 20800239
+                  20800270 20800054 20800202 20800295 20800186 20800118 24600055 20800209 20800158
+                  20800171 20800347 20800063 24600145 20800067 24600195 75200133 24600155 20800315
+                  20800149 75200173 20800250 20800227 24600147 75200061 75200176 20800339 20800182
+                  20800306 20800156 20800351 75200163 20800200 20800082 20800302 20800303 20800060
+                  75200107 20800266 75200005 24600040 75200137 20800249 24600152 20800259 20800241
+                  20800035 20800208 24600135 24600137 20800016 20800308 20800044 20800377 20800286
+                  20800319 20800321 20800096 20800327 20800116 20800336 75200108 20800140 75200126
+                  20800004 20800359 75200135 24600204 20800172 20800299 75200160 20800109 20800219
+                  20800012 24600052 75200071 75200046 75200136 24600156 24600162 24600163 24600037
+                  20800043 24600046 24600047 75200081 20800101 24600057 20800257 20800113 75200209
+                  20800204 20800019 20800108 20800356 20800033 24600035 75200158 20800161 24600056
+                  24600180 24600189 20800139 24600094 24600008 24600097 75200014 24600081 24600024
+                  24600090 24600178 75200057 24600095 24600191 24600042 24600198 24600199 24600045
+                  75200165 75200080 24600133 24600206 24600134 20800374 20800026 20800234 75200096
+                  20800074 20800252 24600013 75200019 75200225 24600119 24600122 24600128 24600129
+                  24600051 24600009 24600140 24600010 24600012 24600148 24600058 75200039 24600062
+                  24600071 75200053 75200055 24600023 24600074 24600076 24600077 24600176 75200185
+                  24600083 24600181 24600028 24600030 24600033 20800349 24600196 24600197 24600038
+                  24600102 24600103 75200223 24600104 24600115 24600007 24600120 24600186 75200054
+                  24600136 75200150 24600194 20800357 24600142 24600144 24600036 24600017 24600201
+                  24600203 24600065 24600149 24600018 24600067 24600099 24600158 24600161 24600020
+                  24600072 24600105 75200015 24600106 24600168 24600111 20800177 24600146 75200171
+                  24600061 20800103 24600124 24600151 24600211 24600091 24600157 24600131 24600107
+                  24600110 75200144 75200208 75200151 75200104 75200017 24600112 24600048 24600171
+                  75200227 24600054 24600031 24600085 75200086 75200175 24600116 75200092 24600089
+                  75200149 20800010 20800273 20800364 20800132 75200120 20800009 75200002 75200067
+                  75200167
+
+     THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN ILL-CONDITIONED
+     FISHER INFORMATION MATRIX.  CHANGE YOUR MODEL AND/OR STARTING VALUES.
+
+     THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO A NON-POSITIVE
+     DEFINITE FISHER INFORMATION MATRIX.  THIS MAY BE DUE TO THE STARTING VALUES
+     BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE CONDITION
+     NUMBER IS       0.979D-10.
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES COULD NOT BE
+     COMPUTED.  THIS IS OFTEN DUE TO THE STARTING VALUES BUT MAY ALSO BE
+     AN INDICATION OF MODEL NONIDENTIFICATION.  CHANGE YOUR MODEL AND/OR
+     STARTING VALUES.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 62, %BETWEEN%: READ
+
+
+Errors for replication with data file C:\Users\Mudar Saied\read6.dat:
+
+*** WARNING
+  One or more individual-level variables have no variation within a
+  cluster for the following clusters.
+
+     Variable   Cluster IDs with no within-cluster variation
+
+      FEMALE      20800205 75200066 20800338 75200103 24600141 24600066 24600192 24600205 20800280
+                  20800011
+      IMMI1GEN    20800205 75200066 20800338 75200103 20800188 24600141 24600066 75200021 75200109
+                  75200062 20800110 75200156 75200076 20800232 20800020 20800073 24600209 75200153
+                  75200006 24600039 75200029 24600192 24600205 75200202 20800134 20800280 20800111
+                  20800034 24600170 24600086 20800184 75200154 20800271 20800061 20800047 20800207
+                  75200075 20800011 20800244 75200008 20800159 20800165 20800092 24600210 75200077
+                  20800028 20800090 20800323 20800057 24600177 20800218 20800098 20800006 20800190
+                  20800051 24600004 24600026 20800260 20800107 20800163 20800070 20800236 20800305
+                  20800239 20800270 20800292 20800054 20800194 20800372 20800202 20800295 20800186
+                  20800118 24600055 20800017 20800158 75200152 20800337 20800063 24600145 20800312
+                  24600172 20800067 75200089 20800166 20800213 20800378 20800261 20800178 20800275
+                  24600155 20800048 20800315 20800149 20800324 20800018 20800278 20800247 24600214
+                  20800227 20800038 20800112 24600147 20800080 20800290 75200176 20800339 20800087
+                  20800182 20800306 20800238 20800150 20800240 20800156 20800119 20800122 20800351
+                  75200163 20800066 20800200 20800082 20800303 20800060 75200098 75200107 20800046
+                  75200137 20800341 20800059 20800296 20800368 20800369 20800154 20800241 20800035
+                  20800088 20800127 20800335 20800208 20800297 20800298 20800021 20800162 75200047
+                  24600135 24600137 20800216 20800016 20800308 20800044 20800055 20800121 20800316
+                  20800377 20800015 20800286 20800269 20800095 20800131 20800096 20800274 20800327
+                  20800196 20800140 20800282 20800342 20800169 20800359 75200135 24600204 20800246
+                  20800172 20800299 20800212 20800370 20800301 20800152 20800125 75200191 20800263
+                  24600052 20800268 24600073 75200046 20800265 20800223 75200136 24600163 20800130
+                  20800352 20800043 24600047 20800101 24600057 20800104 20800366 20800257 20800113
+                  20800079 75200209 20800373 20800355 75200124 20800356 20800033 75200129 24600034
+                  24600154 20800157 20800056 20800030 24600169 75200158 20800161 24600056 24600180
+                  24600183 24600189 20800180 24600079 20800001 24600008 24600097 24600014 75200014
+                  20800039 24600081 24600024 24600182 20800105 20800264 20800231 24600191 24600042
+                  24600198 24600045 75200083 24600206 24600134 20800374 75200189 20800234 75200196
+                  20800074 24600013 75200019 75200214 20800062 24600159 20800330 24600122 24600128
+                  75200122 20800155 24600051 24600140 24600010 24600148 24600058 24600059 20800320
+                  20800343 75200048 24600166 24600076 24600077 24600173 24600080 75200072 24600083
+                  24600181 20800114 24600030 24600188 20800349 24600038 24600102 24600103 20800102
+                  24600109 24600114 24600115 20800289 24600049 75200041 24600050 24600027 20800363
+                  24600011 24600186 20800144 20800357 24600142 24600144 24600017 24600201 24600203
+                  24600149 24600018 24600153 75200179 24600099 75200186 24600216 24600002 24600020
+                  75200100 20800235 24600072 75200018 24600005 24600111 20800177 24600146 20800103
+                  24600124 24600151 75200127 75200183 24600126 24600021 24600157 24600107 24600110
+                  75200208 24600193 24600112 24600138 24600048 24600082 24600171 24600070 24600003
+                  75200194 24600031 75200131 24600085 75200204 20800331 20800325 24600116 75200149
+                  24600150 20800010 20800273 20800226 75200022 75200045 20800364 75200182 75200079
+                  20800132 20800333 75200002 75200025 75200167 75200166 75200193
+      IMMI2GEN    75200066 75200103 20800188 24600141 75200021 75200109 75200062 75200156 75200076
+                  20800020 24600209 75200006 24600039 24600096 75200029 24600192 24600205 75200202
+                  20800280 20800123 75200221 20800034 24600170 24600175 24600086 75200224 20800184
+                  20800271 20800047 75200112 20800207 75200009 75200075 20800011 24600123 20800040
+                  75200008 20800165 24600210 75200077 20800028 20800323 20800057 24600177 20800218
+                  24600004 20800260 20800163 20800305 20800239 20800270 20800054 20800202 20800295
+                  20800186 20800118 24600055 20800209 20800158 20800171 20800347 20800063 24600145
+                  24600172 20800067 24600195 20800213 75200133 24600155 20800315 20800149 75200173
+                  20800250 20800227 24600147 75200061 75200176 20800182 20800306 20800156 20800351
+                  75200163 20800200 20800082 20800302 20800303 20800060 75200107 20800266 75200005
+                  24600040 75200137 20800249 24600152 20800259 20800241 20800035 20800208 24600137
+                  20800016 20800044 20800286 20800319 20800321 20800096 20800327 20800116 20800336
+                  75200108 20800140 75200126 20800004 20800359 75200135 24600204 20800172 20800299
+                  75200160 20800109 20800219 24600052 75200071 75200046 75200136 24600156 24600162
+                  24600163 75200069 24600037 20800043 24600046 24600047 75200081 20800101 24600057
+                  20800257 20800113 75200209 20800204 20800019 20800108 20800356 20800033 24600035
+                  75200158 20800161 24600056 24600180 24600189 24600069 20800139 24600094 24600008
+                  24600097 75200014 24600081 24600024 24600090 24600178 75200057 24600095 24600191
+                  24600042 24600198 24600199 75200080 24600133 24600206 24600134 20800374 20800026
+                  20800234 75200096 20800074 20800252 24600013 20800141 75200225 24600119 24600122
+                  24600128 24600129 24600051 24600009 24600140 24600010 24600012 24600148 24600058
+                  75200039 24600062 24600071 75200053 75200055 24600023 24600074 24600076 24600077
+                  24600176 75200185 24600083 24600181 24600028 24600029 24600030 24600033 20800349
+                  24600196 24600197 24600038 24600102 24600103 75200223 24600104 24600115 24600007
+                  24600120 24600186 75200054 24600136 75200150 24600194 20800357 24600142 24600144
+                  24600036 24600017 24600203 24600065 24600149 24600018 24600153 24600067 24600099
+                  24600158 24600161 24600020 75200100 24600072 24600105 75200015 24600168 24600111
+                  20800177 24600146 75200171 24600061 20800103 24600124 24600151 24600211 24600091
+                  24600157 24600131 24600107 24600110 75200144 75200145 75200208 75200151 75200104
+                  75200017 24600112 24600048 24600171 75200227 24600054 24600031 24600085 75200086
+                  75200175 24600116 75200092 24600089 75200149 20800010 20800273 20800364 20800132
+                  75200120 20800009 75200002 75200067 75200167
+
+     THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN ILL-CONDITIONED
+     FISHER INFORMATION MATRIX.  CHANGE YOUR MODEL AND/OR STARTING VALUES.
+
+     THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO A NON-POSITIVE
+     DEFINITE FISHER INFORMATION MATRIX.  THIS MAY BE DUE TO THE STARTING VALUES
+     BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE CONDITION
+     NUMBER IS      -0.597D-10.
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES COULD NOT BE
+     COMPUTED.  THIS IS OFTEN DUE TO THE STARTING VALUES BUT MAY ALSO BE
+     AN INDICATION OF MODEL NONIDENTIFICATION.  CHANGE YOUR MODEL AND/OR
+     STARTING VALUES.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 62, %BETWEEN%: READ
+
+
+Errors for replication with data file C:\Users\Mudar Saied\read7.dat:
+
+*** WARNING
+  One or more individual-level variables have no variation within a
+  cluster for the following clusters.
+
+     Variable   Cluster IDs with no within-cluster variation
+
+      FEMALE      20800205 75200066 20800338 75200103 24600141 24600066 24600192 24600205 20800280
+                  20800011
+      IMMI1GEN    20800205 75200066 20800338 75200103 20800188 24600141 24600066 75200021 75200109
+                  75200062 20800110 75200156 75200076 20800232 20800020 20800073 24600209 75200153
+                  75200006 24600039 75200029 24600192 24600205 75200202 20800134 20800280 20800111
+                  20800034 24600170 24600086 20800184 75200154 20800061 20800047 20800207 75200075
+                  20800011 75200008 20800159 20800165 20800092 24600210 75200077 20800028 20800243
+                  20800090 20800323 24600185 20800057 24600177 20800218 20800098 20800006 20800190
+                  20800051 24600004 24600026 20800260 20800107 20800163 20800070 20800236 20800305
+                  20800239 20800270 20800292 20800054 20800194 20800372 20800202 20800295 20800186
+                  20800118 24600055 20800017 20800158 75200152 20800337 20800063 24600145 20800312
+                  24600172 20800067 75200089 20800166 20800360 20800077 20800213 20800378 20800261
+                  20800178 20800275 24600155 20800048 20800315 20800149 20800324 20800278 20800247
+                  24600214 20800227 20800038 20800112 24600147 20800080 20800290 75200176 20800339
+                  20800087 20800182 20800306 20800238 20800150 20800156 20800119 20800122 20800351
+                  75200163 20800066 20800200 20800082 20800303 20800060 75200098 75200107 20800046
+                  75200137 20800251 20800341 20800059 20800296 20800259 20800368 20800369 20800154
+                  20800241 20800035 20800088 20800127 20800335 20800208 20800064 20800297 20800298
+                  20800021 20800162 75200047 24600137 20800216 20800016 20800308 20800044 20800055
+                  20800121 20800316 20800377 20800286 20800269 20800095 20800131 20800096 20800274
+                  20800196 20800140 20800169 20800359 75200135 20800293 24600204 20800246 20800172
+                  20800299 20800212 20800370 20800301 20800152 20800125 75200191 20800263 24600052
+                  20800268 24600073 75200046 20800265 20800223 75200136 20800130 20800352 20800043
+                  24600047 20800101 24600057 20800366 20800257 20800113 20800079 75200209 20800373
+                  20800355 75200124 20800356 20800033 75200129 24600034 24600154 20800157 20800056
+                  20800030 24600169 75200158 20800161 24600056 24600180 24600183 24600189 20800180
+                  24600079 20800001 24600006 24600094 24600008 24600097 24600014 75200014 20800039
+                  24600081 24600024 24600182 20800105 20800264 20800231 24600191 24600042 24600198
+                  24600045 75200083 24600206 24600134 20800374 75200189 20800234 75200196 20800074
+                  24600013 75200019 75200214 20800062 24600159 20800099 20800330 24600122 24600128
+                  75200122 20800155 24600051 24600140 24600010 24600148 24600058 24600059 20800320
+                  20800343 75200048 24600166 24600076 24600077 24600080 75200072 24600083 24600181
+                  20800114 24600029 24600030 24600188 20800349 24600038 24600102 24600103 20800102
+                  24600109 24600114 24600115 20800289 24600049 75200041 24600050 24600027 20800363
+                  24600011 24600186 20800144 20800357 24600142 24600144 24600017 24600201 24600203
+                  24600149 24600018 75200179 24600099 75200186 24600213 24600216 24600002 75200205
+                  24600020 75200100 20800235 24600072 75200018 24600005 24600111 20800177 24600146
+                  20800103 24600124 24600151 75200127 75200183 24600126 24600021 24600157 24600130
+                  24600107 24600110 75200208 24600193 24600112 24600138 24600082 24600070 24600003
+                  75200194 24600031 75200131 24600085 75200204 20800331 20800325 24600116 75200149
+                  24600150 20800010 20800273 20800226 75200022 75200045 20800364 75200182 75200059
+                  20800132 20800333 75200002 75200025 75200167 75200166 75200193
+      IMMI2GEN    75200066 20800338 75200103 20800188 24600141 75200021 75200109 75200062 75200156
+                  75200076 20800020 24600209 75200006 24600039 24600096 75200029 24600192 24600205
+                  75200202 20800280 20800123 75200221 20800034 24600170 24600175 24600086 75200224
+                  20800184 20800271 20800047 20800207 75200009 75200075 20800011 24600123 20800040
+                  75200008 20800159 20800165 24600210 75200077 20800028 20800323 20800057 24600177
+                  20800218 20800006 24600004 24600026 20800260 20800163 20800305 20800239 20800270
+                  20800054 20800202 20800295 20800186 20800118 24600055 20800209 20800158 20800171
+                  20800347 20800063 24600145 24600172 20800067 24600195 20800261 24600155 20800315
+                  20800149 75200173 20800250 20800227 24600147 75200061 75200176 20800339 20800182
+                  20800306 20800156 20800351 75200163 20800200 20800082 20800302 20800303 20800060
+                  75200107 20800266 75200005 24600040 75200137 20800249 24600152 20800259 20800241
+                  20800035 20800208 24600135 24600137 20800016 20800308 20800044 20800377 20800286
+                  20800319 20800321 20800096 20800327 20800116 20800336 75200108 20800140 75200126
+                  20800004 20800359 24600204 20800172 20800299 75200160 20800109 20800012 24600052
+                  75200046 75200136 24600156 24600162 24600163 75200069 24600037 20800043 24600046
+                  24600047 75200081 20800101 24600057 20800257 20800113 75200209 20800204 20800019
+                  20800356 20800033 24600035 75200158 20800161 24600056 24600180 24600189 20800139
+                  24600006 24600008 24600097 75200014 24600081 24600024 24600090 24600178 75200057
+                  24600095 24600191 24600042 24600198 24600199 24600045 75200165 75200080 24600133
+                  24600206 24600134 20800374 20800026 20800234 75200096 20800074 20800252 24600013
+                  75200019 75200225 24600119 24600122 24600128 24600129 24600051 24600009 24600140
+                  24600010 24600012 24600058 75200039 24600062 24600071 75200053 75200055 24600023
+                  24600074 24600076 24600077 24600173 24600176 75200185 24600083 24600181 24600087
+                  24600028 24600030 20800349 24600197 24600038 24600102 24600103 75200223 24600104
+                  24600115 24600007 24600120 24600186 75200054 24600136 20800283 75200150 24600194
+                  20800357 24600144 24600036 24600017 24600203 24600065 24600149 24600018 24600153
+                  24600067 24600099 24600161 24600020 75200100 24600072 24600105 75200015 24600168
+                  24600111 20800177 24600146 75200171 24600061 20800103 24600124 24600151 24600211
+                  24600091 24600157 24600131 24600107 24600110 75200144 75200145 75200208 75200151
+                  75200104 75200017 24600112 24600048 24600171 75200227 24600054 24600031 24600085
+                  75200086 75200175 24600116 75200092 24600089 75200149 20800010 20800273 20800364
+                  75200120 20800009 75200002 75200067 75200167
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+Errors for replication with data file C:\Users\Mudar Saied\read8.dat:
+
+*** WARNING
+  One or more individual-level variables have no variation within a
+  cluster for the following clusters.
+
+     Variable   Cluster IDs with no within-cluster variation
+
+      FEMALE      20800205 75200066 20800338 75200103 24600141 24600066 24600192 24600205 20800280
+                  20800011
+      IMMI1GEN    20800205 75200066 75200103 20800188 24600141 24600066 75200021 75200109 75200062
+                  20800110 75200156 75200076 20800232 20800020 20800073 24600209 75200153 75200006
+                  24600039 75200029 24600192 24600205 75200202 20800134 20800280 20800111 20800034
+                  24600170 24600086 20800184 75200154 20800271 20800061 20800047 20800207 75200075
+                  20800011 20800244 75200008 20800159 20800165 24600210 75200077 20800028 20800090
+                  20800323 24600185 20800057 24600177 20800218 20800098 20800006 20800190 20800051
+                  24600004 24600026 20800260 20800107 20800163 20800070 20800236 20800305 20800239
+                  20800270 20800292 20800054 20800194 20800372 20800202 20800295 20800186 20800118
+                  24600055 20800017 20800158 75200152 20800337 20800063 24600145 20800312 24600172
+                  20800067 75200089 20800166 20800360 20800077 20800213 20800378 20800261 20800178
+                  20800275 24600155 20800048 20800315 20800149 20800324 20800018 20800278 20800247
+                  24600214 20800227 20800112 24600147 20800080 20800290 75200176 20800339 20800087
+                  20800182 20800306 20800238 20800150 20800156 20800119 20800122 20800351 75200163
+                  20800066 20800200 20800082 20800303 20800060 75200098 75200107 20800046 75200137
+                  20800251 20800341 20800059 20800296 20800259 20800368 20800154 20800241 20800035
+                  20800088 20800127 20800335 20800208 20800297 20800298 20800021 20800162 75200047
+                  24600137 20800216 20800016 20800308 20800044 20800055 20800121 20800316 20800377
+                  20800015 20800286 20800269 20800095 20800096 20800274 20800327 20800196 20800140
+                  20800282 20800342 20800169 20800359 75200135 24600204 20800246 20800172 20800299
+                  20800212 20800370 20800301 20800152 20800125 75200191 20800263 24600052 20800268
+                  24600073 75200046 20800265 20800223 75200136 24600163 20800130 20800352 20800043
+                  24600047 20800101 24600057 20800104 20800366 20800257 20800113 20800079 75200209
+                  20800373 20800108 20800355 75200124 20800356 20800033 75200129 24600034 24600154
+                  20800157 20800056 20800030 24600169 75200158 20800161 24600056 24600180 24600183
+                  24600189 20800180 24600079 20800001 24600006 24600094 24600008 24600097 24600014
+                  75200014 20800039 24600081 24600024 24600182 20800105 20800264 20800231 24600191
+                  24600042 24600198 24600045 75200083 24600206 24600134 20800374 75200189 20800234
+                  75200196 20800074 24600013 75200019 75200214 20800062 24600159 20800330 24600122
+                  24600128 75200122 20800155 24600051 24600140 24600010 24600148 24600058 24600059
+                  20800343 75200048 24600166 24600076 24600077 24600173 24600080 75200072 24600083
+                  24600181 20800114 24600029 24600030 24600188 20800349 24600038 24600102 24600103
+                  20800102 24600109 24600114 24600115 20800289 24600049 75200041 24600050 24600027
+                  20800363 24600011 24600186 20800144 20800283 20800357 24600142 24600144 24600017
+                  24600201 24600203 24600149 24600018 24600153 24600099 75200186 24600213 24600216
+                  24600002 24600020 75200100 20800235 24600072 75200018 24600005 24600111 20800177
+                  24600146 20800103 24600124 24600151 75200127 75200183 24600126 24600021 24600157
+                  24600130 24600107 24600110 75200208 24600193 24600112 24600138 24600048 24600082
+                  24600171 24600070 24600003 75200194 24600031 75200131 24600085 75200204 20800331
+                  20800325 24600116 75200149 20800201 24600150 20800010 20800273 20800226 75200022
+                  75200045 75200182 75200079 75200059 20800132 20800333 75200002 75200025 75200167
+                  75200166 75200193
+      IMMI2GEN    75200066 20800338 75200103 20800188 24600141 24600066 75200021 75200109 75200062
+                  75200156 75200076 20800020 24600209 75200006 24600039 24600096 75200029 24600192
+                  24600205 75200202 20800280 20800123 75200221 20800034 24600170 24600175 24600086
+                  75200224 20800184 20800271 20800047 75200112 20800207 75200009 75200075 20800011
+                  24600123 20800040 75200008 20800165 24600210 75200077 20800323 20800057 24600177
+                  20800218 20800006 24600004 24600026 20800260 20800163 20800305 20800239 20800270
+                  20800202 20800295 20800186 20800118 20800209 20800158 20800171 20800347 20800063
+                  24600145 24600172 20800067 24600195 75200133 24600155 20800315 20800149 75200173
+                  20800250 20800227 24600147 75200061 75200176 20800339 20800182 20800306 20800156
+                  20800351 75200163 20800200 20800082 20800302 20800303 20800060 75200107 20800266
+                  75200005 24600040 75200137 20800249 24600152 20800241 20800035 20800208 24600135
+                  24600137 20800016 20800308 20800044 20800377 20800286 20800319 20800321 20800096
+                  20800116 20800336 75200108 20800140 75200126 20800004 20800359 75200135 24600204
+                  20800172 20800299 75200160 20800109 20800219 20800012 24600052 75200071 75200046
+                  75200136 24600162 24600163 75200069 20800043 24600046 24600047 75200081 20800101
+                  24600057 20800257 20800113 75200209 20800204 20800019 20800108 20800356 20800033
+                  24600035 75200158 20800161 24600056 24600180 24600189 24600069 20800139 24600006
+                  24600094 24600008 24600097 75200014 24600081 24600024 24600090 24600178 75200057
+                  24600095 24600191 24600042 24600198 24600199 75200080 24600133 24600206 24600134
+                  20800374 20800026 20800234 75200096 20800074 20800252 24600013 75200019 20800141
+                  75200225 24600119 24600122 24600128 24600051 24600009 24600140 24600010 24600012
+                  24600148 24600058 75200039 24600062 24600071 75200053 75200055 24600023 24600074
+                  24600076 24600077 24600173 24600176 75200185 24600083 24600181 24600087 24600028
+                  24600029 24600030 24600033 20800349 24600196 24600197 24600038 24600102 24600103
+                  75200223 24600104 24600115 24600007 24600120 24600186 75200054 24600136 75200150
+                  24600194 20800357 24600142 24600144 24600036 24600017 24600201 24600203 24600065
+                  24600149 24600018 24600153 24600067 24600099 24600158 24600161 24600020 24600072
+                  24600105 75200015 24600168 24600111 20800177 24600146 24600061 20800103 24600124
+                  24600151 24600211 24600091 24600157 24600131 24600107 24600110 75200144 75200145
+                  75200208 75200151 75200104 75200017 24600112 24600048 24600171 75200227 24600054
+                  24600031 24600085 75200086 75200175 24600116 75200092 75200149 20800010 20800273
+                  20800364 20800132 75200120 20800009 75200002 75200067 75200167
+
+     WARNING: THE MODEL ESTIMATION HAS REACHED A SADDLE POINT OR A POINT WHERE THE
+     OBSERVED AND THE EXPECTED INFORMATION MATRICES DO NOT MATCH.
+     AN ADJUSTMENT TO THE ESTIMATION OF THE INFORMATION MATRIX HAS BEEN MADE.
+     THE CONDITION NUMBER IS      -0.786D-05.
+     THE PROBLEM MAY ALSO BE RESOLVED BY DECREASING THE VALUE OF THE
+     MCONVERGENCE OR LOGCRITERION OPTIONS OR BY CHANGING THE STARTING VALUES
+     OR BY USING THE MLF ESTIMATOR.
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS       0.364D-15.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 62, %BETWEEN%: READ
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+Errors for replication with data file C:\Users\Mudar Saied\read9.dat:
+
+*** WARNING
+  One or more individual-level variables have no variation within a
+  cluster for the following clusters.
+
+     Variable   Cluster IDs with no within-cluster variation
+
+      FEMALE      20800205 75200066 20800338 75200103 24600141 24600066 24600192 24600205 20800280
+                  20800011
+      IMMI1GEN    20800205 75200066 20800338 75200103 20800188 24600141 24600066 75200021 75200109
+                  75200062 20800110 75200156 75200076 20800232 20800020 20800073 24600209 75200153
+                  75200006 24600039 75200029 24600192 24600205 75200202 20800134 20800280 20800111
+                  20800034 24600170 24600086 20800184 75200154 20800271 20800061 20800047 20800207
+                  75200075 20800011 20800244 75200008 20800159 20800165 20800092 24600210 75200077
+                  20800028 20800243 20800090 20800323 20800057 24600177 20800218 20800098 20800006
+                  20800190 20800051 24600004 24600026 20800260 20800107 20800163 20800070 20800236
+                  20800305 20800239 20800270 20800292 20800054 20800194 20800372 20800202 20800295
+                  20800186 20800118 24600055 20800017 20800158 75200152 20800337 20800063 24600145
+                  20800312 24600172 20800067 75200089 20800166 20800360 20800077 20800378 20800261
+                  20800178 20800275 24600155 20800048 20800315 20800149 20800324 20800018 20800278
+                  20800247 20800227 20800038 20800112 24600147 20800080 20800290 75200176 20800339
+                  20800087 20800182 20800306 20800238 20800150 20800240 20800156 20800119 20800122
+                  20800351 75200163 20800066 20800200 20800082 20800303 20800060 75200098 75200107
+                  20800046 75200137 20800251 20800341 20800059 20800296 20800259 20800368 20800369
+                  20800154 20800241 20800035 20800088 20800127 20800335 20800208 20800064 20800297
+                  20800298 20800021 20800162 75200047 24600135 24600137 20800216 20800016 20800308
+                  20800044 20800055 20800121 20800316 20800377 20800015 20800286 20800269 20800095
+                  20800096 20800274 20800327 20800140 20800282 20800342 20800169 20800359 75200135
+                  20800293 24600204 20800246 20800172 20800299 20800212 20800370 20800301 20800152
+                  20800125 20800263 24600052 20800268 24600073 75200046 20800265 20800223 75200136
+                  24600163 20800130 20800352 20800043 20800101 24600057 20800104 20800366 20800257
+                  20800113 20800079 75200209 20800373 20800108 20800355 75200124 20800356 20800033
+                  75200129 24600034 24600154 20800157 20800056 20800030 24600169 75200158 20800161
+                  24600056 24600180 24600183 24600189 20800180 24600079 20800001 24600006 24600094
+                  24600008 24600097 24600014 75200014 20800039 24600081 24600024 24600182 20800105
+                  20800264 20800231 24600191 24600042 24600198 75200083 24600206 24600134 20800374
+                  75200189 20800234 75200196 20800074 24600013 75200019 75200214 20800062 24600159
+                  20800099 20800330 24600122 24600128 75200122 20800155 24600051 24600140 24600010
+                  24600148 24600058 24600059 20800320 20800343 75200048 24600166 24600076 24600077
+                  24600173 24600080 75200072 24600083 24600181 20800114 24600029 24600030 24600188
+                  20800349 24600038 24600102 24600103 20800102 24600109 24600114 24600115 20800289
+                  24600049 75200041 24600050 24600027 20800363 24600011 24600186 20800144 20800283
+                  20800357 24600142 24600144 24600017 24600201 24600203 24600149 24600018 75200179
+                  24600099 75200186 24600213 24600216 24600002 75200205 24600020 75200100 20800235
+                  24600072 75200018 24600005 24600111 20800177 24600146 20800103 24600124 24600151
+                  75200127 75200183 24600126 24600021 24600157 24600130 24600107 24600110 75200208
+                  24600193 24600112 24600138 24600048 24600082 24600171 24600070 24600003 75200194
+                  24600031 75200131 24600085 75200204 20800331 20800325 24600116 75200149 20800201
+                  24600150 20800010 20800273 20800226 75200022 75200045 20800364 75200182 75200079
+                  75200059 20800132 20800333 75200002 75200025 75200167 75200166 75200193
+      IMMI2GEN    20800338 75200103 20800188 24600141 24600066 75200021 75200109 75200062 75200156
+                  75200076 20800020 24600209 75200006 24600039 24600096 75200029 24600192 24600205
+                  75200202 20800280 20800123 75200221 20800034 24600170 24600175 24600086 75200224
+                  20800184 20800271 20800047 75200112 20800207 75200009 75200075 20800011 24600123
+                  20800040 75200008 20800165 24600210 75200077 20800323 20800057 24600177 20800218
+                  20800006 24600004 24600026 20800260 20800163 20800305 20800239 20800270 20800202
+                  20800295 20800186 20800118 24600055 20800209 20800158 20800171 20800347 20800063
+                  24600145 20800067 24600195 20800213 75200133 24600155 20800315 20800149 75200173
+                  20800250 20800227 24600147 75200061 75200176 20800339 20800182 20800306 20800156
+                  20800351 75200163 20800200 20800082 20800302 20800303 20800060 20800266 75200005
+                  24600040 75200137 20800249 24600152 20800259 20800241 20800035 20800208 24600137
+                  20800016 20800044 20800377 20800286 20800319 20800321 20800096 20800116 20800336
+                  75200108 20800140 75200126 20800004 20800359 75200135 24600204 20800172 20800299
+                  75200160 20800109 20800219 20800012 24600052 75200071 75200046 75200136 24600162
+                  24600163 75200069 24600037 24600046 24600047 75200081 20800101 24600057 20800257
+                  20800113 75200209 20800204 20800019 20800108 20800356 20800033 24600035 75200158
+                  20800161 24600056 24600180 24600189 24600069 20800139 24600008 24600097 75200014
+                  24600081 24600024 24600090 24600178 75200057 24600095 24600191 24600042 24600198
+                  24600199 24600045 75200165 75200080 24600133 24600206 24600134 20800374 20800026
+                  20800234 75200096 20800074 20800252 24600013 20800141 75200225 24600119 24600122
+                  24600128 24600129 24600051 24600009 24600140 24600010 24600012 24600058 75200039
+                  24600062 24600071 75200053 75200055 24600023 24600074 24600076 24600077 24600173
+                  24600176 75200185 24600083 24600181 24600087 24600028 24600030 24600033 20800349
+                  24600196 24600197 24600038 24600102 24600103 75200223 24600104 24600115 24600007
+                  24600120 24600186 75200054 24600136 20800283 75200150 24600194 20800357 24600142
+                  24600144 24600036 24600017 24600203 24600065 24600149 24600018 24600153 24600067
+                  24600099 24600158 24600161 24600020 75200100 24600105 75200015 24600106 24600168
+                  24600111 20800177 24600146 75200171 24600061 20800103 24600124 24600151 24600211
+                  24600091 24600157 24600131 24600107 24600110 75200144 75200208 75200151 75200104
+                  75200017 24600112 24600048 75200227 24600054 24600031 75200086 75200175 24600116
+                  75200092 24600089 75200149 20800010 20800273 20800364 20800132 75200120 20800009
+                  75200002 75200067 75200167
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+Errors for replication with data file C:\Users\Mudar Saied\read10.dat:
+
+*** WARNING
+  One or more individual-level variables have no variation within a
+  cluster for the following clusters.
+
+     Variable   Cluster IDs with no within-cluster variation
+
+      FEMALE      20800205 75200066 20800338 75200103 24600141 24600066 24600192 24600205 20800280
+                  20800011
+      IMMI1GEN    20800205 75200066 20800338 75200103 20800188 24600141 24600066 75200021 75200109
+                  75200062 20800110 75200156 75200076 20800232 20800020 20800073 24600209 75200153
+                  24600039 75200029 24600192 24600205 75200202 20800134 20800280 20800111 20800034
+                  24600086 20800184 75200154 20800271 20800061 20800047 20800207 75200075 20800011
+                  20800244 75200008 20800159 20800165 20800092 24600210 75200077 20800028 20800243
+                  20800090 20800323 24600185 20800057 24600177 20800218 20800098 20800006 20800190
+                  20800051 24600004 24600026 20800260 20800107 20800163 20800070 20800236 20800305
+                  20800239 20800270 20800292 20800054 20800194 20800372 20800202 20800295 20800186
+                  20800118 24600055 20800017 20800158 75200152 20800337 20800063 24600145 20800312
+                  24600172 20800067 75200089 20800166 20800360 20800077 20800378 20800261 20800178
+                  20800275 24600155 20800315 20800149 20800324 20800018 20800278 20800247 20800227
+                  20800038 20800112 20800080 20800290 75200176 20800339 20800087 20800182 20800306
+                  20800238 20800150 20800240 20800156 20800119 20800122 20800351 75200163 20800066
+                  20800200 20800082 20800303 20800060 75200098 20800046 75200137 20800251 20800341
+                  20800059 20800296 20800259 20800368 20800369 20800154 20800241 20800035 20800088
+                  20800127 20800335 20800208 20800064 20800297 20800298 20800021 20800162 75200047
+                  24600135 24600137 20800216 20800016 20800308 20800044 20800055 20800121 20800316
+                  20800377 20800015 20800286 20800269 20800095 20800096 20800274 20800327 20800196
+                  20800140 20800282 20800342 20800359 75200135 20800293 24600204 20800246 20800172
+                  20800299 20800212 20800370 20800301 20800152 20800125 75200191 20800263 24600052
+                  20800268 24600073 75200046 20800265 20800223 75200136 24600163 20800130 20800352
+                  20800043 24600047 20800101 24600057 20800104 20800366 20800257 20800113 20800079
+                  75200209 20800373 20800108 20800355 75200124 20800356 20800033 75200129 24600154
+                  20800157 20800056 20800030 24600169 75200158 20800161 24600180 24600183 24600189
+                  20800180 24600079 20800001 24600006 24600008 24600097 24600014 75200014 20800039
+                  24600081 24600024 24600182 20800264 20800231 24600191 24600042 24600198 75200083
+                  24600206 24600134 20800374 75200189 20800234 75200196 20800074 24600013 75200019
+                  75200214 20800062 24600159 20800099 20800330 24600122 24600128 75200122 20800155
+                  24600051 24600140 24600010 24600148 24600058 24600059 20800320 20800343 75200048
+                  24600166 24600076 24600077 75200072 24600083 24600181 20800114 24600029 24600030
+                  24600188 20800349 24600038 24600102 24600103 20800102 24600109 24600114 24600115
+                  20800289 24600049 75200041 24600050 24600027 20800363 24600011 24600186 20800144
+                  20800283 20800357 24600142 24600144 24600017 24600201 24600203 24600149 24600018
+                  24600153 75200179 24600099 75200186 24600213 24600216 24600002 75200205 24600020
+                  75200100 20800235 24600072 75200018 24600005 24600111 20800177 24600146 20800103
+                  24600124 24600151 75200127 75200183 24600126 24600021 24600157 24600130 24600107
+                  24600110 75200208 24600193 24600112 24600138 24600048 24600082 24600070 24600003
+                  75200194 24600031 75200131 24600085 75200204 20800331 20800325 24600116 75200149
+                  20800010 20800273 20800226 75200022 75200045 20800364 75200182 75200079 20800132
+                  20800333 75200002 75200025 75200167 75200166 75200193
+      IMMI2GEN    75200066 75200103 20800188 24600141 24600066 75200021 75200109 75200062 75200156
+                  75200076 20800020 24600209 75200006 24600039 24600096 75200029 24600192 24600205
+                  75200202 20800280 20800123 75200221 20800034 24600170 24600175 24600086 75200224
+                  20800184 20800271 20800047 75200112 20800207 75200009 75200075 20800011 24600123
+                  20800040 75200008 20800165 24600210 75200077 20800028 20800323 20800057 24600177
+                  20800218 24600004 20800260 20800163 20800305 20800239 20800270 20800054 20800202
+                  20800295 20800186 20800118 24600055 20800209 20800158 20800171 20800347 20800063
+                  24600145 24600172 20800067 24600195 20800213 20800261 75200133 24600155 20800315
+                  20800149 20800250 20800227 24600147 75200061 75200176 20800339 20800182 20800306
+                  20800156 20800351 75200163 20800200 20800082 20800302 20800303 20800060 75200107
+                  20800266 75200005 24600040 75200137 24600152 20800259 20800241 20800035 20800208
+                  24600135 24600137 20800016 20800308 20800044 20800377 20800286 20800319 20800321
+                  20800096 20800327 20800116 20800336 75200108 20800140 75200126 20800004 20800359
+                  75200135 24600204 20800172 20800299 75200160 20800109 20800219 20800012 24600052
+                  75200071 75200046 75200136 24600162 24600163 75200069 24600037 20800043 24600046
+                  24600047 75200081 20800101 24600057 20800257 20800113 75200209 20800204 20800019
+                  20800356 20800033 75200158 20800161 24600056 24600180 24600189 24600069 20800139
+                  24600094 24600008 24600097 75200014 24600081 24600024 24600090 24600178 75200057
+                  24600191 24600042 24600198 24600199 24600045 75200165 75200080 24600133 24600206
+                  24600134 20800374 20800026 20800234 75200096 20800074 20800252 24600013 75200019
+                  20800141 75200225 24600119 24600122 24600128 24600129 24600051 24600009 24600140
+                  24600010 24600012 24600148 24600058 75200039 24600062 24600071 75200055 24600023
+                  24600074 24600076 24600077 24600173 24600176 75200185 24600083 24600181 24600087
+                  24600028 24600029 24600030 24600033 20800349 24600196 24600197 24600038 24600102
+                  24600103 75200223 24600104 24600115 24600007 24600120 24600186 75200054 24600136
+                  75200150 24600194 20800357 24600142 24600144 24600036 24600017 24600201 24600203
+                  24600065 24600149 24600018 24600153 24600067 24600099 24600158 24600161 24600020
+                  24600072 24600105 24600106 24600168 24600111 20800177 24600146 24600061 20800103
+                  24600124 24600151 24600211 24600091 24600157 24600131 24600107 24600110 75200144
+                  75200208 75200151 75200104 75200017 24600112 24600048 24600171 75200227 24600054
+                  24600031 24600085 75200086 75200175 24600116 75200092 75200149 20800010 20800273
+                  20800364 20800132 75200120 20800009 75200002 75200067 75200167
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+DIAGRAM INFORMATION
+
+  Mplus diagrams are currently not available for multilevel analysis.
+  No diagram output was produced.
+
+
+     Beginning Time:  19:31:48
+        Ending Time:  19:32:58
+       Elapsed Time:  00:01:10
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2019 Muthen & Muthen

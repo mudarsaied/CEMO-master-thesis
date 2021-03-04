@@ -1,0 +1,57 @@
+ TITLE:
+    M1 Student-level only
+
+
+DATA:
+    file = "C:\Users\Mudar Saied\implist.dat";
+
+    type = imputation;
+
+
+VARIABLE:
+      names =
+        CNTRYID CNTSCHID CNTSTUID W_STU READ
+        ! Demographic control var
+        FEMALE IMMI1GEN IMMI2GEN ESCS
+        ! ICT Use at Home
+        ICTLEIS ICTSCHWK USESCH
+        ! Reading Mediation
+        READJOY READCOMP  READEASE 
+        ! School Weight
+        W_SCH
+        ! School ICT Policy
+        Q05HA
+        ;
+    !useobs = (CNTRYID EQ 246);            ! 208DNK=7657, 246FIN=5649, 752SWE=5504
+    usevar =
+        ! Outcome
+        READ
+        ! Student-level
+        FEMALE IMMI1GEN IMMI2GEN ESCS     ! Demographic controls
+            ! ICT-related var
+        ICTLEIS ICTSCHWK USESCH           ! ICT use at home/ at school
+            ! Mediators
+        READJOY READCOMP READEASE         ! Reading affect
+        
+    ;
+
+    missing = all (-99);
+
+    weight = W_STU;
+
+
+ANALYSIS:  
+
+    processors = 8;
+
+    estimator = MLR;
+
+
+MODEL:
+    
+   
+
+
+OUTPUT:
+    sampstat stdyx;
+    

@@ -1,0 +1,59 @@
+TITLE:
+    M0 Null model
+
+
+DATA:
+    file = "C:\Users\Mudar Saied\implist.dat";
+
+    type = imputation;
+
+
+VARIABLE:
+    names =
+          CNTRYID CNTSCHID CNTSTUID W_STU READ
+         ! Demographic control var
+          FEMALE IMMI1GEN IMMI2GEN ESCS
+         ! ICT
+            ! ICT Use at school (10 items)
+          Q3 Q4 Q5 Q7 Q8
+          Q9 Q10 Q1 Q2 Q6
+            !ICT PISA scaled
+          ACAHOM USESCH LEIHOM
+            ! Reading Mediation
+          READJOY READCOMP  READEASE
+         ! School Weight
+          W_SCH
+           ! School ICT Policy
+          Q05HA
+        ;
+    !useobs = CNTRYID eq [[208]];          ! Pull out one country at a time
+
+    usevar = READ;
+
+    cluster = CNTSCHID;
+
+    missing = all (-99);
+
+    weight = W_STU;
+    wtscale = cluster;
+    bweight = W_SCH;
+    bwtscale = sample;
+
+
+ANALYSIS:
+    processors = 8;
+
+    type = twolevel;
+
+
+MODEL:
+
+%Between%
+    READ;
+
+%Within%
+    READ;
+
+
+OUTPUT:
+    sampstat stdyx;
